@@ -13,7 +13,7 @@ const { name, slug, image } = Astro.props;
 <article class="relative group flex items-center gap-4">
     <a class="absolute inset-0 z-10" href={`/artist/${slug}`}></a>
     <figure class="aspect-1/1 object-cover overflow-clip w-12 rounded-full bg-neutral-600 group-hover:scale-110 transition-transform">
-        <img src={ image } alt="" />
+        <img class="size-full h-full object-cover object-center" src={ image } alt="" />
     </figure>
     <p class="font-bold">{ name }</p>
 </article>
