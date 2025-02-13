@@ -1,3 +1,5 @@
+import { API_URL, CUSTOM_QUERY_URL } from '../functions/theme';
+
 import { stripHtml } from "../functions/helpers";
 
 import pkg from 'he';
@@ -7,15 +9,15 @@ export async function fetchSingleArtist(id, slug) {
   let url;
 
   if (id) {
-    url = `http://localhost:8070/wp-json/wp/v2/artist/${id}`;
+    url = `${API_URL}/artist/${id}`;
   } else if(slug) {
-    url = `http://localhost:8070/wp-json/wp/v2/artist?slug=${slug}`;
+    url = `${API_URL}/artist?slug=${slug}`;
   }
 
   try {
     const response = await fetch(url);
     const data = await response.json();
-    const featuredMedia = await fetch('http://localhost:8070/wp-json/wp/v2/media/' + data.featured_media);
+    const featuredMedia = await fetch(`${API_URL}/media/` + data.featured_media);
     const media = await featuredMedia.json();
 
     return {
@@ -34,15 +36,15 @@ export async function fetchSingleLocation(id, slug) {
   let url;
 
   if (id) {
-    url = `http://localhost:8070/wp-json/wp/v2/location/${id}`;
+    url = `${API_URL}/location/${id}`;
   } else if(slug) {
-    url = `http://localhost:8070/wp-json/wp/v2/location?slug=${slug}`;
+    url = `${API_URL}/location?slug=${slug}`;
   }
 
   try {
     const response = await fetch(url);
     const data = await response.json();
-    const featuredMedia = await fetch('http://localhost:8070/wp-json/wp/v2/media/' + data.featured_media);
+    const featuredMedia = await fetch(`${API_URL}/media/` + data.featured_media);
     const media = await featuredMedia.json();
 
     return {
@@ -62,18 +64,18 @@ export async function fetchSingleEvent(id, slug) {
   let url;
 
   if (id) {
-    url = `http://localhost:8070/wp-json/wp/v2/event/${id}`;
+    url = `${API_URL}/event/${id}`;
   } else if(slug) {
-    url = `http://localhost:8070/wp-json/wp/v2/event?slug=${slug}`;
+    url = `${API_URL}/event?slug=${slug}`;
   }
 
   try {
     const response = await fetch(url);
     const data = await response.json();
-    const featuredMedia = await fetch('http://localhost:8070/wp-json/wp/v2/media/' + data.featured_media);
+    const featuredMedia = await fetch(`${API_URL}/media/` + data.featured_media);
     const media = await featuredMedia.json();
 
-    let genres = await fetch('http://localhost:8070/wp-json/wp/v2/genre?post=' + data.id);
+    let genres = await fetch(`${API_URL}/genre?post=` + data.id);
     const genresData = await genres.json();
 
     let artists = [];
@@ -105,7 +107,7 @@ export async function fetchSingleEvent(id, slug) {
 }
 
 export async function fetchEvents(limit = 100, orderby = 'date', order = 'desc') {
-    const url = `http://localhost:8070/wp-json/wp/v2/event?per_page=${limit}&orderby=${orderby}&order=${order}`;
+    const url = `${API_URL}/event?per_page=${limit}&orderby=${orderby}&order=${order}`;
     const posts = [];    
   
     try {
@@ -113,10 +115,10 @@ export async function fetchEvents(limit = 100, orderby = 'date', order = 'desc')
       const data = await response.json();
 
       for (let entry of data) {
-        let featuredMedia = await fetch('http://localhost:8070/wp-json/wp/v2/media/' + entry.featured_media);
+        let featuredMedia = await fetch(`${API_URL}/media/` + entry.featured_media);
         const media = await featuredMedia.json();
 
-        let genres = await fetch('http://localhost:8070/wp-json/wp/v2/genre?post=' + entry.id);
+        let genres = await fetch(`${API_URL}/genre?post=` + entry.id);
         const genresData = await genres.json();
 
         let artists = [];
@@ -152,7 +154,7 @@ export async function fetchEvents(limit = 100, orderby = 'date', order = 'desc')
 }
   
 export async function fetchArtists(limit = 100, orderby = 'title', order = 'asc') {
-    const url = `http://localhost:8070/wp-json/wp/v2/artist?per_page=${limit}&orderby=${orderby}&order=${order}`;
+    const url = `${API_URL}/artist?per_page=${limit}&orderby=${orderby}&order=${order}`;
     const posts = [];
   
     try {
@@ -160,7 +162,7 @@ export async function fetchArtists(limit = 100, orderby = 'title', order = 'asc'
       const data = await response.json();
   
       for (let entry of data) {
-        let featuredMedia = await fetch('http://localhost:8070/wp-json/wp/v2/media/' + entry.featured_media);
+        let featuredMedia = await fetch(`${API_URL}/media/` + entry.featured_media);
         const media = await featuredMedia.json();
   
         posts.push({
@@ -180,7 +182,7 @@ export async function fetchArtists(limit = 100, orderby = 'title', order = 'asc'
 }
 
 export async function fetchLocations(limit = 100, orderby = 'title', order = 'asc') {
-  const url = `http://localhost:8070/wp-json/wp/v2/location?per_page=${limit}&orderby=${orderby}&order=${order}`;
+  const url = `${API_URL}/location?per_page=${limit}&orderby=${orderby}&order=${order}`;
   const posts = [];
 
   try {
@@ -188,7 +190,7 @@ export async function fetchLocations(limit = 100, orderby = 'title', order = 'as
     const data = await response.json();
 
     for (let entry of data) {
-      let featuredMedia = await fetch('http://localhost:8070/wp-json/wp/v2/media/' + entry.featured_media);
+      let featuredMedia = await fetch(`${API_URL}/media/` + entry.featured_media);
       const media = await featuredMedia.json();
 
       posts.push({
@@ -208,7 +210,7 @@ export async function fetchLocations(limit = 100, orderby = 'title', order = 'as
 }
 
 export async function fetchLocationEvents(locationId) {
-  const url = `http://localhost:8070/wp-json/pyrite/v2/customQuery?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
+  const url = `${CUSTOM_QUERY_URL}?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
   const posts = [];
 
   try {
