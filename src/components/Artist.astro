@@ -1,5 +1,8 @@
 ---
 
+import * as AstroFeather from 'astro-feather';
+import { Image } from 'astro:assets';
+
 interface Props {
   name: string;
   slug: string;
@@ -12,8 +15,9 @@ const { name, slug, image } = Astro.props;
 
 <article class="relative group flex items-center gap-4">
     <a class="absolute inset-0 z-10" href={`/artist/${slug}`}></a>
-    <figure class="aspect-1/1 object-cover overflow-clip w-12 rounded-full bg-neutral-600 group-hover:scale-110 transition-transform">
-        <img class="size-full h-full object-cover object-center" src={ image } alt="" />
+    <figure class="aspect-1/1 object-cover overflow-clip w-12 rounded-full bg-neutral-600 group-hover:scale-110 transition-transform flex items-center justify-center">
+      { image && <Image width="48" height="48" class="size-full h-full object-cover object-center" src={ image } alt="" /> }
+      { !image && <AstroFeather.MusicIcon customClasses="w-4 h-4 aspect-1 text-neutral-700" /> }
     </figure>
     <p class="font-bold">{ name }</p>
 </article>

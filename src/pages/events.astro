@@ -9,9 +9,7 @@ import "../styles/global.css";
 
 import { fetchEvents } from "../api/server";
 
-let events = await fetchEvents();
-console.log(events);
-
+let events = await fetchEvents();;
 
 ---
 
@@ -21,7 +19,7 @@ console.log(events);
     <Page>
         <Grid>
             {events.map((event) => (
-                <Card title={event.title} featured_media={event.featured_media} meta={ event.genres } href={`/event/${event.slug}`} date={ event.date }/>
+                <Card title={event.title} featured_media={event.featured_media } meta={ event.genres } href={`/event/${event.slug}`} date={ event.date }/>
             ))}
         </Grid> 
     </Page>
