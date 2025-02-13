@@ -1,5 +1,5 @@
 {
-  "name": "pyrite-neo",
+  "name": "",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -10,5 +10,14 @@
   },
   "dependencies": {
     "astro": "^5.2.5"
+  },
+  "devDependencies": {
+    "@fontsource-variable/figtree": "^5.1.2",
+    "@fontsource/barlow-condensed": "^5.1.1",
+    "@tailwindcss/vite": "^4.0.6",
+    "astro-feather": "^1.0.0",
+    "feather-icons": "^4.29.2",
+    "he": "^1.2.0",
+    "tailwindcss": "^4.0.6"
   }
 }

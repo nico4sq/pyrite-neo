@@ -1,0 +1,23 @@
+---
+
+interface Props {
+  name: string;
+  slug: string;
+  date: string;
+  image?: string;
+}
+
+const { name, slug, date, image } = Astro.props;
+
+---
+
+<article class="relative group flex gap-4 items-center not-last:mb-6">
+    <a href={`/event/${slug}`} class="absolute inset-0 z-10"></a>
+    <figure class="aspect-1/1 object-cover overflow-clip w-12 min-w-12 rounded-full bg-neutral-600 group-hover:scale-110 transition-transform">
+        <img class="size-full h-full object-cover object-center" src={ image } alt="" />
+    </figure>
+    <div>
+        <p class="text-xs pb-1">{ date }</p>
+        <p class="font-bold">{ name }</p>
+    </div>  
+</article>

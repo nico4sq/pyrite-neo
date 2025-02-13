@@ -1,11 +1,31 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import Header from '../components/Header.astro';
 import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import Hero from '../components/Hero.astro';
+
+import { SITENAME } from '../functions/theme';
+let title = SITENAME;
+
+import "../styles/global.css";
+import Page from '../components/Page.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Home">
+	<Header />
+
+	<Hero title={ title } copy="Dein Event-Planer für Core- und Metal-Shows. Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten."/>
+
+	<Page>
+		<Button label="Primary Button" href="#" type="primary" icon/>
+		<Button label="Secondary Button" href="#" type="secondary" icon/>
+		<Button label="Default Button" href="#" icon/>
+
+		<Button href="#" type="primary" icon/>
+		<Button href="#" type="secondary" icon/>
+		<Button href="#" icon/>
+	</Page>
 </Layout>

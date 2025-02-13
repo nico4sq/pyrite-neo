@@ -1,0 +1,65 @@
+---
+import * as AstroFeather from 'astro-feather';
+
+interface Props {
+  label?: string;
+  href: string;
+  type?: string;
+  icon?: boolean;
+}
+
+const { label, href, type, icon } = Astro.props;
+
+let classesButton = [
+  'group',
+  'py-2',
+  'transition-all',
+  'rounded-lg',
+  'uppercase',
+  'font-barlow',
+  'font-bold',
+  'flex',
+  'flex-auto',
+  'justify-center',
+  'cursor-pointer',
+  'items-center',
+  'leading-1.05'
+];
+
+let classesIcon = [
+  'transition-all',
+  'w-5',
+  'h-5'
+];
+
+if (label === undefined) {
+  classesButton.push('px-3');
+
+  if (type === 'primary') {
+    classesButton.push('border-1', 'border-yellow-400', 'bg-yellow-400', 'hover:bg-yellow-500', 'text-stone-950');
+  } else if (type === 'secondary') {
+    classesButton.push('border-1', 'border-neutral-950', 'dark:border-white', 'hover:border-yellow-400', 'dark:hover:border-yellow-400', 'text-neutral-950', 'dark:text-white');
+  } else {
+    classesButton.push('text-white');
+  }
+} else {
+  classesButton.push('px-4');
+
+  if (icon) {
+    classesButton.push('hover:pr-3', 'hover:gap-3', 'gap-2');
+  }
+
+  if (type === 'primary') {
+    classesButton.push('border-1', 'border-yellow-400', 'bg-yellow-400', 'hover:bg-yellow-500', 'text-stone-950');
+  } else if (type === 'secondary') {
+    classesButton.push('border-1', 'border-neutral-950', 'dark:border-white', 'hover:border-yellow-600', 'dark:hover:border-yellow-400', 'text-neutral-950', 'dark:text-white',);
+  } else {
+    classesButton.push('text-white');
+  }
+}
+---
+
+<a href={ href } class={classesButton.join(' ')}>
+  { label }
+  { icon && <AstroFeather.ArrowRightIcon customClasses={classesIcon.join(' ')} /> }
+</a>

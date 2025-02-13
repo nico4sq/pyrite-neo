@@ -1,0 +1,77 @@
+--- 
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Page from '../../components/Page.astro';
+import Button from '../../components/Button.astro';
+import Artist from '../../components/Artist.astro';
+import Location from '../../components/Location.astro';
+
+import "../../styles/global.css";
+
+import { fetchEvents } from '../../api/server';
+
+export async function getStaticPaths() {
+    let events = await fetchEvents();
+    return events.map((event) => ({
+        params: {
+            event: event.slug
+        },
+        props : {
+            event: event
+        }
+    }));
+}
+
+const { event } = Astro.props;
+
+---
+
+<Layout title={ event.title }>
+    <Header />
+
+    <img src={ event.featured_media } alt={ event.title } class="size-full h-full object-cover object-center fixed inset-0 opacity-20 dark:opacity-10 blur-xl -z-10" />
+
+
+    <Page>
+        <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-6">
+                <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold p-6 bg-yellow-400 rounded-3xl shadow-lg">{ event.title }</h1>
+                <ul class="p-6 bg-neutral-200 dark:bg-neutral-800 rounded-3xl list-none flex gap-4 shadow-lg"> 
+                    <li class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-yellow-600 dark:text-yellow-300">Datum</span><span>{ event.date }</span></li>
+                    <li class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-yellow-600 dark:text-yellow-300">Start</span><span>{ event.start } Uhr</span></li>
+                    <li class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-yellow-600 dark:text-yellow-300">Einlass</span><span>{ event.doors } Uhr</span></li>
+                </ul>
+                { event.content && 
+                    <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl shadow-lg">
+                        <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
+                        <p>{ event.content }</p>
+                    </div> 
+                }
+                <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 shadow-lg">
+                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-4">Artists</h3>
+                    { event.artists.map((artist) => (
+                        <Artist name={ artist.title } image={ artist.featured_media } slug={ artist.slug }/>
+                    ))}
+                </div>
+
+                <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl shadow-lg">
+                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Location</h3>
+                    { event.location && 
+                        <Location name={ event.location.title } image={ event.location.featured_media } slug={ event.location.slug } address={ event.location.address }/>
+                    }
+                </div>
+            </div>
+            <div class="flex flex-col gap-6">
+                <figure class="size-fit aspect-3/2 overflow-clip rounded-3xl shadow-lg">
+                    <img src={ event.featured_media } alt={ event.title } class="size-full h-full object-cover object-center" />
+                </figure>
+
+                <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl flex gap-4 shadow-lg">
+                    <Button label="Tickets" href="#" type="primary"/>
+                    <Button label="Kalender" href="/events" type="secondary"/>
+                    <Button label="Merken" href="#" type="secondary"/>
+                </div>
+            </div>
+        </div>
+    </Page>
+</Layout>

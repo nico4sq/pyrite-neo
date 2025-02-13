@@ -1,0 +1,28 @@
+---
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+import Grid from '../components/Grid.astro';
+import Card from '../components/Card.astro';
+
+import "../styles/global.css";
+
+import { fetchEvents } from "../api/server";
+
+let events = await fetchEvents();
+console.log(events);
+
+
+---
+
+<Layout title="Events">
+	<Header />
+
+    <Page>
+        <Grid>
+            {events.map((event) => (
+                <Card title={event.title} featured_media={event.featured_media} meta={ event.genres } href={`/event/${event.slug}`} date={ event.date }/>
+            ))}
+        </Grid> 
+    </Page>
+</Layout>

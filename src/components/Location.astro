@@ -1,0 +1,23 @@
+---
+
+interface Props {
+  name: string;
+  slug: string;
+  image?: string;
+  address: string;
+}
+
+const { name, slug, image, address } = Astro.props;
+
+---
+
+<article class="relative group flex items-center gap-4">
+    <a class="absolute inset-0 z-10" href={`/location/${slug}`}></a>
+    <figure class="aspect-1/1 object-cover overflow-clip w-12 rounded-full bg-neutral-600 group-hover:scale-110 transition-transform">
+        <img src={ image } alt="" />
+    </figure>
+    <div>
+        <p class="font-bold">{ name }</p>
+        <p class="text-sm">{ address }</p>
+    </div>  
+</article>
