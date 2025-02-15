@@ -9,8 +9,8 @@ import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
 
-import { fetchLocations } from '../../api/server';
-import { fetchLocationEvents } from '../../api/server';
+import { fetchLocations } from '../../api/wordpress';
+import { fetchLocationEvents } from '../../api/wordpress';
 
 export async function getStaticPaths() {
     let locations = await fetchLocations();
