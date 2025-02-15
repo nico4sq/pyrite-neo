@@ -1,0 +1,30 @@
+---
+import Header from '../components/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import Page from '../components/Page.astro';
+import Input from '../components/Input.astro';
+
+import "../styles/global.css";
+
+---
+
+<Layout title="Login">
+  <Header/>
+
+  <Page>
+    <h1>Login</h1>
+    <form action="/login" method="post" class="w-full flex flex-col gap-6">
+        <Input type="text" name="username" label="Benutzername" placeholder="z.B. Erika Mustermann" />
+        <Input type="textarea" name="description" label="Beschreibung" placeholder="Ihre Beschreibung" required/>
+        <Input type="password" name="password" label="Passwort" placeholder="Ihr Passwort" required/>
+        <Input type="number" name="age" label="Alter" placeholder="Ihr Alter" required/>
+        <Input type="email" name="email" label="E-Mail" placeholder="Ihre E-Mail-Adresse" required/>
+        <Input type="tel" name="phone" label="Telefonnummer" placeholder="Ihre Telefonnummer" required/>
+        <Input type="url" name="website" label="Webseite" placeholder="Ihre Webseite" required/>
+        <Input type="file" name="resume" label="Lebenslauf" required/>
+
+    </form>
+  </Page>
+
+</Layout>

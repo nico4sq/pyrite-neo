@@ -1,0 +1,87 @@
+---
+import * as AstroFeather from 'astro-feather';
+
+interface props {
+  type: string;
+  label: string;
+  name: string;
+    placeholder: string;
+    required: boolean | false;
+}
+
+const { type, label, name, placeholder, required } = Astro.props;
+---
+<label for={ name } class="flex flex-col items-stretch w-full gap-1">
+    <span class="text-stone-950 dark:text-white font-barlow font-bold uppercase text-sm mb-2">
+        { label }
+        { required && <span class="text-yellow-300 ml-1">*</span> }
+    </span>
+    {type === 'text' &&
+        <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-4 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required } />
+    }
+
+    {type === 'textarea' &&
+        <textarea id={ name } name={ name } placeholder={ placeholder } class="w-full py-2 px-4 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required }></textarea>
+    }
+
+    {type === 'password' &&
+        <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-4 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required } />
+    }
+
+    {type === 'number' &&
+        <div class="relative flex gap-2">
+            <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-8 text-center border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none appearance-none" required={ required } />
+            <button type="button" class="decrement absolute top-1/2 left-4 -translate-y-1/2 w-4 aspect-1 flex items-center justify-center">-</button>
+            <button type="button" class="increment absolute top-1/2 right-4 -translate-y-1/2 w-4 aspect-1 flex items-center justify-center">+</button>
+        </div>
+    }
+
+    {type === 'email' &&
+        <div class="relative flex gap-2">
+        <AstroFeather.MailIcon customClasses="absolute top-1/2 left-4 -translate-y-1/2 w-4 aspect-1 text-neutral-600 dark:text-neutral-400" />
+        <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-4 pl-11 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required } />
+        </div>
+    }
+
+    {type === 'tel' &&
+        <div class="relative flex gap-2">
+        <AstroFeather.PhoneIcon customClasses="absolute top-1/2 left-4 -translate-y-1/2 w-4 aspect-1 text-neutral-600 dark:text-neutral-400" />
+        <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-4 pl-11 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required } />
+        </div>
+    }
+
+    {type === 'url' &&
+        <div class="relative flex gap-2">
+        <AstroFeather.LinkIcon customClasses="absolute top-1/2 left-4 -translate-y-1/2 w-4 aspect-1 text-neutral-600 dark:text-neutral-400" />
+        <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-4 pl-11 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required } />
+        </div>
+    }
+
+    {type === 'file' &&
+        <input id={ name } name={ name } type={ type } placeholder={ placeholder } class="w-full py-2 px-4 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required } />
+    }
+
+    {type === 'select' &&
+        <select id={ name } name={ name } class="w-full py-2 px-4 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-yellow-400 dark:focus:ring-yellow-400 focus:outline-none" required={ required }>
+            <option value="" disabled selected>Bitte wählen</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+        </select>
+    }
+</label>
+
+<script>
+    document.querySelectorAll('.increment').forEach((button) => {
+        button.addEventListener('click', () => {
+            button.parentElement?.querySelector('input')?.stepUp();
+        });
+    });
+
+    document.querySelectorAll('.decrement').forEach((button) => {
+        button.addEventListener('click', () => {
+            button.parentElement?.querySelector('input')?.stepDown();
+        });
+    });
+    
+</script>

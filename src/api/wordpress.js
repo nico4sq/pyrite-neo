@@ -194,6 +194,12 @@ export async function fetchEventsWithMetaQueries(metaQueries = []) {
   try {
     const response = await fetch(url);
     const data = await response.json();
+
+    for (let entry of data) {     
+      let location = await fetchLocationById(entry.meta.location);
+      entry.location = location;
+    }
+
     return data;
   } catch (error) {
     console.error('Fehler:', error);
@@ -226,7 +232,7 @@ export async function fetchLocationsWithMetaQueries(metaQueries = []) {
       return `meta_query[${index}][key]=${query.key}&meta_query[${index}][value]=${query.value}`;
     }).join('&');
     url += `?${queryString}`;
-  } 
+  }
 
   try {
     const response = await fetch(url);
@@ -235,6 +241,23 @@ export async function fetchLocationsWithMetaQueries(metaQueries = []) {
   } catch (error) {
     console.error('Fehler:', error);
     return [];
+  }
+}
+
+export async function fetchLocationById(id) {
+  let url = CUSTOM_QUERY_URL + '/locations';
+
+  if (id) {
+    url += `?id=${id}`;
+  }
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data[0];
+  } catch (error) {
+    console.error('Fehler:', error);
+    return {};
   }
 }
 

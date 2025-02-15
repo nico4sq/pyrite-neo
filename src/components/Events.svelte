@@ -13,12 +13,11 @@
     let events = [];
 
     async function loadAllEvents() {
-        events = await fetchEventsWithMetaQueries();
+        return await fetchEventsWithMetaQueries();
     }
 
     onMount(async () => {
-        await loadAllEvents();
-
+        events = await loadAllEvents();
         cities = await fetchCities();
     });
 
@@ -32,7 +31,10 @@
         events = await fetchEventsByLocationIds(
             locations.map((location) => location.id)
         );
-    }
+
+        console.log(events);
+        
+    }    
 </script>
 
 <form id="events-filter">
@@ -52,7 +54,7 @@
     </label>
 </form>
 
-<div id="events-list" class="grid grid-cols-3 gap-6">
+<div id="events-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {#each events as event}
         <EventCard
             title={event.title}
@@ -60,6 +62,7 @@
             featured_media={event.featured_media}
             date={event.date}
             genre={event.taxonomies}
+            city={event.location.meta.address_city}
         />
     {/each}
 </div>
