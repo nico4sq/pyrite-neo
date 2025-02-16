@@ -24,7 +24,7 @@ export async function fetchSingleArtist(id, slug) {
       title: decode(data.title.rendered),
       slug: data.slug,
       content: decode(stripHtml(data.content.rendered)),
-      featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url + '&ll&output=webp' : undefined,
+      featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url : undefined,
     };
   } catch (error) {
     console.error('Fehler:', error);
@@ -51,7 +51,7 @@ export async function fetchSingleLocation(id, slug) {
       title: decode(data.title.rendered),
       slug: data.slug,
       content: decode(stripHtml(data.content.rendered)),
-      featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url + '&ll&output=webp' : undefined,
+      featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url : undefined,
       address: data.acf.address.street +  ' ' + data.acf.address.house_number + ', ' + data.acf.address.postal_code + ' ' + data.acf.address.city,
     };
   } catch (error) {
@@ -89,7 +89,7 @@ export async function fetchEvents(limit = 100, orderby = 'date', order = 'desc')
           title: entry.title.rendered,
           slug: entry.slug,
           content: decode(stripHtml(entry.content.rendered)),
-          featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url + '&ll&output=webp' : undefined,
+          featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url : undefined,
           genres: genresData.map(genre => genre.name),
           date: entry.acf.info.date.substring(6, 8) + '.' + entry.acf.info.date.substring(4, 6) + '.' + entry.acf.info.date.substring(0, 4),
           start: entry.acf.info.time_start.split(':').slice(0, 2).join(':'),
@@ -123,7 +123,7 @@ export async function fetchArtists(limit = 100, orderby = 'title', order = 'asc'
           title: decode(entry.title.rendered),
           slug: entry.slug,
           content: decode(stripHtml(entry.content.rendered)),
-          featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url + '&ll&output=webp' : undefined,
+          featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url : undefined,
         });
       }
     }
@@ -151,7 +151,7 @@ export async function fetchLocations(limit = 100, orderby = 'title', order = 'as
         title: decode(entry.title.rendered),
         slug: entry.slug,
         content: decode(stripHtml(entry.content.rendered)),
-        featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url + '&ll&output=webp' : undefined,
+        featured_media: media.source_url ? '//wsrv.nl/?url=' + media.source_url : undefined,
         address: entry.acf.address.street +  ' ' + entry.acf.address.house_number + ', ' + entry.acf.address.postal_code + ' ' + entry.acf.address.city,
       });
     }

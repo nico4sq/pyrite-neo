@@ -9,3 +9,13 @@ export function decodeHtml(html)
     txt.innerHTML = html;
     return txt.value;
 }
+
+export function addLoadingState(element)
+{
+    element.classList.add('is--loading');
+}
+
+export function removeLoadingState(element)
+{
+    element.classList.remove('is--loading');
+}

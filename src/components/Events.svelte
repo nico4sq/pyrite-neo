@@ -9,6 +9,8 @@
         fetchCities
     } from "../api/wordpress";
 
+    import { addLoadingState, removeLoadingState } from "../functions/helpers";
+
     let cities = [];
     let events = [];
 
@@ -17,12 +19,17 @@
     }
 
     onMount(async () => {
+        addLoadingState(document.getElementById("events-list"));
+
         events = await loadAllEvents();
         cities = await fetchCities();
+
+        removeLoadingState(document.getElementById("events-list"));
     });
 
     async function handleFilterChange(event) {
         events = [];
+        addLoadingState(document.getElementById("events-list"));
 
         let locations = await fetchLocationsWithMetaQueries([
             { key: "address_city", value: event.target.value }
@@ -32,8 +39,7 @@
             locations.map((location) => location.id)
         );
 
-        console.log(events);
-        
+        removeLoadingState(document.getElementById("events-list"));
     }    
 </script>
 
@@ -54,7 +60,7 @@
     </label>
 </form>
 
-<div id="events-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div id="events-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
     {#each events as event}
         <EventCard
             title={event.title}
