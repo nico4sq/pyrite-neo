@@ -1,6 +1,6 @@
 --- 
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
+import Header from '../../components/Header.svelte';
 import Page from '../../components/Page.astro';
 import Event from '../../components/Event.astro';
 
@@ -31,7 +31,7 @@ const locationEvents = await fetchLocationEvents(location.id);
 ---
 
 <Layout title={ location.title }>
-    <Header />
+    <Header client:load/>
 
     <Page>
         <article class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">

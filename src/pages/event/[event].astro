@@ -1,6 +1,6 @@
 --- 
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
+import Header from '../../components/Header.svelte';
 import Page from '../../components/Page.astro';
 import Button from '../../components/Button.astro';
 import Artist from '../../components/Artist.astro';
@@ -13,10 +13,11 @@ import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
 
-import { fetchEvents } from '../../api/wordpress';
+import { fetchEvents, fetchEventsWithMetaQueries } from '../../api/wordpress';
+import { downloadICS } from '../../functions/helpers';
 
 export async function getStaticPaths() {
-    let events = await fetchEvents();
+    let events = await fetchEventsWithMetaQueries();
     return events.map((event) => ({
         params: {
             event: event.slug
@@ -34,7 +35,7 @@ const { event } = Astro.props;
 
 
 <Layout title={ event.title }>
-    <Header />
+    <Header client:load/>
 
     { event.featured_media && <Image width="1200" height="800" src={ event.featured_media } alt={ event.title } class="size-full h-full object-cover object-center fixed inset-0 opacity-20 dark:opacity-10 blur-xl -z-10" /> }
     { !event.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
@@ -71,7 +72,7 @@ const { event } = Astro.props;
                 </figure>
 
                 <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl flex gap-4 shadow-lg -order-2">
-                    <Button label="Tickets" href="#" type="primary"/>
+                    <Button label="Tickets" href={ event.tickets } type="primary" target="_blank"/>
                     <Button label="Kalender" href="/events" type="secondary"/>
                     <Button label="Merken" href="#" type="secondary"/>
                 </div>

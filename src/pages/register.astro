@@ -2,16 +2,17 @@
 import Header from '../components/Header.svelte';
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
-import LoginForm from '../components/LoginForm.svelte';
+import RegistrationForm from '../components/RegistrationForm.svelte';
 
 import "../styles/global.css";
+
 ---
 
-<Layout title="Login">
+<Layout title="Registrierung">
   <Header client:load/>
 
   <Page>
-    <LoginForm client:load/>
+    <RegistrationForm client:load/>
   </Page>
 
 </Layout>

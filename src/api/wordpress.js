@@ -182,6 +182,7 @@ export async function fetchLocationEvents(locationId) {
 }
 
 export async function fetchEventsWithMetaQueries(metaQueries = []) {
+  const posts = [];
   let url = CUSTOM_QUERY_URL + '/events';
 
   if (metaQueries.length > 0) {
@@ -195,16 +196,38 @@ export async function fetchEventsWithMetaQueries(metaQueries = []) {
     const response = await fetch(url);
     const data = await response.json();
 
-    for (let entry of data) {     
-      let location = await fetchLocationById(entry.meta.location);
-      entry.location = location;
-    }
+    for (let entry of data) {   
+      entry.title = decode(entry.title);
+      entry.tickets = entry.meta.links_tickets.toString();
+      entry.date = entry.meta.info_date.toString().substring(6, 8) + '.' + entry.meta.info_date.toString().substring(4, 6) + '.' + entry.meta.info_date.toString().substring(0, 4);
+      entry.start = entry.meta.info_time_start.toString().split(':').slice(0, 2).join(':');
+      entry.doors = entry.meta.info_time_doors.toString().split(':').slice(0, 2).join(':');
 
-    return data;
+      let location = await fetchLocationById(entry.meta.location);
+      location.address = location.meta.address_street + ' ' + location.meta.address_house_number + ', ' + location.meta.address_postal_code + ' ' + location.meta.address_city;
+      location.city = location.meta.address_city.toString();
+      delete location.meta;
+      entry.location = location;
+
+      let artists = [];
+      let artistIds = entry.meta.artists;
+      artistIds.forEach(async id => {
+        let artist = await fetchArtistById(id);
+        delete artist.meta;
+        
+        artists.push(artist);
+      });
+      entry.artists = artists;
+
+      delete entry.meta;
+
+      posts.push(entry);
+    }
   } catch (error) {
     console.error('Fehler:', error);
-    return [];
   }
+
+  return posts;
 }
 
 export async function fetchEventById(id) {
@@ -246,6 +269,43 @@ export async function fetchLocationsWithMetaQueries(metaQueries = []) {
 
 export async function fetchLocationById(id) {
   let url = CUSTOM_QUERY_URL + '/locations';
+
+  if (id) {
+    url += `?id=${id}`;
+  }
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data[0];
+  } catch (error) {
+    console.error('Fehler:', error);
+    return {};
+  }
+}
+
+export async function fetchArtistsWithMetaQueries(metaQueries = []) {
+  let url = CUSTOM_QUERY_URL + '/artists';
+
+  if (metaQueries.length > 0) {
+    const queryString = metaQueries.map((query, index) => {
+      return `meta_query[${index}][key]=${query.key}&meta_query[${index}][value]=${query.value}`;
+    }).join('&');
+    url += `?${queryString}`;
+  }
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Fehler:', error);
+    return [];
+  }
+}
+
+export async function fetchArtistById(id) {
+  let url = CUSTOM_QUERY_URL + '/artists';
 
   if (id) {
     url += `?id=${id}`;

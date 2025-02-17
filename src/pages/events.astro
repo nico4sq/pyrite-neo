@@ -1,5 +1,5 @@
 ---
-import Header from '../components/Header.astro';
+import Header from '../components/Header.svelte';
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
 import Events from '../components/Events.svelte';
@@ -9,7 +9,7 @@ import "../styles/global.css";
 ---
 
 <Layout title="Events">
-	<Header />
+    <Header client:load/>
 
     <Page>
         <Events client:load />

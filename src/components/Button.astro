@@ -6,9 +6,10 @@ interface Props {
   href: string;
   type?: string;
   icon?: boolean;
+  target?: string;
 }
 
-const { label, href, type, icon } = Astro.props;
+const { label, href, type, icon, target } = Astro.props;
 
 let classesButton = [
   'group',
@@ -59,7 +60,7 @@ if (label === undefined) {
 }
 ---
 
-<a href={ href } class={classesButton.join(' ')}>
+<a href={ href } class={classesButton.join(' ')} target={ target }>
   { label }
   { icon && <AstroFeather.ArrowRightIcon customClasses={classesIcon.join(' ')} /> }
-</a>
+</a>  

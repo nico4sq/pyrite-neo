@@ -1,5 +1,5 @@
 ---
-import Header from '../components/Header.astro';
+import Header from '../components/Header.svelte';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
@@ -10,12 +10,10 @@ let title = SITENAME;
 import "../styles/global.css";
 import Page from '../components/Page.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title="Home">
-	<Header />
+	<Header client:load/>
 
 	<Hero title={ title } copy="Dein Event-Planer für Core- und Metal-Shows. Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten."/>
 

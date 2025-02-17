@@ -23,6 +23,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+:is(input, textarea, select):focus {
+  outline-offset: 0.25rem;
+}
+
 .fade-in {
   scale: 0.8;
   opacity: 0;
