@@ -2,14 +2,11 @@
 import Header from '../components/Header.svelte';
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
-import EventsComponent from '../components/Events.svelte';
-
+import MapComponent from '../components/Map.svelte';
 ---
 
-<Layout title="Alle Events auf einen Blick">
+<Layout title="Karte">
     <Header client:load/>
 
-    <Page>
-        <EventsComponent client:load />
-    </Page>
+    <MapComponent client:only />
 </Layout>

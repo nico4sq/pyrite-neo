@@ -3,13 +3,15 @@ import Header from '../components/Header.svelte';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
+import Map from '../components/Map.svelte';
 
 import { SITENAME } from '../functions/theme';
 let title = SITENAME;
 
-import "../styles/global.css";
 import Page from '../components/Page.astro';
+import { fetchEventsWithMetaQueries } from '../api/wordpress';
 
+let eventsData = await fetchEventsWithMetaQueries();
 ---
 
 <Layout title="Home">
@@ -18,12 +20,5 @@ import Page from '../components/Page.astro';
 	<Hero title={ title } copy="Dein Event-Planer für Core- und Metal-Shows. Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten."/>
 
 	<Page>
-		<Button label="Primary Button" href="#" type="primary" icon/>
-		<Button label="Secondary Button" href="#" type="secondary" icon/>
-		<Button label="Default Button" href="#" icon/>
-
-		<Button href="#" type="primary" icon/>
-		<Button href="#" type="secondary" icon/>
-		<Button href="#" icon/>
-	</Page>
+	</Page>	
 </Layout>

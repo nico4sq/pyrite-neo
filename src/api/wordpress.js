@@ -163,21 +163,22 @@ export async function fetchLocations(limit = 100, orderby = 'title', order = 'as
 }
 
 export async function fetchLocationEvents(locationId) {
-  const url = `${CUSTOM_QUERY_URL}?meta_query[relation]=OR&meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
   const posts = [];
+  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
 
     for (let id of data) {
-      let entry = await fetchSingleEvent(id);
+      id = id.id;
+      let entry = await fetchEventById(id);
       posts.push(entry);
     }
   } catch (error) {
     console.error('Fehler:', error);
   }
-  
+
   return posts;
 }
 
@@ -204,6 +205,8 @@ export async function fetchEventsWithMetaQueries(metaQueries = []) {
       entry.doors = entry.meta.info_time_doors.toString().split(':').slice(0, 2).join(':');
 
       let location = await fetchLocationById(entry.meta.location);
+
+      location.title = decode(location.title);
       location.address = location.meta.address_street + ' ' + location.meta.address_house_number + ', ' + location.meta.address_postal_code + ' ' + location.meta.address_city;
       location.city = location.meta.address_city.toString();
       delete location.meta;
@@ -231,6 +234,7 @@ export async function fetchEventsWithMetaQueries(metaQueries = []) {
 }
 
 export async function fetchEventById(id) {
+  let entry = {};
   let url = CUSTOM_QUERY_URL + '/events';
 
   if (id) {
@@ -240,14 +244,17 @@ export async function fetchEventById(id) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    return data[0];
+    entry = data[0];
+    entry.title = decode(entry.title);
   } catch (error) {
-    console.error('Fehler:', error);
-    return {};
+    console.error('Fehler:', error);  
   }
+
+  return entry;
 }
 
 export async function fetchLocationsWithMetaQueries(metaQueries = []) {
+  const posts = [];
   let url = CUSTOM_QUERY_URL + '/locations';
 
   if (metaQueries.length > 0) {
@@ -260,11 +267,22 @@ export async function fetchLocationsWithMetaQueries(metaQueries = []) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    return data;
+
+    for (let entry of data) {
+      entry.title = decode(entry.title);
+      entry.address = entry.meta.address_street + ' ' + entry.meta.address_house_number + ', ' + entry.meta.address_postal_code + ' ' + entry.meta.address_city;
+      entry.city = entry.meta.address_city.toString();
+      entry.coordinates = { lat: entry.meta.coordinates_latitude.toString(), lng: entry.meta.coordinates_longitude.toString() };   
+      
+      delete entry.meta;
+
+      posts.push(entry);
+    }
   } catch (error) {
     console.error('Fehler:', error);
-    return [];
   }
+
+  return posts;
 }
 
 export async function fetchLocationById(id) {
@@ -330,8 +348,8 @@ export async function fetchCities() {
   let cities = [];
   let locations = await fetchLocationsWithMetaQueries();
   locations.forEach(location => {    
-    if (!cities.includes(location.meta.address_city.toString())) {
-      cities.push(location.meta.address_city.toString());
+    if (!cities.includes(location.city.toString())) {
+      cities.push(location.city.toString());
     }
   });
 

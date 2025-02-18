@@ -2,35 +2,38 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.svelte';
 import Page from '../../components/Page.astro';
-import Event from '../../components/Event.astro';
+import LocationEvent from '../../components/LocationEvent.svelte';
+import Map from '../../components/Map.svelte';
 
 import * as AstroFeather from 'astro-feather';
 import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
 
-import { fetchLocations } from '../../api/wordpress';
-import { fetchLocationEvents } from '../../api/wordpress';
+import { fetchLocationsWithMetaQueries, fetchLocationEvents } from '../../api/wordpress';
 
 export async function getStaticPaths() {
-    let locations = await fetchLocations();
+    let locations = await fetchLocationsWithMetaQueries();    
     return locations.map((location) => ({
         params: {
             location: location.slug
         },
         props : {
-            location: location
+            featured_media: location.featured_media,
+            title: location.title,
+            address: location.address,
+            content: location.content,
+            id: location.id
         }
     }));
 }
 
-const { location } = Astro.props;
-
-const locationEvents = await fetchLocationEvents(location.id);
+const { featured_media, title, address, content, id } = Astro.props;
+const locationEvents = await fetchLocationEvents(id);
 
 ---
 
-<Layout title={ location.title }>
+<Layout title={ title }>
     <Header client:load/>
 
     <Page>
@@ -38,31 +41,31 @@ const locationEvents = await fetchLocationEvents(location.id);
             <div class="flex flex-col gap-6">
                 <hgroup class="p-6 bg-yellow-400 rounded-3xl -order-2">
                     <p class="font-barlow uppercase text-sm font-bold text-stone-950">Location</p>
-                    <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold ">{ location.title }</h1>
+                    <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold ">{ title }</h1>
                 </hgroup>
 
                 <div class="p-6 bg-neutral-200 dark:bg-neutral-800 rounded-3xl list-none flex gap-4 -order-2"> 
-                    <div class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-yellow-600 dark:text-yellow-300">Adresse</span><address class="not-italic">{ location.address }</address></div>
+                    <div class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-yellow-600 dark:text-yellow-300">Adresse</span><address class="not-italic">{ address }</address></div>
                 </div>
 
-                { location.content && 
+                { content && 
                     <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl">
                         <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
-                        <p>{ location.content }</p>
+                        <p>{ content }</p>
                     </div> 
                 }
 
                 <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl">
                     <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
-                    { locationEvents.map((event) => (
-                        event && <Event name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } />
+                    { locationEvents && locationEvents.map((event) => (
+                        event && <LocationEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } />
                     ))}
-                    </div>
+                </div>
             </div>
             <div class="flex flex-col gap-6">
                 <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center">
-                    { location.featured_media && <Image width="600" height="400" src={ location.featured_media } alt={ location.title } class="aspect-3/2 size-full object-cover object-center" /> }
-                    { !location.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
+                    { featured_media && <Image src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
+                    { !featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>
             </div>
         </article>

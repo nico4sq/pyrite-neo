@@ -3,8 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.svelte';
 import Page from '../../components/Page.astro';
 import Button from '../../components/Button.astro';
-import Artist from '../../components/Artist.astro';
-import Location from '../../components/Location.astro';
 import EventArtists from '../../components/EventArtists.svelte';
 import EventLocation from '../../components/EventLocation.svelte';
 
@@ -13,7 +11,7 @@ import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
 
-import { fetchEvents, fetchEventsWithMetaQueries } from '../../api/wordpress';
+import { fetchEventsWithMetaQueries } from '../../api/wordpress';
 import { downloadICS } from '../../functions/helpers';
 
 export async function getStaticPaths() {
@@ -57,16 +55,16 @@ const { event } = Astro.props;
                 }
                 <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl shadow-lg -order-1">
                     <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Artists</h3>
-                    <EventArtists client:load artists={ event.artists }/>
+                    <EventArtists artists={ event.artists }/>
                 </div>
 
                 <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl shadow-lg -order-1">
                     <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Location</h3>
-                    <EventLocation client:load location={ event.location }/>
+                    <EventLocation location={ event.location }/>
                 </div>
             </div>
             <div class="gap-6 contents md:flex flex-col">
-                <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-2 shadow-lg">
+                <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3 shadow-lg">
                     { event.featured_media && <Image width="600" height="400" src={ event.featured_media } alt={ event.title } class="aspect-3/2 size-full object-cover object-center" /> }
                     { !event.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>

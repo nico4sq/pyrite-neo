@@ -59,3 +59,20 @@ export async function downloadICS(eventData) {
         console.error('Fehler beim Generieren der ICS-Datei:', error);
     }
 }
+
+import { mount } from 'svelte';
+import * as FeatherIcons from 'svelte-feather-icons';
+
+export function renderIcon(iconName, size = 5) {
+    const iconContainer = document.createElement('span');
+    iconContainer.classList.add('flex', 'w-' + size, 'h-' + size, 'aspect-1', 'text-inherit');
+
+    mount(FeatherIcons[iconName], {
+        target: iconContainer,
+        props: {
+            class: [`w-${size}!`, `h-${size}!`].join(' ')
+        }
+    });
+
+    return iconContainer.outerHTML;
+}

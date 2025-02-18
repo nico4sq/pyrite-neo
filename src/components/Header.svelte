@@ -6,8 +6,6 @@
   let loggedIn = false;
 
   onMount(() => {
-    loggedIn = window.localStorage.getItem('token') !== null;
-
     navigationLinks = [
       {
         name: 'Home',
@@ -16,25 +14,17 @@
       {
         name: 'Events',
         href: '/events'
+      },
+      {
+        name: 'Karte',
+        href: '/map'
       }
     ];
-
-    if (loggedIn) {
-      navigationLinks.push({
-        name: 'Logout',
-        href: '/login?logout=success'
-      });
-    } else {
-      navigationLinks.push({
-        name: 'Login',
-        href: '/login'
-      });
-    }
   });
 
 </script>
 
-<header class="sticky w-full top-0 left-0 right-0 z-10 dark:bg-neutral-900 bg-white shadow-lg py-4">
+<header class="fixed w-full top-0 left-0 right-0 z-1000 dark:bg-neutral-900 bg-white shadow-lg py-4">
   <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
     <a href="/">
       <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />

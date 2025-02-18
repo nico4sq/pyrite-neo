@@ -77,3 +77,47 @@ input[type="number"] {
     50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
     66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
 }
+
+.hero-bg-animation {
+  position: relative;
+
+  &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      inset: 0 auto 0 50%;
+      translate: -50% 0;
+      width: 100vw;
+      background: linear-gradient(300deg, var(--color-yellow-400), var(--color-yellow-200), var(--color-yellow-600));
+      background-size: 180% 180%;
+      animation: gradient-animation 24s ease infinite;
+      z-index: -1;
+  }
+
+  &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      inset: 0 auto 0 50%;
+      translate: -50% 0;
+      width: 100vw;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KICAgIDxmaWx0ZXIgaWQ9Im5vaXNlIiB4PSIwIiB5PSIwIj4KICAgICAgPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz4KICAgICAgPGZlQmxlbmQgbW9kZT0ic2NyZWVuIi8+CiAgICA8L2ZpbHRlcj4KICAgIDxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+');
+      z-index: -1;
+      filter: contrast(100%) grayscale(1);
+      mix-blend-mode: luminosity;
+      background-repeat: repeat;
+      background-size: 20%;
+  }
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
