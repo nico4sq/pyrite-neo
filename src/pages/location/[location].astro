@@ -64,7 +64,7 @@ const locationEvents = await fetchLocationEvents(id);
             </div>
             <div class="flex flex-col gap-6">
                 <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center">
-                    { featured_media && <Image src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
+                    { featured_media && <Image width="600" height="400" src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
                     { !featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>
             </div>
