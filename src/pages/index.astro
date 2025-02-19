@@ -1,5 +1,5 @@
 ---
-import Header from '../components/Header.svelte';
+import Header from '../components/Header.astro';
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
@@ -15,7 +15,7 @@ let eventsData = await fetchEventsWithMetaQueries();
 ---
 
 <Layout title="Home">
-	<Header client:load/>
+    <Header/>
 
 	<Hero title={ title } copy="Dein Event-Planer für Core- und Metal-Shows. Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten."/>
 

@@ -1,12 +1,9 @@
-<script>
-  import { onMount } from 'svelte';
+---
   import logo from '../assets/pyrite-logo.svg';
 
   let navigationLinks = [];
-  let loggedIn = false;
 
-  onMount(() => {
-    navigationLinks = [
+  navigationLinks = [
       {
         name: 'Home',
         href: '/'
@@ -20,9 +17,8 @@
         href: '/map'
       }
     ];
-  });
 
-</script>
+---
 
 <header class="sticky w-full top-0 left-0 right-0 z-10000 dark:bg-neutral-900 bg-white shadow-lg py-4 h-16">
   <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
@@ -31,13 +27,13 @@
     </a>
     <nav>
         <ul class="flex justify-between">
-        {#each navigationLinks as link}
-          <li>
-            <a href={link.href} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-sm py-1 px-2">
-              {link.name}
-            </a>
-          </li>
-        {/each}
+          { navigationLinks && navigationLinks.map((link) => (
+            <li>
+              <a href={link.href} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-sm py-1 px-2">
+                {link.name}
+              </a>
+            </li>
+          ))}
         </ul>
     </nav>
   </div>

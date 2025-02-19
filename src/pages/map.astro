@@ -1,12 +1,12 @@
 ---
-import Header from '../components/Header.svelte';
+import Header from '../components/Header.astro';
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
 import MapComponent from '../components/Map.svelte';
 ---
 
 <Layout title="Karte">
-    <Header client:load/>
+    <Header/>
 
     <MapComponent client:only />
 </Layout>

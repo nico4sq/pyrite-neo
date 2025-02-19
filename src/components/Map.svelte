@@ -187,7 +187,7 @@
 
 </script>
 
-<div class="w-full h-dvh -mt-16 pt-16">
+<div class="w-full h-screen -mt-16 pt-16">
     <div id="map" class="size-full bg-transparent!" use:mapAction></div>
 </div>
 
