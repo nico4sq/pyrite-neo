@@ -7,11 +7,11 @@
     import 'leaflet/dist/leaflet.css';
 
     import * as FeatherIcon from 'svelte-feather-icons';
+    import '../styles/global.css';
 
     import { renderIcon, addLoadingState, removeLoadingState } from '../functions/helpers';
     import { fetchLocationById, fetchLocationEvents, fetchLocationsWithMetaQueries } from '../api/wordpress';
     import { onMount } from 'svelte';
-    import { on } from 'svelte/events';
     import LocationEvent from './LocationEvent.svelte';
 
     let map;
@@ -187,7 +187,13 @@
 
 </script>
 
-<div class="w-full h-screen -mt-16 pt-16">
+<style>
+    .h-dvh {
+        height: 100dvh;
+    }
+</style>
+
+<div class="w-full h-dvh -mt-16 pt-16">
     <div id="map" class="size-full bg-transparent!" use:mapAction></div>
 </div>
 
