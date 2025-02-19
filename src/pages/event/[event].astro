@@ -1,6 +1,6 @@
 --- 
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.svelte';
+import Header from '../../components/Header.astro';
 import Page from '../../components/Page.astro';
 import Button from '../../components/Button.astro';
 import EventArtists from '../../components/EventArtists.svelte';
@@ -33,7 +33,7 @@ const { event } = Astro.props;
 
 
 <Layout title={ event.title }>
-    <Header client:load/>
+    <Header/>
 
     { event.featured_media && <Image width="1200" height="800" src={ event.featured_media } alt={ event.title } class="size-full h-full object-cover object-center fixed inset-0 opacity-20 dark:opacity-10 blur-xl -z-10" /> }
     { !event.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
