@@ -16,11 +16,13 @@
 
     onMount(async () => {
         addLoadingState(document.getElementById("allEvents-list"));
+        addLoadingState(document.getElementById("cities-filter"));
 
         allEvents = await fetchEventsWithMetaQueries();
-        cities = await fetchCities();
-        
         removeLoadingState(document.getElementById("allEvents-list"));
+
+        cities = await fetchCities();
+        removeLoadingState(document.getElementById("cities-filter"));
     });
 
     async function handleFilterChange(event) {
@@ -40,22 +42,21 @@
 </script>
 
 <form id="allEvents-filter">
-    {#if cities.length > 0}
-        <label for="cities" class="flex flex-col gap-3"
-            ><strong class="font-barlow uppercase text-sm sr-only">Städte</strong>
-            <select
-                id="cities"
-                name="cities"
-                on:change={handleFilterChange}
-                class="p-2 outline outline-neutral-950 border-r-8 border-r-transparent dark:outline-white rounded-lg cursor-pointer"
-            >
-                <option value="">Alle Städte</option>
-                {#each cities as city}
-                    <option value={city}>{city}</option>
-                {/each}
-            </select>
-        </label>
-    {/if}
+    <label id="cities-filter" for="cities" class="flex flex-col gap-3">
+        {#if cities.length > 0}
+        <strong class="font-barlow uppercase text-sm sr-only">Städte</strong>
+        <select
+            id="cities"
+            name="cities"
+            on:change={handleFilterChange}
+            class="p-2 outline outline-neutral-950 border-r-8 border-r-transparent dark:outline-white rounded-lg cursor-pointer">
+            <option value="">Alle Städte</option>
+            {#each cities as city}
+                <option value={city}>{city}</option>
+            {/each}
+        </select>
+        {/if} 
+    </label>
 </form>
 
 <div id="allEvents-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">

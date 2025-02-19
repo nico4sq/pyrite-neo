@@ -50,9 +50,12 @@ input[type="number"] {
 
 .is--loading {
   position: relative;
-  color: var(--color-yellow-300);
+  background-color: color-mix(in oklab, var(--color-neutral-100) 5%, transparent);
+  animation: var(--animate-pulse);
+  border-radius: var(--radius-xl);
+  padding: calc(var(--spacing) * 4);
 
-  &::after {
+  /* &::after {
     content: "";
     position: absolute;
     inset: 4rem auto auto 50%;
@@ -69,7 +72,7 @@ input[type="number"] {
     grid-column: 1 / -1;
     place-self: center;
     transition: all 0.3s ease;
-  }
+  } */
 }
 
 @keyframes l7 {

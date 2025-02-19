@@ -24,7 +24,7 @@
 
 </script>
 
-<header class="fixed w-full top-0 left-0 right-0 z-1000 dark:bg-neutral-900 bg-white shadow-lg py-4">
+<header class="sticky w-full top-0 left-0 right-0 z-10000 dark:bg-neutral-900 bg-white shadow-lg py-4 h-16">
   <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
     <a href="/">
       <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />

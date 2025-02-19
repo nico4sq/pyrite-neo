@@ -179,7 +179,7 @@ export async function fetchLocationEvents(locationId) {
     console.error('Fehler:', error);
   }
 
-  return posts;
+  return posts || null;
 }
 
 export async function fetchEventsWithMetaQueries(metaQueries = []) {
@@ -286,6 +286,7 @@ export async function fetchLocationsWithMetaQueries(metaQueries = []) {
 }
 
 export async function fetchLocationById(id) {
+  let entry = {};
   let url = CUSTOM_QUERY_URL + '/locations';
 
   if (id) {
@@ -295,11 +296,15 @@ export async function fetchLocationById(id) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    return data[0];
+    entry = data[0];
+    entry.title = decode(entry.title);
+    entry.address = entry.meta.address_street + ' ' + entry.meta.address_house_number + ', ' + entry.meta.address_postal_code + ' ' + entry.meta.address_city;
+    entry.city = entry.meta.address_city.toString();
   } catch (error) {
     console.error('Fehler:', error);
-    return {};
   }
+
+  return entry;
 }
 
 export async function fetchArtistsWithMetaQueries(metaQueries = []) {
