@@ -23,7 +23,6 @@ const currentPage = parseInt(page || '1', 10);
 ---
 
 <Layout title={`Events - Seite ${currentPage}`}>
-    <Header />
     <PageComponent>
         <Events pagination currentPage={currentPage} />
     </PageComponent>
