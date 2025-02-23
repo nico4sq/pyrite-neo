@@ -1,9 +1,9 @@
----
-import Header from '../components/Header.astro';
+--- 
+// @ts-nocheck
+
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
 import EventsComponent from '../components/Events.svelte';
-
 ---
 
 <Layout 
@@ -11,6 +11,10 @@ import EventsComponent from '../components/Events.svelte';
     description="Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten.">
 
     <Page>
-        <EventsComponent client:load />
+		<section class="w-full py-16">
+            <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Eventfinder</h1>
+
+            <EventsComponent client:load />
+        </section>
     </Page>
 </Layout>

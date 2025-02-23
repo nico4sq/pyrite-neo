@@ -1,4 +1,6 @@
----
+--- 
+// @ts-nocheck
+
 import '@fontsource-variable/figtree';
 import '@fontsource/barlow-condensed/400.css';
 import '@fontsource/barlow-condensed/700.css';
@@ -26,7 +28,7 @@ title += " | " + SITENAME;
 		<meta name="robots" content="noindex, nofollow" />
 		<meta name="description" content={ description } />
 	</head>
-	<body class="bg-white dark:bg-neutral-900 text-stone-950 dark:text-white has-[dialog:open]:overflow-hidden">
+	<body class="bg-white dark:bg-neutral-900 text-stone-950 dark:text-white has-[dialog:open]:overflow-hidden min-h-screen flex flex-col">
 		<slot />
 	</body>
 </html>

@@ -1,15 +1,20 @@
----
+--- 
+// @ts-nocheck
+
 import Layout from '../../layouts/Layout.astro';
 import Events from '../../components/Events.astro';
-import Header from '../../components/Header.astro';
 import Page from '../../components/Page.astro';
 
 const currentPage = 1;
 const pagination = true;
 ---
 
-<Layout title="Events">
+<Layout title="Alle Events">
     <Page>
-        <Events pagination={pagination} currentPage={currentPage} />
+        <section class="w-full py-16">
+            <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Alle Events</h1>
+            
+            <Events pagination={pagination} currentPage={currentPage} />
+        </section>
     </Page>
 </Layout>
