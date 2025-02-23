@@ -5,8 +5,11 @@ import Page from '../components/Page.astro';
 import MapComponent from '../components/Map.svelte';
 ---
 
-<Layout title="Karte">
-    <Header/>
+<Layout 
+    title="Karte"
+    description="Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten.">
 
+    <Header/>
+    
     <MapComponent client:only />
 </Layout>

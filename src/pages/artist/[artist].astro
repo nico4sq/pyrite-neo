@@ -27,8 +27,9 @@ const { artist } = Astro.props;
 let artistEvents = await fetchArtistEvents(artist.id);
 ---
 
-<Layout title={ artist.title }>
-    <Header/>
+<Layout 
+    title={ artist.title }
+    description={ artist.excerpt }>
 
     <Page>
         <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">

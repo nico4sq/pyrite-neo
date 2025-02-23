@@ -122,7 +122,7 @@
 
 
         if (single) {
-            map.setView([location.coordinates.lat, location.coordinates.lng], 14);
+            map.setView(markerLayer.getBounds().getCenter(), 14);
         } else {
             map.fitBounds(markerLayer.getBounds());
         }

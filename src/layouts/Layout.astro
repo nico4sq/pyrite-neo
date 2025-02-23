@@ -9,9 +9,10 @@ import { SITENAME } from '../functions/theme';
 
 interface Props {
 	title?: string;
+	description?: string;
 }
 
-let { title } = Astro.props;
+let { title, description } = Astro.props;
 title += " | " + SITENAME;
 ---
 
@@ -23,8 +24,9 @@ title += " | " + SITENAME;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{ title }</title>
 		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content={ description } />
 	</head>
-	<body class="bg-white dark:bg-neutral-900 text-stone-950 dark:text-white">
+	<body class="bg-white dark:bg-neutral-900 text-stone-950 dark:text-white has-[dialog:open]:overflow-hidden">
 		<slot />
 	</body>
 </html>

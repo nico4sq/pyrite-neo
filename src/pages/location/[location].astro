@@ -19,6 +19,7 @@ export async function getStaticPaths() {
             location: location.slug
         },
         props : {
+            excerpt: location.excerpt,
             featured_media: location.featured_media,
             title: location.title,
             address: location.address,
@@ -28,13 +29,14 @@ export async function getStaticPaths() {
     }));
 }
 
-const { featured_media, title, address, content, id } = Astro.props;
+const { excerpt, featured_media, title, address, content, id } = Astro.props;
 const locationEvents = await fetchLocationEvents(id);
 
 ---
 
-<Layout title={ title }>
-    <Header/>
+<Layout 
+    title={ title }
+    description={ excerpt }>
 
     <Page>
         <article class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">

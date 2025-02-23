@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Events from '../../components/Events.astro';
+import Header from '../../components/Header.astro';
+import PageComponent from '../../components/Page.astro';
+
+import { fetchEvents } from '../../api/wordpress';
+
+export async function getStaticPaths() {
+  const totalEvents = await fetchEvents(); // Annahme: fetchEvents() ohne Parameter gibt die Gesamtzahl zurück
+  const perPage = 3;
+  const totalPages = Math.ceil(totalEvents.length / perPage);
+
+  const paths = Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: (i + 1).toString() },
+  }));
+
+  return paths;
+}
+
+const { page } = Astro.params;
+const currentPage = parseInt(page || '1', 10);
+---
+
+<Layout title={`Events - Seite ${currentPage}`}>
+    <Header />
+    <PageComponent>
+        <Events pagination currentPage={currentPage} />
+    </PageComponent>
+</Layout>

@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Events from '../../components/Events.astro';
+import Header from '../../components/Header.astro';
+import Page from '../../components/Page.astro';
+
+const currentPage = 1;
+const pagination = true;
+---
+
+<Layout title="Events">
+    <Page>
+        <Events pagination={pagination} currentPage={currentPage} />
+    </Page>
+</Layout>

@@ -3,12 +3,16 @@ import { CUSTOM_QUERY_URL } from '../functions/theme';
 import pkg from 'he';
 const { decode } = pkg;
 
-export async function fetchEvents($limit, metaQueries = []) {
+export async function fetchEvents($limit, $page, metaQueries = []) {
   const posts = [];
   let url = CUSTOM_QUERY_URL + '/events';
 
   if ($limit) {
-    url += `?limit=${$limit}`;
+    url += `?per_page=${$limit}`;
+
+    if ($page) {
+      url += `&page=${$page}`;
+    }
   }
 
   if (metaQueries.length > 0) {

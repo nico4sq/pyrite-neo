@@ -9,14 +9,14 @@ let genres = await fetchGenres();
 
 <ul class="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 w-full place-items-stretch">
     {genres && genres.map((genre) => (
-        <li class="relative group overflow-clip bg-neutral-800 rounded-3xl">
-            <a href={`/genre/${genre.slug}`} class="p-4 text-lg text-white font-barlow uppercase font-bold flex flex-col items-start justify-end aspect-3/2 group-hover:text-yellow-400 transition">{genre.name}</a>
+        <li class="relative group outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white overflow-clip bg-neutral-800 rounded-3xl aspect-2/1 md:aspect-3/2">
+            <a href={`/genre/${genre.slug}`} class="p-4 text-lg text-white font-barlow uppercase font-bold flex flex-col size-full items-start justify-end group-hover:text-yellow-400 transition">{genre.name}</a>
             <AstroFeather.DiscIcon customClasses="absolute -top-2 right-2 w-20 h-20 aspect-1 text-neutral-700 group-hover:text-yellow-300 transition pointer-events-none" />
         </li>
     ))}
 
-    <li class="relative group bg-yellow-400 hover:bg-yellow-500 text-stone-950 p-4 rounded-3xl flex flex-col items-start justify-end transition">
-        <a href="/events" class="absolute inset-0 z-1"></a>
+    <li class="relative group outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white bg-yellow-400 hover:bg-yellow-500 text-stone-950 p-4 rounded-3xl flex flex-col items-start justify-end transition aspect-2/1 md:aspect-3/2">
+        <a href="/events" class="absolute inset-0 z-1 rounded-3xl"></a>
         <p class="text-lg font-barlow uppercase leading-none font-bold">Eventfinder</p>
         <AstroFeather.ArrowRightIcon customClasses="absolute top-4 right-4 w-8 h-8 aspect-1 text-stone-950 transition pointer-events-none" />
     </li>

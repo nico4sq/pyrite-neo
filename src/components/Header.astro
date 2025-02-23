@@ -1,40 +1,62 @@
 ---
-  import logo from '../assets/pyrite-logo.svg';
+import logo from '../assets/pyrite-logo.svg';
 
-  let navigationLinks = [];
+import { SITENAME } from '../functions/theme';
 
-  navigationLinks = [
-      {
-        name: 'Home',
-        href: '/'
-      },
-      {
-        name: 'Events',
-        href: '/events'
-      },
-      {
-        name: 'Karte',
-        href: '/map'
-      }
-    ];
+import * as AstroFeather from 'astro-feather';
 
 ---
 
 <header class="sticky w-full top-0 left-0 right-0 z-10000 dark:bg-neutral-900 bg-white shadow-lg py-4 h-16">
-  <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
-    <a href="/">
-      <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />
-    </a>
-    <nav>
-        <ul class="flex justify-between">
-          { navigationLinks && navigationLinks.map((link) => (
-            <li>
-              <a href={link.href} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-sm py-1 px-2">
-                {link.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-    </nav>
-  </div>
+<div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
+  <a href="/" class="flex items-center gap-2">
+    <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />
+    <p class="dark:text-white text-stone-950 font-barlow font-bold uppercase text-lg ml-2">{ SITENAME }</p>
+  </a>
+  <button id="menu-button" class="dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-sm py-1 px-2 cursor-pointer" onclick="document.getElementById('sidebar-dialog').showModal()">
+    <AstroFeather.MenuIcon customClasses="w-6 h-6 pointer-events-none" />
+    <span class="sr-only">Menü</span>
+  </button>
+</div>
 </header>
+
+<dialog id="sidebar-dialog" class="fixed top-0 right-0 left-auto bottom-0 h-screen max-h-screen w-80 bg-white dark:bg-neutral-900 shadow-lg z-20 backdrop:bg-black/60 transition">
+<div class="flex flex-col h-full pt-5">
+  <button onclick="document.getElementById('sidebar-dialog').close()" class="flex items-center justify-center absolute top-2 right-2 w-10 h-10 bg-yellow-400 text-stone-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><AstroFeather.XIcon customClasses="w-4 h-4"/></button>
+  <nav class="flex-1">
+    <a href="/" class="flex items-center mx-6 gap-2">
+      <img src={ logo.src } alt="Pyrite logo" class="w-4 h-4 hover:scale-110 transition opacity-30" />
+    </a>
+
+    <ul class="flex flex-col justify-start items-start mx-6 py-6 gap-2">
+      <li>
+        <a href={'/events'} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-xl py-1">
+          Events
+        </a>
+      </li>
+      <li>
+        <a href={'/locations'} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-xl py-1">
+          Locations
+        </a>
+      </li>
+      <li>
+        <a href={'/artists'} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-xl py-1">
+          Artists
+        </a>
+      </li>
+    </ul>
+    <ul class="flex flex-col justify-start items-start mx-6 py-6 border-t-1 border-neutral-300 dark:border-neutral-800">
+      <li>
+        <a href={'/eventfinder'} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-md py-1">
+          Eventfinder
+        </a>
+      </li>
+      <li>
+        <a href={'/locationfinder'} class="flex dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-md py-1">
+          Locationfinder
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</dialog>

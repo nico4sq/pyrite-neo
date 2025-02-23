@@ -32,8 +32,9 @@ const { event } = Astro.props;
 
 
 
-<Layout title={ event.title }>
-    <Header/>
+<Layout 
+    title={ event.title }
+    description={ event.excerpt }>
 
     { event.featured_media && <Image width="1200" height="800" src={ event.featured_media } alt={ event.title } class="size-full h-full object-cover object-center fixed inset-0 opacity-20 dark:opacity-10 blur-xl -z-10" /> }
     { !event.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
