@@ -1,24 +1,37 @@
 ---
 import Header from '../components/Header.astro';
 import Layout from '../layouts/Layout.astro';
-import Button from '../components/Button.astro';
 import Hero from '../components/Hero.astro';
-import Map from '../components/Map.svelte';
+import Genres from '../components/Genres.astro';
+import Cities from '../components/Cities.astro';
+import Events from '../components/Events.astro';
 
 import { SITENAME } from '../functions/theme';
 let title = SITENAME;
 
 import Page from '../components/Page.astro';
-import { fetchEventsWithMetaQueries } from '../api/wordpress';
 
-let eventsData = await fetchEventsWithMetaQueries();
 ---
 
 <Layout title="Home">
     <Header/>
 
 	<Hero title={ title } copy="Dein Event-Planer für Core- und Metal-Shows. Entdecke Events in deiner Nähe, finde alle Informationen und speichere deine Favoriten."/>
-
+	
 	<Page>
+		<section>
+			<h2 class="font-barlow text-3xl uppercase font-bold mb-6">Aktuelle Events</h2>
+			<Events />
+		</section>
+		
+		<section class="w-full py-16">
+			<h2 class="font-barlow text-3xl uppercase font-bold mb-6">Erkunde deine Lieblings-Genres</h2>
+			<Genres />
+		</section>
+
+		<section class="w-full py-16">
+			<h2 class="font-barlow text-3xl uppercase font-bold mb-6">Finde Events in deiner Stadt</h2>
+			<Cities />
+		</section>
 	</Page>	
 </Layout>

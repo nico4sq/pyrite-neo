@@ -3,8 +3,8 @@
 
     import EventCard from "./EventCard.svelte";
     import {
-        fetchEventsWithMetaQueries,
-        fetchLocationsWithMetaQueries,
+        fetchEvents,
+        fetchLocations,
         fetchEventsByLocationIds,
         fetchCities
     } from "../api/wordpress";
@@ -18,7 +18,7 @@
         addLoadingState(document.getElementById("allEvents-list"));
         addLoadingState(document.getElementById("cities-filter"));
 
-        allEvents = await fetchEventsWithMetaQueries();
+        allEvents = await fetchEvents();
         removeLoadingState(document.getElementById("allEvents-list"));
 
         cities = await fetchCities();
@@ -29,9 +29,9 @@
         allEvents = [];
         addLoadingState(document.getElementById("allEvents-list"));
 
-        let locations = await fetchLocationsWithMetaQueries([
-            { key: "city", value: event.target.value }
-        ]);
+        let locations = await fetchLocations([
+            { key: "address_city", value: event.target.value }
+        ]);        
 
         allEvents = await fetchEventsByLocationIds(
             locations.map((location) => location.id)
@@ -42,17 +42,17 @@
 </script>
 
 <form id="allEvents-filter">
-    <label id="cities-filter" for="cities" class="flex flex-col gap-3">
+    <label id="cities-filter" for="cities" class="fade-in flex flex-col gap-3">
         {#if cities.length > 0}
         <strong class="font-barlow uppercase text-sm sr-only">Städte</strong>
         <select
             id="cities"
             name="cities"
             on:change={handleFilterChange}
-            class="p-2 outline outline-neutral-950 border-r-8 border-r-transparent dark:outline-white rounded-lg cursor-pointer">
+            class="p-2 border-1 border-white rounded-lg cursor-pointer">
             <option value="">Alle Städte</option>
             {#each cities as city}
-                <option value={city}>{city}</option>
+                <option value={city.name}>{city.name}</option>
             {/each}
         </select>
         {/if} 

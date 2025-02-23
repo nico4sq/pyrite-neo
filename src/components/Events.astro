@@ -1,0 +1,27 @@
+---
+
+import * as AstroFeather from 'astro-feather';
+import { fetchEvents } from './../api/wordpress';
+
+import EventCard from './EventCard.svelte';
+
+let events = await fetchEvents(8);
+
+console.log(events);
+
+
+---
+
+<ul class="flex flex-col sm:grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 w-full place-items-stretch">
+    {events && events.map((event) => (
+        <li class="flex items-stretch h-full">
+            <EventCard title={event.title} href={`/event/${event.slug}`} featured_media={event.featured_media} genre={event.genre} date={event.date} city={event.location.city} />
+        </li>
+    ))}
+    <li class="relative group bg-yellow-400 hover:bg-yellow-500 text-stone-950 p-6 rounded-3xl flex flex-col items-start justify-end transition aspect-square">
+        <a href="/events" class="absolute inset-0 z-1"></a>
+        <p>Nichts für dich dabei?</p>
+        <p class="text-2xl font-barlow uppercase leading-none font-bold">Zum Eventfinder</p>
+        <AstroFeather.ArrowRightIcon customClasses="absolute top-6 right-6 w-20 h-20 aspect-1 text-stone-950 transition pointer-events-none" />
+    </li>
+</ul>

@@ -1,0 +1,22 @@
+---
+
+import * as AstroFeather from 'astro-feather';
+import { fetchCities } from './../api/wordpress';
+
+let cities = await fetchCities();
+---
+
+<ul class="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 w-full place-items-stretch">
+    {cities && cities.map((city) => (
+        <li class="relative group overflow-clip bg-neutral-800 rounded-3xl">
+            <a href={`/city/${city.slug}`} class="p-4 text-lg text-white font-barlow uppercase font-bold flex flex-col items-start justify-end aspect-3/2 group-hover:text-yellow-400 transition">{city.name}</a>
+            <AstroFeather.NavigationIcon customClasses="absolute -top-2 right-2 w-20 h-20 aspect-1 text-neutral-700 group-hover:text-yellow-300 transition pointer-events-none" />
+        </li>
+    ))}
+
+    <li class="relative group bg-yellow-400 hover:bg-yellow-500 text-stone-950 p-4 rounded-3xl flex flex-col items-start justify-end transition">
+        <a href="/events" class="absolute inset-0 z-1"></a>
+        <p class="text-lg font-barlow uppercase leading-none font-bold">Eventfinder</p>
+        <AstroFeather.ArrowRightIcon customClasses="absolute top-4 right-4 w-8 h-8 aspect-1 text-stone-950 transition pointer-events-none" />
+    </li>
+</ul>

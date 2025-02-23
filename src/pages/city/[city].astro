@@ -1,0 +1,51 @@
+--- 
+// @ts-nocheck
+
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Page from '../../components/Page.astro';
+import ArtistEvent from '../../components/ArtistEvent.svelte';
+
+import "../../styles/global.css";
+
+import { fetchCities, fetchCityEvents } from '../../api/wordpress';
+
+export async function getStaticPaths() {
+    let cities = await fetchCities();
+    return cities.map((city) => ({
+        params: {
+            city: city.slug
+        },
+        props : {
+            id: city.id,
+            name: city.name,
+            slug: city.slug,
+            description: city.description,
+            locations: city.locations 
+        }
+    }));
+}
+
+const { id, name, slug, description, locations = [] } = Astro.props;
+let cityEvents = await fetchCityEvents(id);
+
+---
+
+<Layout title={ name }>
+    <Header/>
+
+    <Page>
+        <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="contents md:flex flex-col gap-6">
+                <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold p-6 bg-yellow-400 rounded-3xl">{ name }</h1>
+
+                <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl">
+                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
+                    { cityEvents && cityEvents.map((event) => (
+                        event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.location.city } />
+                    ))}
+                </div>
+            </div>
+        </div>
+    </Page>
+</Layout>   

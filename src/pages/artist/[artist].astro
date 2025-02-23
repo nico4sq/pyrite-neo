@@ -2,13 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Page from '../../components/Page.astro';
+import ArtistEvent from '../../components/ArtistEvent.svelte';
 
 import * as AstroFeather from 'astro-feather';
 import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
 
-import { fetchArtists } from '../../api/wordpress';
+import { fetchArtists, fetchArtistEvents } from '../../api/wordpress';
 
 export async function getStaticPaths() {
     let artists = await fetchArtists();
@@ -23,7 +24,7 @@ export async function getStaticPaths() {
 }
 
 const { artist } = Astro.props;
-
+let artistEvents = await fetchArtistEvents(artist.id);
 ---
 
 <Layout title={ artist.title }>
@@ -31,7 +32,7 @@ const { artist } = Astro.props;
 
     <Page>
         <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="flex flex-col gap-6">
+            <div class="contents md:flex flex-col gap-6">
                 <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold p-6 bg-yellow-400 rounded-3xl">{ artist.title }</h1>
 
                 { artist.content && 
@@ -40,9 +41,15 @@ const { artist } = Astro.props;
                         <p>{ artist.content }</p>
                     </div> 
                 }
+                <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl">
+                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
+                    { artistEvents && artistEvents.map((event) => (
+                        event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.location.city } />
+                    ))}
+                </div>
             </div>
-            <div class="flex flex-col gap-6">
-                <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center">
+            <div class="contents md:flex flex-col gap-6">
+                <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-1">
                     { artist.featured_media && <Image width="600" height="400" src={ artist.featured_media } alt={ artist.title } class="aspect-3/2 size-full object-cover object-center" /> }
                     { !artist.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>

@@ -10,10 +10,10 @@ import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
 
-import { fetchLocationsWithMetaQueries, fetchLocationEvents } from '../../api/wordpress';
+import { fetchLocations, fetchLocationEvents } from '../../api/wordpress';
 
 export async function getStaticPaths() {
-    let locations = await fetchLocationsWithMetaQueries();    
+    let locations = await fetchLocations();    
     return locations.map((location) => ({
         params: {
             location: location.slug
@@ -38,7 +38,7 @@ const locationEvents = await fetchLocationEvents(id);
 
     <Page>
         <article class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="flex flex-col gap-6">
+            <div class="contents md:flex flex-col gap-6">
                 <hgroup class="p-6 bg-yellow-400 rounded-3xl -order-2">
                     <p class="font-barlow uppercase text-sm font-bold text-stone-950">Location</p>
                     <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold ">{ title }</h1>
@@ -62,11 +62,12 @@ const locationEvents = await fetchLocationEvents(id);
                     ))}
                 </div>
             </div>
-            <div class="flex flex-col gap-6">
-                <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center">
+            <div class="contents md:flex flex-col gap-6">
+                <figure class="bg-neutral-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3">
                     { featured_media && <Image width="600" height="400" src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
                     { !featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>
+                <Map single="true" client:only />
             </div>
         </article>
     </Page>
