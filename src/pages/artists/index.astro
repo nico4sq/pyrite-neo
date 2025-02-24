@@ -2,18 +2,18 @@
 // @ts-nocheck
 
 import Layout from '../../layouts/Layout.astro';
-import Events from '../../components/Events.astro';
+import Artists from '../../components/Artists.astro';
 import Page from '../../components/Page.astro';
 
 const currentPage = 1;
 ---
 
-<Layout title="Alle Events">
+<Layout title="Alle Artists">
     <Page>
         <section class="w-full py-16">
             <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Alle Events</h1>
             
-            <Events pagination currentPage={currentPage} />
+            <Artists pagination currentPage={currentPage} />
         </section>
     </Page>
 </Layout>

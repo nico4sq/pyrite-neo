@@ -108,33 +108,6 @@ export async function fetchArtistEvents(artistId) {
     for (let id of data) {
       id = id.id;
       let entry = await fetchEventById(id);
-
-      entry.title = decode(entry.title);
-      entry.tickets = entry.meta.links_tickets.toString();
-      entry.date = entry.meta.info_date.toString().substring(6, 8) + '.' + entry.meta.info_date.toString().substring(4, 6) + '.' + entry.meta.info_date.toString().substring(0, 4);
-      entry.start = entry.meta.info_time_start.toString().split(':').slice(0, 2).join(':');
-      entry.doors = entry.meta.info_time_doors.toString().split(':').slice(0, 2).join(':');
-
-      let location = await fetchLocationById(entry.meta.location);
-
-      location.title = decode(location.title);
-      location.address = location.meta.address_street + ' ' + location.meta.address_house_number + ', ' + location.meta.address_postal_code + ' ' + location.meta.address_city;
-      location.city = location.meta.address_city.toString();
-      delete location.meta;
-      entry.location = location;
-
-      let artists = [];
-      let artistIds = entry.meta.artists;
-      artistIds.forEach(async id => {
-        let artist = await fetchArtistById(id);
-        delete artist.meta;
-        
-        artists.push(artist);
-      });
-      entry.artists = artists;
-
-      delete entry.meta;
-      
       posts.push(entry);
     }
   } catch (error) {
@@ -232,9 +205,17 @@ export async function fetchCityEvents(cityId) {
   return posts || null;
 }
 
-export async function fetchLocations(metaQueries = []) {
+export async function fetchLocations(limit, page, metaQueries = []) {
   const posts = [];
   let url = CUSTOM_QUERY_URL + '/locations';
+
+  if (limit) {
+    url += `?per_page=${limit}`;
+
+    if (page) {
+      url += `&page=${page}`;
+    }
+  }
 
   if (metaQueries.length > 0) {
     const queryString = metaQueries.map((query, index) => {
@@ -290,9 +271,17 @@ export async function fetchLocationById(id) {
   return entry;
 }
 
-export async function fetchArtists(metaQueries = []) {
+export async function fetchArtists(limit, page, metaQueries = []) {
   let posts = [];
   let url = CUSTOM_QUERY_URL + '/artists';
+
+  if (limit) {
+    url += `?per_page=${limit}`;
+
+    if (page) {
+      url += `&page=${page}`;
+    }
+  }
 
   if (metaQueries.length > 0) {
     const queryString = metaQueries.map((query, index) => {

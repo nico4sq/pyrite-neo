@@ -29,7 +29,7 @@
         allEvents = [];
         addLoadingState(document.getElementById("events-list"));
 
-        let locations = await fetchLocations([
+        let locations = await fetchLocations(null, null, [
             { key: "address_city", value: event.target.value }
         ]);        
 
