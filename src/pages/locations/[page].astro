@@ -1,0 +1,34 @@
+--- 
+// @ts-nocheck
+
+import Layout from '../../layouts/Layout.astro';
+import Locations from '../../components/Locations.astro';
+import PageComponent from '../../components/Page.astro';
+
+import { fetchLocations } from '../../api/wordpress';
+
+export async function getStaticPaths() {
+  const totalLocations = await fetchLocations();
+  const perPage = 3;
+  const totalPages = Math.ceil(totalLocations.length / perPage);
+
+  const paths = Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: (i + 1).toString() },
+  }));
+
+  return paths;
+}
+
+const { page } = Astro.params;
+const currentPage = parseInt(page || '1', 10);
+---
+
+<Layout title={`Locations - Seite ${currentPage}`}>
+    <PageComponent>
+        <section class="w-full py-16">
+            <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Alle Locations</h1>
+            
+            <Locations pagination currentPage={currentPage} />
+        </section>
+    </PageComponent>
+</Layout>

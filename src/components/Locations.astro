@@ -1,7 +1,9 @@
----
+--- 
+// @ts-nocheck
+
 import * as AstroFeather from 'astro-feather';
-import { fetchEvents } from '../api/wordpress';
-import EventCard from './EventCard.svelte';
+import { fetchLocations } from '../api/wordpress';
+import LocationCard from './LocationCard.svelte';
 
 export interface Props {
     pagination?: boolean;
@@ -13,55 +15,44 @@ const shouldPaginate = pagination === true;
 const perPage = 3;
 let pages;
 
-let events;
+let locations;
 
 if (shouldPaginate) {
-    events = await fetchEvents(perPage, currentPage);
+    locations = await fetchLocations(perPage, currentPage);
 
-    const totalEvents = await fetchEvents(); 
-    const totalPages = Math.ceil(totalEvents.length / perPage);
+    const totalArtists = await fetchLocations(); 
+    const totalPages = Math.ceil(totalArtists.length / perPage);
 
     pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 } else {
-    events = await fetchEvents(perPage - 1);
+    locations = await fetchLocations(perPage - 1);
 }
 ---
 
 <ul class="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 w-full place-items-stretch">
-    {events && events.map((event) => (
+    {locations && locations.map((location) => (
         <li class="flex items-stretch h-full">
-            <EventCard 
-                title={event.title} 
-                href={`/event/${event.slug}`} 
-                featured_media={event.featured_media} 
-                genre={event.genre} 
-                date={event.date} 
-                city={event.location.city} 
+            <LocationCard client:load
+                id={location.id}
+                title={location.title} 
+                href={`/location/${location.slug}`} 
+                featured_media={location.featured_media}  
             />
         </li>
     ))}
-
-    {!shouldPaginate && (
-        <li class="relative group bg-yellow-400 hover:bg-yellow-500 text-stone-950 p-6 rounded-3xl flex flex-col items-start justify-end transition aspect-3/2">
-            <a href="/eventfinder" class="absolute rounded-3xl inset-0 z-1"><span class="sr-only top-1/2 left-1/2">Zum Eventfinder</span></a>
-            <p>Nichts für dich dabei?</p>
-            <p class="text-2xl font-barlow uppercase leading-none font-bold">Zum Eventfinder</p>
-            <AstroFeather.ArrowRightIcon customClasses="absolute top-6 right-6 w-20 h-20 aspect-1 text-stone-950 transition pointer-events-none" />
-        </li>
-    )}
 </ul>
 
 {shouldPaginate && (
     <nav class="flex justify-center items-center py-8 gap-2">
         <a 
-            href={`/events/1`} 
+            href={`/locations/1`} 
             class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronsLeftIcon customClasses="w-4 h-4" />
         </a>
         <a 
-            href={`/events/${currentPage - 1}`} 
+            href={`/locations/${currentPage - 1}`} 
             class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
@@ -76,7 +67,7 @@ if (shouldPaginate) {
                     )}
 
                     <a 
-                        href={`/events/${pageNumber}`} 
+                        href={`/locations/${pageNumber}`} 
                         class:list={{ 
                             'text-sm p-2 w-4 h-4 box-content! aspect-square font-bold rounded-lg flex items-center justify-center leading-1 hover:text-yellow-300': true,
                             'pointer-events-none bg-neutral-800': pageNumber === currentPage 
@@ -93,14 +84,14 @@ if (shouldPaginate) {
         })}
 
         <a 
-            href={`/events/${currentPage + 1}`} 
+            href={`/locations/${currentPage + 1}`} 
             class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronRightIcon customClasses="w-4 h-4" />
         </a>
         <a 
-            href={`/events/${pages.length}`} 
+            href={`/locations/${pages.length}`} 
             class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
