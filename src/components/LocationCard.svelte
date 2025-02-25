@@ -13,10 +13,7 @@
 
     onMount(async () => {
       try {
-        const events = await fetchLocationEvents(id);        
-
-        console.log(events);
-        
+        const events = await fetchLocationEvents(id);
 
         upcomingEventsCount = events.length > 0 ? events.length : 0;
       } catch (error) {

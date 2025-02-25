@@ -3,7 +3,7 @@ import { CUSTOM_QUERY_URL } from '../functions/theme';
 import pkg from 'he';
 const { decode } = pkg;
 
-export async function fetchEvents($limit, $page, metaQueries = []) {
+export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = []) {
   const posts = [];
   let url = CUSTOM_QUERY_URL + '/events';
 
@@ -17,10 +17,29 @@ export async function fetchEvents($limit, $page, metaQueries = []) {
 
   if (metaQueries.length > 0) {
     const queryString = metaQueries.map((query, index) => {
-      return `meta_query[${index}][key]=${query.key}&meta_query[${index}][value]=${query.value}`;
+      if (query.relation) {
+        const subQueries = query.queries.map((subQuery, subIndex) => {
+          subQuery.compare = subQuery.compare || '=';
+          return `meta_query[${index}][${subIndex}][key]=${subQuery.key}&meta_query[${index}][${subIndex}][value]=${subQuery.value}&meta_query[${index}][${subIndex}][compare]=${subQuery.compare}`;
+        }).join('&');
+        return `meta_query[${index}][relation]=${query.relation}&${subQueries}`;
+      } else {
+        query.compare = query.compare || '=';
+        return `meta_query[${index}][key]=${query.key}&meta_query[${index}][value]=${query.value}&meta_query[${index}][compare]=${query.compare}`;
+      }
     }).join('&');
-    url += `?${queryString}`;
+    url += (url.includes('?') ? '&' : '?') + queryString;
   }
+
+  if (taxQueries.length > 0) {
+    const queryString = taxQueries.map((query, index) => {
+      return `tax_query[${index}][taxonomy]=${query.taxonomy}&tax_query[${index}][field]=${query.field}&tax_query[${index}][terms]=${query.terms}`;
+    }).join('&');
+    url += (url.includes('?') ? '&' : '?') + queryString;
+  }
+
+  console.log(url);
+  
 
   try {
     const response = await fetch(url);
@@ -352,6 +371,7 @@ export async function fetchGenres() {
   try {
     const response = await fetch(url);
     const data = await response.json();
+
     genres = data;
   } catch (error) {
     console.error('Fehler:', error);
