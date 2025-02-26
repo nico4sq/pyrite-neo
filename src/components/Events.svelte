@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
 
     import EventCardSmall from "./EventCardSmall.svelte";
+    import Input from "./Input.svelte";
     import {
         fetchEvents,
         fetchLocations,
@@ -14,30 +15,22 @@
 
     let cities = [];
     let genres = [];
-    let events = [];
+    let events = false;
     let selectedCity = "";
     let selectedGenre = "";
+    let selectedDates = {};
 
     onMount(async () => {
-        addLoadingState(document.getElementById("events-list"));
-        addLoadingState(document.getElementById("cities-filter"));
-        addLoadingState(document.getElementById("genres-filter"));
-
-        events = await fetchEvents();
-        removeLoadingState(document.getElementById("events-list"));
-
         cities = await fetchCities();
-        removeLoadingState(document.getElementById("cities-filter"));
-
         genres = await fetchGenres();
-        removeLoadingState(document.getElementById("genres-filter"));
+        events = await fetchEvents();
     });
 
     async function handleFilterChange() {
-        addLoadingState(document.getElementById("events-list"));
+        events = false;
 
         let metaQueries = [];
-        let taxQueries = [];
+        let taxQueries = [];        
 
         if (selectedCity) {          
         
@@ -57,57 +50,89 @@
             taxQueries.push({ taxonomy: "genre", field: "term_id", terms: selectedGenre });
         }
 
+        if (selectedDates.from) {
+            metaQueries.push({ key: "info_date", value: selectedDates.from, compare: ">=", type: "DATE" });
+        }
+
+        if (selectedDates.to) {
+            metaQueries.push({ key: "info_date", value: selectedDates.to, compare: "<=", type: "DATE" });
+        }
+
         events = await fetchEvents(null, null, metaQueries, taxQueries);
-        removeLoadingState(document.getElementById("events-list"));
     }
 </script>
 
-<form id="events-filter" class="flex flex-row gap-4 lg:gap-6 w-full mb-6">
-    <label id="cities-filter" for="cities" class="fade-in flex flex-col gap-3 w-48">
-        {#if cities.length > 0}
-        <strong class="font-barlow uppercase text-sm sr-only">Städte</strong>
-        <select
-            id="cities"
-            name="cities"
-            bind:value={selectedCity}
-            on:change={handleFilterChange}
-            class="p-2 outline-1 outline-white outline-offset-0! border-r-8 border-transparent rounded-lg cursor-pointer">
-            <option value="">Alle Städte</option>
-            {#each cities as city}
-                <option value={city.name}>{city.name}</option>
-            {/each}
-        </select>
-        {/if} 
-    </label>
+<form id="events-filter" class="flex flex-col md:flex-row flex-wrap gap-4 lg:gap-6 w-full mb-6">
 
-    <label id="genres-filter" for="genres" class="fade-in flex flex-col gap-3 w-48">
-        {#if genres.length > 0}
-        <strong class="font-barlow uppercase text-sm sr-only">Genres</strong>
-        <select
-            id="genres"
-            name="genres"
-            bind:value={selectedGenre}
-            on:change={handleFilterChange}
-            class="p-2 outline-1 outline-white outline-offset-0! border-r-8 border-transparent rounded-lg cursor-pointer">
-            <option value="">Alle Genres</option>
-            {#each genres as genre}
-                <option value={genre.id}>{genre.name}</option>
-            {/each}
-        </select>
-        {/if} 
-    </label>
+    <Input
+        type="daterange"
+        id="date"
+        label="Datumsbereich"
+        floating={true}
+        placeholder="Zeitraum wählen"
+        bind:value={selectedDates}
+        on:change={handleFilterChange}
+    />
+
+    <Input
+        type="select"
+        id="cities"
+        label="Städte"
+        floating={true}
+        options={[
+            { value: "", label: "Alle Städte" },
+            ...cities.map((city) => {
+            return {
+                value: city.name,
+                label: city.name
+            };
+            })
+        ]}
+        bind:value={selectedCity}
+        on:change={handleFilterChange}
+    />
+
+    <Input
+        type="select"
+        id="genres"
+        label="Genres"
+        floating={true}
+        options={[
+            { value: "", label: "Alle Genres" },
+            ...genres.map((genre) => {
+            return {
+                value: genre.id,
+                label: genre.name
+            };
+            })
+        ]}
+        bind:value={selectedGenre}
+        on:change={handleFilterChange}
+    />
 </form>
 
 <ul id="events-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-    {#each events as event}
-        <li class="flex items-stretch h-full">
-            <EventCardSmall
-                title={event.title}
-                href={`/event/${event.slug}`}
-                date={event.date}
-                genre={event.taxonomies}
-                city={event.location.city}
-            />
+    {#if events !== false}
+        {#if events.length > 0}
+            {#each events as event}
+                <li class="flex items-stretch h-full">
+                    <EventCardSmall
+                        title={event.title}
+                        href={`/event/${event.slug}`}
+                        date={event.date}
+                        genre={event.taxonomies}
+                        city={event.location.city}
+                    />
+                </li>
+            {/each}
+        {:else}
+            <li class="w-full">
+                <p class="text-center text-lg font-bold">Keine Events gefunden</p>
+            </li>
+        {/if}
+    {:else}
+        <li class="w-full">
+            <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 animate-ping bg-yellow-400/40 before:bg-yellow-400 before:rounded-full before:w-2 before:h-2"></span>Gib uns eine Sekunde Zeit, um Events für dich zu laden...</p>
         </li>
-    {/each}
+    {/if}
 </ul>

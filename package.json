@@ -11,8 +11,7 @@
   "dependencies": {
     "@astrojs/react": "^4.2.0",
     "@astrojs/svelte": "^7.0.4",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
+    "air-datepicker": "^3.5.3",
     "astro": "^5.3.0",
     "browser-sync": "^3.0.3",
     "ics": "^3.8.1",
@@ -20,12 +19,8 @@
     "leaflet-control-geocoder": "^3.1.0",
     "leaflet-gesture-handling": "^1.2.2",
     "leaflet.markercluster": "^1.5.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "svelte": "^5.20.1",
-    "swiper": "^11.2.4",
-    "typescript": "^5.7.3",
-    "unlighthouse": "^0.15.0"
+    "typescript": "^5.7.3"
   },
   "devDependencies": {
     "@fontsource-variable/figtree": "^5.1.2",

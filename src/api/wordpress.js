@@ -20,12 +20,14 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
       if (query.relation) {
         const subQueries = query.queries.map((subQuery, subIndex) => {
           subQuery.compare = subQuery.compare || '=';
-          return `meta_query[${index}][${subIndex}][key]=${subQuery.key}&meta_query[${index}][${subIndex}][value]=${subQuery.value}&meta_query[${index}][${subIndex}][compare]=${subQuery.compare}`;
+          subQuery.type = subQuery.type || 'CHAR';
+          return `meta_query[${index}][${subIndex}][key]=${subQuery.key}&meta_query[${index}][${subIndex}][value]=${subQuery.value}&meta_query[${index}][${subIndex}][compare]=${subQuery.compare}&meta_query[${index}][${subIndex}][type]=${subQuery.type}`;
         }).join('&');
         return `meta_query[${index}][relation]=${query.relation}&${subQueries}`;
       } else {
         query.compare = query.compare || '=';
-        return `meta_query[${index}][key]=${query.key}&meta_query[${index}][value]=${query.value}&meta_query[${index}][compare]=${query.compare}`;
+        query.type = query.type || 'CHAR';
+        return `meta_query[${index}][key]=${query.key}&meta_query[${index}][value]=${query.value}&meta_query[${index}][compare]=${query.compare}&meta_query[${index}][type]=${query.type}`;
       }
     }).join('&');
     url += (url.includes('?') ? '&' : '?') + queryString;

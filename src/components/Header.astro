@@ -13,16 +13,16 @@ import * as AstroFeather from 'astro-feather';
     <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />
     <p class="dark:text-white text-stone-950 font-barlow font-bold uppercase text-lg ml-2">{ SITENAME }</p>
   </a>
-  <button id="menu-button" class="dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-sm py-1 px-2 cursor-pointer" onclick="document.getElementById('sidebar-dialog').showModal()">
+  <button id="menu-button" class="dark:text-white text-stone-950 hover:text-yellow-600 dark:hover:text-yellow-400 font-barlow font-bold uppercase text-sm py-1 px-2 cursor-pointer" onclick="document.getElementById('main-menu').classList.add('translate-x-0!')">
     <AstroFeather.MenuIcon customClasses="w-6 h-6 pointer-events-none" />
     <span class="sr-only">Menü</span>
   </button>
 </div>
 </header>
 
-<dialog id="sidebar-dialog" class="fixed top-0 right-0 left-auto bottom-0 h-screen max-h-screen w-80 bg-white dark:bg-neutral-900 shadow-lg z-20 backdrop:bg-black/60 transition">
+<div id="main-menu" class="fixed z-10002 top-0 right-0 bottom-0 ml-0 w-xs max-w-9/10 bg-white dark:bg-neutral-900 shadow-lg transition translate-x-full">
 <div class="flex flex-col h-full pt-5">
-  <button onclick="document.getElementById('sidebar-dialog').close()" class="flex items-center justify-center absolute top-2 right-2 w-10 h-10 bg-yellow-400 text-stone-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><AstroFeather.XIcon customClasses="w-4 h-4"/></button>
+  <button onclick="document.getElementById('main-menu').classList.remove('translate-x-0!')" class="flex items-center justify-center absolute top-2 right-2 w-10 h-10 bg-yellow-400 text-stone-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><AstroFeather.XIcon customClasses="w-4 h-4"/></button>
   <nav class="flex-1">
     <a href="/" class="flex items-center mx-6 gap-2">
       <img src={ logo.src } alt="Pyrite logo" class="w-4 h-4 hover:scale-110 transition opacity-30" />
@@ -59,4 +59,4 @@ import * as AstroFeather from 'astro-feather';
     </ul>
   </nav>
 </div>
-</dialog>
+</div>

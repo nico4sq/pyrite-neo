@@ -76,3 +76,7 @@ export function renderIcon(iconName, size = 5) {
 
     return iconContainer.outerHTML;
 }
+
+export function formatDate(date) {
+    return  date.toISOString().split('T')[0].replace(/-/g, '');
+}
