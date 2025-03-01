@@ -47,7 +47,7 @@ let artistEvents = await fetchArtistEvents(artist.id, true);
                 <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl">
                     <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
                     { artistEvents && artistEvents.map((event) => (
-                        event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.location.city } />
+                        event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.city } />
                     ))}
                 </div>
             </div>

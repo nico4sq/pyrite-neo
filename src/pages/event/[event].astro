@@ -16,7 +16,7 @@ import { fetchEvents } from '../../api/wordpress';
 import { downloadICS } from '../../functions/helpers';
 
 export async function getStaticPaths() {
-    let events = await fetchEvents();
+    let events = await fetchEvents(null, null, [], [], true);
     return events.map((event) => ({
         params: {
             event: event.slug
