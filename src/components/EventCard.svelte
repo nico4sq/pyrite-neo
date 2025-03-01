@@ -30,11 +30,11 @@
       </header>
 
       <ul class="p-6 pt-0 gap-2 empty:hidden flex flex-wrap mt-auto">
-        {#if city}
-          <li aria-label="Stadt" class="text-xs border border-yellow-300 bg-yellow-300/20 text-yellow-300 rounded-lg px-2 py-1 flex items-center gap-2"><MapPinIcon class="w-3 h-3 aspect-1 text-yellow-300" />{city}</li>
-        {/if}
+        {#each city as item}
+          <li aria-label="Stadt" class="text-xs border border-yellow-300 bg-yellow-300/20 text-yellow-300 rounded-lg px-2 py-1 flex items-center gap-2"><MapPinIcon class="w-3 h-3 aspect-1 text-yellow-300" />{item}</li>
+        {/each}
         {#each genre as item}
-          <li aria-label="Genre" class="text-xs border border-neutral-300 bg-neutral-300/20 text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2"><MusicIcon class="w-3 h-3 aspect-1 text-neutral-300" />{item.name}</li>
+          <li aria-label="Genre" class="text-xs border border-neutral-300 bg-neutral-300/20 text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2"><MusicIcon class="w-3 h-3 aspect-1 text-neutral-300" />{item}</li>
         {/each}
       </ul>
   </article>

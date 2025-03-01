@@ -1,17 +1,17 @@
 <script>
     import { onMount } from "svelte";
 
+    import * as FeatherIcons from "svelte-feather-icons";
+
     import EventCardSmall from "./EventCardSmall.svelte";
     import Input from "./Input.svelte";
     import {
         fetchEvents,
         fetchLocations,
-        fetchEventsByLocationIds,
         fetchCities,
         fetchGenres
     } from "../api/wordpress";
-
-    import { addLoadingState, removeLoadingState } from "../functions/helpers";
+    import { formatDate } from "../functions/helpers";
 
     let cities = [];
     let genres = [];
@@ -26,15 +26,34 @@
         events = await fetchEvents();
     });
 
-    async function handleFilterChange() {
+    async function handleFilterChange(e) {
         events = false;
+
+        if (e.target.id === "date") {
+            selectedDates = e.target.value.split(" - ");
+            selectedDates = {
+                from: selectedDates[0] ? formatDate(selectedDates[0]) : null,
+                to: selectedDates[1] ? formatDate(selectedDates[1]) : null
+            };
+        } else {
+            selectedDates = {};
+        }
+
+        if (e.target.id === "cities") {
+            selectedCity = e.target.value;
+        }
+
+        if (e.target.id === "genres") {
+            selectedGenre = e.target.value;
+        }
 
         let metaQueries = [];
         let taxQueries = [];        
 
+        console.log(selectedDates);       
+
         if (selectedCity) {          
-        
-        let locations = await fetchLocations(null, null, [
+            let locations = await fetchLocations(null, null, [
                 { key: "address_city", value: selectedCity }
             ]);
             if (locations.length > 0) {
@@ -47,7 +66,7 @@
         }
 
         if (selectedGenre) {
-            taxQueries.push({ taxonomy: "genre", field: "term_id", terms: selectedGenre });
+            taxQueries.push({ taxonomy: "genre", field: "name", terms: selectedGenre });
         }
 
         if (selectedDates.from) {
@@ -79,6 +98,7 @@
         id="cities"
         label="Städte"
         floating={true}
+        placeholder="Stadt wählen"
         options={[
             { value: "", label: "Alle Städte" },
             ...cities.map((city) => {
@@ -97,11 +117,12 @@
         id="genres"
         label="Genres"
         floating={true}
+        placeholder="Genre wählen"
         options={[
             { value: "", label: "Alle Genres" },
             ...genres.map((genre) => {
             return {
-                value: genre.id,
+                value: genre.name,
                 label: genre.name
             };
             })
@@ -120,14 +141,14 @@
                         title={event.title}
                         href={`/event/${event.slug}`}
                         date={event.date}
-                        genre={event.taxonomies}
-                        city={event.location.city}
+                        genre={event.genre}
+                        city={event.city}
                     />
                 </li>
             {/each}
         {:else}
             <li class="w-full">
-                <p class="text-center text-lg font-bold">Keine Events gefunden</p>
+                <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><FeatherIcons.XCircleIcon class="w-4 h-4"/>Keine Events gefunden</p>
             </li>
         {/if}
     {:else}

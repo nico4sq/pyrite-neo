@@ -3,7 +3,7 @@ import { CUSTOM_QUERY_URL } from '../functions/theme';
 import pkg from 'he';
 const { decode } = pkg;
 
-export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = []) {
+export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = [], full = false) {
   const posts = [];
   let url = CUSTOM_QUERY_URL + '/events';
 
@@ -38,7 +38,7 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
       return `tax_query[${index}][taxonomy]=${query.taxonomy}&tax_query[${index}][field]=${query.field}&tax_query[${index}][terms]=${query.terms}`;
     }).join('&');
     url += (url.includes('?') ? '&' : '?') + queryString;
-  }
+  }  
 
   console.log(url);
   
@@ -49,8 +49,58 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
 
     for (let entry of data) {   
       entry.title = decode(entry.title);
-      entry.tickets = entry.meta.links_tickets.toString();
       entry.date = entry.meta.info_date.toString().substring(6, 8) + '.' + entry.meta.info_date.toString().substring(4, 6) + '.' + entry.meta.info_date.toString().substring(0, 4);
+      entry.city = entry.taxonomies.city.map(city => city.name);
+      entry.genre = entry.taxonomies.genre.map(genre => genre.name);      
+
+      if (full) {
+        entry.tickets = entry.meta.links_tickets.toString();
+        entry.start = entry.meta.info_time_start.toString().split(':').slice(0, 2).join(':');
+        entry.doors = entry.meta.info_time_doors.toString().split(':').slice(0, 2).join(':');
+
+        let location = await fetchLocationById(entry.meta.location);
+        entry.location = location;
+
+        let artists = [];
+        let artistIds = entry.meta.artists;
+        artistIds.forEach(async id => {
+          let artist = await fetchArtistById(id);
+          delete artist.meta;
+          
+          artists.push(artist);
+        });
+        entry.artists = artists;
+
+        delete entry.meta;
+      }
+
+      posts.push(entry);
+    }
+  } catch (error) {
+    console.error('Fehler:', error);
+  }
+
+  return posts;
+}
+
+export async function fetchEventById(id, full = false) {
+  let entry = {};
+  let url = CUSTOM_QUERY_URL + '/events';
+
+  if (id) {
+    url += `?id=${id}`;
+  }
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    entry = data[0];
+
+    entry.title = decode(entry.title);
+    entry.date = entry.meta.info_date.toString().substring(6, 8) + '.' + entry.meta.info_date.toString().substring(4, 6) + '.' + entry.meta.info_date.toString().substring(0, 4);
+
+    if (full) {
+      entry.tickets = entry.meta.links_tickets.toString();
       entry.start = entry.meta.info_time_start.toString().split(':').slice(0, 2).join(':');
       entry.doors = entry.meta.info_time_doors.toString().split(':').slice(0, 2).join(':');
 
@@ -68,18 +118,16 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
       entry.artists = artists;
 
       delete entry.meta;
-
-      posts.push(entry);
     }
+
   } catch (error) {
-    console.error('Fehler:', error);
+    console.error('Fehler:', error);  
   }
 
-  return posts;
+  return entry;
 }
 
-export async function fetchEventById(id) {
-  let entry = {};
+export async function fetchEventCity(id) {
   let url = CUSTOM_QUERY_URL + '/events';
 
   if (id) {
@@ -89,36 +137,15 @@ export async function fetchEventById(id) {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    entry = data[0];
-    entry.title = decode(entry.title);
-    entry.tickets = entry.meta.links_tickets.toString();
-    entry.date = entry.meta.info_date.toString().substring(6, 8) + '.' + entry.meta.info_date.toString().substring(4, 6) + '.' + entry.meta.info_date.toString().substring(0, 4);
-    entry.start = entry.meta.info_time_start.toString().split(':').slice(0, 2).join(':');
-    entry.doors = entry.meta.info_time_doors.toString().split(':').slice(0, 2).join(':');
-
-    let location = await fetchLocationById(entry.meta.location);
-    entry.location = location;
-
-    let artists = [];
-    let artistIds = entry.meta.artists;
-    artistIds.forEach(async id => {
-      let artist = await fetchArtistById(id);
-      delete artist.meta;
-      
-      artists.push(artist);
-    });
-    entry.artists = artists;
-
-    delete entry.meta;
-
+    const location = await fetchLocationById(data[0].meta.location);
+    return location.city;
   } catch (error) {
-    console.error('Fehler:', error);  
+    console.error('Fehler:', error);
+    return '';
   }
-
-  return entry;
 }
 
-export async function fetchArtistEvents(artistId) {
+export async function fetchArtistEvents(artistId, full = false) {
   const posts = [];
   const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=artists&meta_query[0][value]=${artistId}&meta_query[0][compare]=LIKE`;
 
@@ -128,23 +155,24 @@ export async function fetchArtistEvents(artistId) {
 
     for (let id of data) {
       id = id.id;
-      let entry = await fetchEventById(id);
+      let entry = await fetchEventById(id, full);
       posts.push(entry);
     }
   } catch (error) {
     console.error('Fehler:', error);
   }
-
-  posts.sort((a, b) => {
-    const dateA = new Date(a.date.split('.').reverse().join('-'));
-    const dateB = new Date(b.date.split('.').reverse().join('-'));
-    return dateA - dateB;
-  });
   
   return posts || null;
 }
 
-export async function fetchLocationEvents(locationId) {
+export async function fetchArtistEventsNumber(artistId) {
+  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=artists&meta_query[0][value]=${artistId}&meta_query[0][compare]=LIKE`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.length;
+}
+
+export async function fetchLocationEvents(locationId, full = false) {
   const posts = [];
   const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
 
@@ -154,20 +182,21 @@ export async function fetchLocationEvents(locationId) {
 
     for (let id of data) {
       id = id.id;
-      let entry = await fetchEventById(id);
+      let entry = await fetchEventById(id, full);
       posts.push(entry);
     }
   } catch (error) {
     console.error('Fehler:', error);
   }
 
-  posts.sort((a, b) => {
-    const dateA = new Date(a.date.split('.').reverse().join('-'));
-    const dateB = new Date(b.date.split('.').reverse().join('-'));
-    return dateA - dateB;
-  });
-
   return posts || null;
+}
+
+export async function fetchLocationEventsNumber(locationId) {
+  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.length;
 }
 
 export async function fetchGenreEvents(genreId) {
@@ -245,8 +274,6 @@ export async function fetchLocations(limit, page, metaQueries = []) {
     url += `?${queryString}`;
   }
 
-  console.log(url);
-  
   try {
     const response = await fetch(url);
     const data = await response.json();

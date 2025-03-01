@@ -78,5 +78,11 @@ export function renderIcon(iconName, size = 5) {
 }
 
 export function formatDate(date) {
-    return  date.toISOString().split('T')[0].replace(/-/g, '');
+    if (typeof date === 'string') {
+        if (date.includes('.')) {
+            date = date.split('.').reverse().join('-');
+        }
+    }
+
+    return date;
 }

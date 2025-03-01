@@ -26,7 +26,7 @@ export async function getStaticPaths() {
 }
 
 const { artist } = Astro.props;
-let artistEvents = await fetchArtistEvents(artist.id);
+let artistEvents = await fetchArtistEvents(artist.id, true);
 ---
 
 <Layout 

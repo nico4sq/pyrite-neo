@@ -1,7 +1,6 @@
-<script>    
+<script>
     import * as L from 'leaflet';
 
-    import 'leaflet-control-geocoder';
     import 'leaflet-gesture-handling';
     import 'leaflet.markercluster/dist/leaflet.markercluster.js';
     
@@ -12,11 +11,11 @@
     import * as FeatherIcon from 'svelte-feather-icons';
     import '../styles/global.css';
 
-    import { renderIcon, addLoadingState, removeLoadingState } from '../functions/helpers';
+    import { renderIcon } from '../functions/helpers';
     import { fetchLocationById, fetchLocationEvents, fetchLocations } from '../api/wordpress';
     import { onMount } from 'svelte';
     import LocationEvent from './LocationEvent.svelte';
-    import { transform } from 'typescript';
+    import Input from './Input.svelte';
 
     export let single;
 
@@ -27,7 +26,11 @@
     let cities = [];
     let selectedCity = '';
     let modalOpen = false;
-    let geocoder;
+    let citySelectionModalOpen = true;
+    let searchInput = '';
+    let searchResults = [];
+    let isSearching = false;
+    let searchTimeout = null;
 
     let markerLayer = L.markerClusterGroup({
         maxClusterRadius: 100,
@@ -38,7 +41,6 @@
 
     onMount(async () => {
         mapElement = document.getElementById('map');
-        geocoder = L.Control.Geocoder.nominatim();
 
         map = L.map(mapElement, {
             preferCanvas: true,
@@ -115,15 +117,16 @@
             });
 
             cities = locations.reduce((acc, location) => {
-                if (!acc.includes(location.city)) {
+                if (location.city && !acc.includes(location.city)) {
                     acc.push(location.city);
                 }
                 return acc;
             }, []);
+
+            cities.sort();
         }
 
         markerLayer.addTo(map);
-
 
         if (single) {
             map.setView(markerLayer.getBounds().getCenter(), 14);
@@ -132,7 +135,7 @@
         }
         
         if (!single) {
-            addPositionControl();
+            addCitySelectionControl();
         }
     });
 
@@ -140,6 +143,69 @@
         modalOpen = false;
         activeLocation = null;
         activeLocationEvents = null;
+    }
+
+    function closeCitySelectionModal() {
+        citySelectionModalOpen = false;
+    }
+
+    function openCitySelectionModal() {
+        citySelectionModalOpen = true;
+    }
+
+    async function searchCity() {
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(async () => {
+            if (!searchInput || searchInput.length < 2) {
+                searchResults = [];
+                return;
+            }
+
+            isSearching = true;
+            
+            try {            
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}&limit=5&countrycodes=de`);
+                const data = await response.json();
+                
+                searchResults = data.filter(item => 
+                    item.addresstype === 'city' || 
+                    item.addresstype === 'town' || 
+                    item.addresstype === 'village'
+                );
+                
+                isSearching = false;
+            } catch (error) {
+                console.error('Fehler bei der Stadt-Suche:', error);
+                isSearching = false;
+                searchResults = [];
+            }
+        }, 1000);
+    }
+
+    function selectCity(result) {
+        map.setView([parseFloat(result.lat), parseFloat(result.lon)], 12, { animate: true });
+        citySelectionModalOpen = false;
+    }
+
+    async function selectPredefinedCity(cityName) {
+        try {            
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}`);
+            const data = await response.json();
+                        
+            if (data && data.length > 0) {
+                const result = data[0];
+
+                map.setView([parseFloat(result.lat), parseFloat(result.lon)], 12, { animate: true });
+                citySelectionModalOpen = false;
+            } else {
+                console.error('Keine Ergebnisse mit API erhalten für:', cityName);
+            }
+        } catch (error) {
+            console.error('Fehler bei API-Anfrage:', error);
+        }
     }
 
     async function openModal() {
@@ -158,7 +224,7 @@
                 (position) => {
                     map.setView([position.coords.latitude, position.coords.longitude], 14, { animate: true });
                     setPositionMarker([position.coords.latitude, position.coords.longitude]);
-
+                    citySelectionModalOpen = false;
                     resolve();
                 },
                 (error) => {
@@ -173,8 +239,8 @@
         let marker = L.marker(coords, {
             icon: L.divIcon({
                 className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before:bg-rose-400 before:size-xl after:w-2 after:h-2 after:bg-rose-700 after:rounded-3xl after:flex after:absolute after:animate-pulse text-white flex! items-center justify-center',
-                iconSize: [32, 32],
-                iconAnchor: [16, 32]
+                iconSize: [24, 24],
+                iconAnchor: [12, 24]
             })
         });
 
@@ -184,20 +250,15 @@
         positionLayer.addTo(map);
     }
 
-    function addPositionControl() {
-        let control = L.control({ position: 'bottomright' });
+    function addCitySelectionControl() {
+        let control = L.control({ position: 'topright' });
 
         control.onAdd = function () {
-            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! bg-rose-200 text-rose-800 rounded-lg p-2 shadow-md cursor-pointer! hover:bg-rose-300 hover:text-rose-900 transition!');
-            button.innerHTML = renderIcon('MapPinIcon', 4);
+            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! bg-yellow-100 text-yellow-700 hover:bg-yellow-200 hover:text-yellow-800 rounded-lg p-2 shadow-md cursor-pointer! transition! ml-2');
+            button.innerHTML = renderIcon('SearchIcon', 4);
 
             button.addEventListener('click', () => {
-                button.classList.add('animate-pulse');
-                detectUserLocation().then(() => {
-                    button.classList.remove('animate-pulse');
-                }).catch(() => {
-                    button.classList.remove('animate-pulse');
-                });
+                openCitySelectionModal();
             });
 
             return button;
@@ -205,7 +266,6 @@
 
         control.addTo(map);
     }
-
 </script>
 
 {#if single}
@@ -213,9 +273,78 @@
         <div id="map" class="size-full bg-transparent!"></div>
     </div>
 {:else}
-    <div class="w-full h-dvh -mt-16 pt-16 relative">
+    <div class="w-full h-dvh -mt-16 pt-16 relative overflow-hidden">
         <div id="map" class="size-full bg-transparent!"></div>
 
+        <!-- City Selection Modal -->
+        {#if citySelectionModalOpen}
+        <div class="fixed inset-0 bg-black/70 z-6000 flex items-center justify-center">
+            <div class="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-xl w-96 max-w-[90%]">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-barlow font-bold uppercase text-stone-950 dark:text-stone-200 text-balance">Für welche Stadt interessierst du dich?</h3>
+                    <button on:click={closeCitySelectionModal} class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-stone-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><FeatherIcon.XIcon class="w-4 h-4"/></button>
+                </div>
+                
+                <div class="relative mb-3">
+                    <div class="relative">
+                        <input 
+                            type="text"
+                            bind:value={searchInput}
+                            on:input={searchCity}
+                            placeholder="Stadt suchen..."
+                            class="w-full py-2 pr-4 pl-10 rounded-lg bg-neutral-800 border-1 border-neutral-600 focus:outline-none focus:border-white"
+                        />
+                        <FeatherIcon.SearchIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                        {#if isSearching}
+                            <span class="flex items-center absolute right-3 top-1/2 -translate-y-1/2 justify-center rounded-full w-4 h-4 animate-ping bg-yellow-400/40 before:bg-yellow-400 before:rounded-full before:w-2 before:h-2"></span>
+                        {/if}
+                    </div>
+                    
+                    {#if searchResults.length > 0}
+                        <ul class="mt-2 border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden absolute left-0 right-0 bg-neutral-900 shadow-xl">
+                            {#each searchResults as result}
+                                <li>
+                                    <button 
+                                        on:click={() => selectCity(result)}
+                                        class="w-full text-left py-2 px-4 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-stone-950 dark:text-stone-200 transition cursor-pointer"
+                                    >
+                                        {result.name}
+                                    </button>
+                                </li>
+                            {/each}
+                        </ul>
+                    {/if}
+                </div>
+                
+                {#if cities.length > 0}
+                    <div>
+                        <div class="grid grid-cols-2 gap-3 sm:grid-cols-2">
+                            {#each cities as city}
+                                <button 
+                                    on:click={() => selectPredefinedCity(city)}
+                                    class="text-center py-2 px-3 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-lg text-stone-950 dark:text-stone-200 transition cursor-pointer"
+                                >
+                                    {city}
+                                </button>
+                            {/each}
+                        </div>
+                    </div>
+                {/if}
+                
+                <div class="mt-6 border-t border-neutral-200 dark:border-neutral-700 pt-6">
+                    <button 
+                        on:click={detectUserLocation}
+                        class="w-full flex items-center justify-center py-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 hover:text-yellow-900 rounded-lg transition cursor-pointer"
+                    >
+                        <FeatherIcon.MapPinIcon class="w-4 h-4 mr-2" />
+                        Meinen Standort verwenden
+                    </button>
+                </div>
+            </div>
+        </div>
+        {/if}
+
+        <!-- Location Details Modal -->
         <div id="location-modal"
             class="text-white absolute bottom-0 left-0 right-0 m-4 max-w-3xl h-80 lg:h-auto bg-white dark:bg-neutral-900 shadow-lg rounded-xl p-6 overflow-y-auto z-5000 transition-transform duration-300 transform lg:top-16 lg:left-0 lg:bottom-0 lg:m-4 lg:mr-0 lg:w-sm lg:max-w-3xl"
             class:active={modalOpen}>

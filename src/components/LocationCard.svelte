@@ -7,15 +7,14 @@
     export let featured_media;
 
     import { onMount } from 'svelte';
-    import { fetchLocationEvents } from '../api/wordpress';
+    import { fetchLocationEventsNumber } from '../api/wordpress';
 
     let upcomingEventsCount = false;
 
     onMount(async () => {
       try {
-        const events = await fetchLocationEvents(id);
+        upcomingEventsCount = await fetchLocationEventsNumber(id);
 
-        upcomingEventsCount = events.length > 0 ? events.length : 0;
       } catch (error) {
         console.error('Error fetching artist events:', error);
 

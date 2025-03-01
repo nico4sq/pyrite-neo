@@ -8,7 +8,7 @@ import ArtistEvent from '../../components/ArtistEvent.svelte';
 
 import "../../styles/global.css";
 
-import { fetchGenres, fetchEventById, fetchGenreEvents } from '../../api/wordpress';
+import { fetchGenres, fetchGenreEvents } from '../../api/wordpress';
 
 export async function getStaticPaths() {
     let genres = await fetchGenres();
