@@ -38,9 +38,9 @@ let cityEvents = await fetchCityEvents(id);
     <Page>
         <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
             <div class="contents md:flex flex-col gap-6">
-                <h1 class="text-3xl text-stone-950 font-barlow uppercase font-bold p-6 bg-yellow-400 rounded-3xl">{ name }</h1>
+                <h1 class="text-3xl text-slate-950 font-barlow uppercase font-bold p-6 bg-indigo-400 rounded-3xl">{ name }</h1>
 
-                <div class="p-6 bg-neutral-200 dark:bg-neutral-800  rounded-3xl">
+                <div class="p-6 bg-slate-200 dark:bg-slate-800  rounded-3xl">
                     <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
                     { cityEvents && cityEvents.map((event) => (
                         event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.city } />

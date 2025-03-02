@@ -10,7 +10,7 @@ export interface Props {
 
 const { pagination, currentPage = 1 } = Astro.props;
 const shouldPaginate = pagination === true;
-const perPage = 3;
+const perPage = 9;
 let pages;
 
 let events;
@@ -42,11 +42,11 @@ if (shouldPaginate) {
     ))}
 
     {!shouldPaginate && (
-        <li class="relative group bg-yellow-400 hover:bg-yellow-500 text-stone-950 p-6 rounded-3xl flex flex-col items-start justify-end transition aspect-3/2">
+        <li class="relative group bg-indigo-300 hover:bg-indigo-400 text-slate-950 p-6 rounded-3xl flex flex-col items-start justify-end transition aspect-3/2">
             <a href="/eventfinder" class="absolute rounded-3xl inset-0 z-1"><span class="sr-only top-1/2 left-1/2">Zum Eventfinder</span></a>
             <p>Nichts für dich dabei?</p>
             <p class="text-2xl font-barlow uppercase leading-none font-bold">Zum Eventfinder</p>
-            <AstroFeather.ArrowRightIcon customClasses="absolute top-6 right-6 w-20 h-20 aspect-1 text-stone-950 transition pointer-events-none" />
+            <AstroFeather.ArrowRightIcon customClasses="absolute top-6 right-6 w-20 h-20 aspect-1 text-slate-950 transition pointer-events-none" />
         </li>
     )}
 </ul>
@@ -55,14 +55,14 @@ if (shouldPaginate) {
     <nav class="flex justify-center items-center py-8 gap-2">
         <a 
             href={`/events/1`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronsLeftIcon customClasses="w-4 h-4" />
         </a>
         <a 
             href={`/events/${currentPage - 1}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronLeftIcon customClasses="w-4 h-4" />
@@ -78,8 +78,8 @@ if (shouldPaginate) {
                     <a 
                         href={`/events/${pageNumber}`} 
                         class:list={{ 
-                            'text-sm p-2 w-4 h-4 box-content! aspect-square font-bold rounded-lg flex items-center justify-center leading-1 hover:text-yellow-300': true,
-                            'pointer-events-none bg-neutral-800': pageNumber === currentPage 
+                            'text-sm p-2 w-4 h-4 box-content! aspect-square font-bold rounded-lg flex items-center justify-center leading-1 hover:text-indigo-600 dark:hover:text-indigo-300': true,
+                            'pointer-events-none bg-slate-300 dark:bg-neutral-700': pageNumber === currentPage 
                         }}
                     >
                         {pageNumber}
@@ -94,14 +94,14 @@ if (shouldPaginate) {
 
         <a 
             href={`/events/${currentPage + 1}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronRightIcon customClasses="w-4 h-4" />
         </a>
         <a 
             href={`/events/${pages.length}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-stone-950 bg-yellow-400 hover:bg-yellow-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronsRightIcon customClasses="w-4 h-4" />

@@ -18,8 +18,8 @@
     --adp-background-color-selected-other-month-focused: var(--adp-accent-color);
     --adp-background-color-selected-other-month: var(--adp-accent-color);
     --adp-color: var(--color-white);
-    --adp-color-secondary: var(--color-neutral-500);
-    --adp-accent-color: var(--color-yellow-400);
+    --adp-color-secondary: var(--color-neutral-600);
+    --adp-accent-color: var(--color-indigo-300);
     --adp-color-current-date: var(--adp-accent-color);
     --adp-color-other-month: var(--adp-color-secondary);
     --adp-color-disabled: var(--adp-color-secondary);
@@ -34,7 +34,7 @@
     --adp-nav-action-size: calc(var(--spacing) * 8);
     --adp-nav-color-secondary: var(--adp-color-secondary);
     --adp-day-name-color: var(--adp-accent-color);
-    --adp-day-name-color-hover: var(--color-yellow-500);
+    --adp-day-name-color-hover: var(--color-indigo-500);
     --adp-day-cell-width: 1fr;
     --adp-day-cell-height: calc(var(--spacing) * 12);
     --adp-month-cell-height: calc(var(--spacing) * 14);
@@ -45,9 +45,9 @@
     --adp-cell-border-radius: var(--radius-xl);
     --adp-cell-background-color-hover: var(--adp-background-color-hover);
     --adp-cell-background-color-selected: var(--adp-accent-color);
-    --adp-cell-background-color-selected-hover: var(--color-yellow-500);
-    --adp-cell-background-color-in-range: color-mix(in oklab, var(--color-yellow-300) 20%, transparent);
-    --adp-cell-background-color-in-range-hover: color-mix(in oklab, var(--color-yellow-300) 40%, transparent);
+    --adp-cell-background-color-selected-hover: var(--color-indigo-500);
+    --adp-cell-background-color-in-range: color-mix(in oklab, var(--color-indigo-300) 20%, transparent);
+    --adp-cell-background-color-in-range-hover: color-mix(in oklab, var(--color-indigo-300) 40%, transparent);
     --adp-cell-border-color-in-range: var(--adp-cell-background-color-selected);
     --adp-btn-height: calc(var(--spacing) * 12);
     --adp-btn-color: var(--adp-accent-color);

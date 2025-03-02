@@ -20,7 +20,8 @@
       'justify-center',
       'cursor-pointer',
       'items-center',
-      'leading-1.05'
+      'leading-1.05',
+      'active:scale-95',
     ];
   
     let classesIcon = [
@@ -34,9 +35,9 @@
         classesButton.push('px-3');
   
         if (type === 'primary') {
-          classesButton.push('border-1', 'border-yellow-400', 'bg-yellow-400', 'hover:bg-yellow-500', 'text-stone-950');
+          classesButton.push('border-1', 'border-indigo-400', 'bg-indigo-400', 'hover:bg-indigo-500', 'text-slate-950');
         } else if (type === 'secondary') {
-          classesButton.push('border-1', 'border-neutral-950', 'dark:border-white', 'hover:border-yellow-400', 'dark:hover:border-yellow-400', 'text-neutral-950', 'dark:text-white');
+          classesButton.push('border-1', 'border-slate-950', 'dark:border-white', 'hover:border-indigo-400', 'dark:hover:border-indigo-400', 'text-slate-950', 'dark:text-white');
         } else {
           classesButton.push('text-white');
         }
@@ -48,9 +49,9 @@
         }
   
         if (type === 'primary') {
-          classesButton.push('border-1', 'border-yellow-400', 'bg-yellow-400', 'hover:bg-yellow-500', 'text-stone-950');
+          classesButton.push('border-1', 'border-indigo-400', 'bg-indigo-400', 'hover:bg-indigo-500', 'text-slate-950');
         } else if (type === 'secondary') {
-          classesButton.push('border-1', 'border-neutral-950', 'dark:border-white', 'hover:border-yellow-600', 'dark:hover:border-yellow-400', 'text-neutral-950', 'dark:text-white');
+          classesButton.push('border-1', 'border-slate-950', 'dark:border-white', 'hover:border-indigo-600', 'dark:hover:border-indigo-400', 'text-slate-950', 'dark:text-white');
         } else {
           classesButton.push('text-white');
         }

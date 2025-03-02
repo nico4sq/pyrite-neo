@@ -21,12 +21,12 @@
     });
   </script>
   
-  <article class="fade-in group relative w-full flex flex-col bg-white dark:bg-neutral-800 text-stone-950 dark:text-white rounded-3xl overflow-clip outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white transition">
-    <figure class="relative aspect-3/2 w-full overflow-clip bg-neutral-600 flex items-center justify-center">
+  <article class="fade-in group relative w-full flex flex-col bg-white dark:bg-neutral-800 text-slate-950 dark:text-white rounded-3xl overflow-clip outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white has-[a:active]:scale-95 transition">
+    <figure class="relative aspect-3/2 w-full overflow-clip bg-slate-300 dark:bg-slate-700 flex items-center justify-center">
       {#if featured_media}
         <img width="600" height="400" src={featured_media} alt={title} class="group-has-[a:hover]:scale-110 group-has-[a:focus]:scale-110 transition aspect-3/2 w-full object-cover object-center" />
       {:else}
-        <FeatherIcons.ImageIcon class="w-4 h-4 aspect-1 text-neutral-700" />
+        <FeatherIcons.ImageIcon class="w-8 h-8 aspect-1 text-slate-400" />
       {/if}
 
       {#if href}
@@ -38,13 +38,13 @@
         <hgroup class="flex flex-col p-6 gap-2 h-full">
           <h2 class="text-2xl font-barlow uppercase leading-none font-bold">{title}</h2>
           {#if upcomingEventsCount === false}
-            <p class="w-fit text-xs border border-neutral-300 bg-neutral-300/20 text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2">Lade Events...</p>
+            <p class="w-fit text-xs border border-slate-600 dark:border-neutral-300 bg-slate-600/20 dark:bg-neutral-300/20 text-slate-600 dark:text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2">Lade Events...</p>
           {:else if upcomingEventsCount === 0}
-            <p class="w-fit text-xs border border-yellow-300 bg-yellow-300/20 text-yellow-300 rounded-lg px-2 py-1 flex items-center gap-2">Keine Events</p>
+            <p class="w-fit text-xs border border-indigo-600 dark:border-indigo-300 bg-indigo-600/20 dark:bg-indigo-300/20 text-indigo-600 dark:text-indigo-300 rounded-lg px-2 py-1 flex items-center gap-2">Keine Events</p>
           {:else if upcomingEventsCount === 1}
-            <p class="w-fit text-xs border border-green-300 bg-green-300/20 text-green-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Event</p>
+            <p class="w-fit text-xs border border-green-600 dark:border-green-300 bg-green-600/20 dark:bg-green-300/20 text-green-600 dark:text-green-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Event</p>
           {:else}
-            <p class="w-fit text-xs border border-green-300 bg-green-300/20 text-green-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Events</p>
+            <p class="w-fit text-xs border border-green-600 dark:border-green-300 bg-green-600/20 dark:bg-green-300/20 text-green-600 dark:text-green-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Events</p>
           {/if}
         </hgroup>
       </header>

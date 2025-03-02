@@ -153,7 +153,7 @@
         {/if}
     {:else}
         <li class="w-full">
-            <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 animate-ping bg-yellow-400/40 before:bg-yellow-400 before:rounded-full before:w-2 before:h-2"></span>Gib uns eine Sekunde Zeit, um Events für dich zu laden...</p>
+            <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 animate-ping bg-indigo-400/40 before:bg-indigo-400 before:rounded-full before:w-2 before:h-2"></span>Gib uns eine Sekunde Zeit, um Events für dich zu laden...</p>
         </li>
     {/if}
 </ul>

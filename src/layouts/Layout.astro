@@ -10,8 +10,8 @@ import '../styles/global.css';
 import { SITENAME } from '../functions/theme';
 
 interface Props {
-	title?: string;
-	description?: string;
+    title?: string;
+    description?: string;
 }
 
 let { title, description } = Astro.props;
@@ -20,15 +20,26 @@ title += " | " + SITENAME;
 
 <!doctype html>
 <html lang="de">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{ title }</title>
-		<meta name="robots" content="noindex, nofollow" />
-		<meta name="description" content={ description } />
-	</head>
-	<body class="bg-white dark:bg-neutral-900 text-stone-950 dark:text-white has-[dialog:open]:overflow-hidden min-h-screen flex flex-col">
-		<slot />
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>{ title }</title>
+        <meta name="robots" content="noindex, nofollow" />
+        <meta name="description" content={ description } />
+        <script>
+            function setColorSchemeClass() {
+                const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+                
+                document.documentElement.classList.toggle('dark', prefersDarkScheme.matches);
+            }
+            
+            setColorSchemeClass();
+            
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorSchemeClass);
+        </script>
+    </head>
+    <body class="bg-slate-200 dark:bg-neutral-900 text-slate-950 dark:text-white has-[dialog:open]:overflow-hidden min-h-screen flex flex-col">
+        <slot />
+    </body>
 </html>
