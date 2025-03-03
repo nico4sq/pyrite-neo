@@ -1,14 +1,13 @@
 ---
 import logo from '../assets/pyrite-logo.svg';
-import Input from './Input.svelte';
+import Button from './Button.svelte';
+import Modal from './Modal.svelte';
 
 import { SITENAME } from '../functions/theme';
 
-import * as AstroFeather from 'astro-feather';
-
 ---
 
-<header class="sticky w-full top-0 left-0 right-0 z-10000 bg-slate-200 dark:bg-neutral-900 shadow-lg py-4 h-16">
+<header class="sticky flex items-center w-full top-0 left-0 right-0 z-10000 bg-slate-200 dark:bg-neutral-900 shadow-lg h-16">
 <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
   <a href="/" class="flex items-center gap-2">
     <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />
@@ -16,107 +15,42 @@ import * as AstroFeather from 'astro-feather';
   </a>
   
   <div class="flex items-center gap-4">
-    <!-- Search Icon and Searchbar -->
-    <div class="relative flex items-center">
-      <button id="search-button" class="text-slate-700 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-sm p-2 aspect-square cursor-pointer" aria-label="Suche öffnen">
-        <AstroFeather.SearchIcon customClasses="w-5 h-5 pointer-events-none" />
-      </button>
-      
-      <div id="search-bar" class="absolute right-0 top-full mt-5 origin-top-right scale-0 opacity-0 transition-all duration-300 ease-in-out">
-        <form action="/search" method="get" class="flex items-center bg-white dark:bg-slate-800 shadow-lg rounded-lg overflow-hidden p-2 gap-3">
-          <Input type="text" id="q" label="Suche" floating={true} placeholder="Suche..." />
-          <button type="submit" class="text-slate-800 bg-indigo-400 hover:bg-indigo-500 font-barlow font-bold uppercase text-sm p-2 aspect-square rounded-lg cursor-pointer"><AstroFeather.ArrowRightIcon customClasses="w-5 h-5 pointer-events-none" /></button>
-        </form>
-      </div>
-    </div>
-    
-    <!-- Menu Button -->
-    <button id="menu-button" class="text-slate-700 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-sm p-2 aspect-square cursor-pointer">
-      <AstroFeather.MenuIcon customClasses="w-6 h-6 pointer-events-none" />
-      <span class="sr-only">Menü</span>
-    </button>
+    <Button
+      label="Menü"
+      interaction={{ type: 'modal', target: 'main-menu' }}
+      icon={{ name: 'MenuIcon', only: true }}
+      client:load
+    />
   </div>
 </div>
 </header>
 
-<div id="main-menu" class="fixed z-10002 top-0 right-0 bottom-0 ml-0 w-xs max-w-9/10 bg-slate-200 dark:bg-neutral-900 shadow-xl transition translate-x-full">
-<div class="flex flex-col h-full pt-5">
-  <button id="close-menu-button" class="flex items-center justify-center absolute top-2 right-2 w-10 h-10 bg-indigo-400 text-slate-800 dark:text-slate-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><AstroFeather.XIcon customClasses="w-4 h-4"/></button>
-  <nav class="flex-1">
-    <a href="/" class="flex items-center mx-6 gap-2">
-      <img src={ logo.src } alt="Pyrite logo" class="w-4 h-4 hover:scale-110 transition opacity-30" />
-    </a>
-
-    <ul class="flex flex-col justify-start items-start mx-6 py-6 gap-2">
+<Modal 
+  id="main-menu"
+  title="Menü"
+  position="right"
+  client:load
+>
+  <nav class="flex flex-col gap-6">
+    <ul class="flex flex-col gap-2">
       <li>
-        <a href={'/events'} class="flex text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-xl py-1 transition">
-          Events
-        </a>
+        <a href="/events" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Events</a>
       </li>
       <li>
-        <a href={'/locations'} class="flex text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-xl py-1 transition">
-          Locations
-        </a>
+        <a href="/artists" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Artists</a>
       </li>
       <li>
-        <a href={'/artists'} class="flex text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-xl py-1 transition">
-          Artists
-        </a>
+        <a href="/locations" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Locations</a>
       </li>
     </ul>
-    <ul class="flex flex-col justify-start items-start mx-6 py-6 border-t border-slate-300 dark:border-neutral-800">
+
+    <ul class="flex flex-col gap-2">
       <li>
-        <a href={'/eventfinder'} class="flex text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-md py-1 transition">
-          Eventfinder
-        </a>
+        <a href="/eventfinder" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Eventfinder</a>
       </li>
       <li>
-        <a href={'/locationfinder'} class="flex text-slate-800 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 font-barlow font-bold uppercase text-md py-1 transition">
-          Locationfinder
-        </a>
+        <a href="/locationfinder" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Locationfinder</a>
       </li>
     </ul>
   </nav>
-</div>
-</div>
-
-<script>
-  // Menu toggle functionality
-  document.getElementById('menu-button').addEventListener('click', () => {
-    document.getElementById('main-menu').classList.add('translate-x-0!');
-  });
-  
-  document.getElementById('close-menu-button').addEventListener('click', () => {
-    document.getElementById('main-menu').classList.remove('translate-x-0!');
-  });
-  
-  // Search bar toggle functionality
-  const searchButton = document.getElementById('search-button');
-  const searchBar = document.getElementById('search-bar');
-
-  if(searchButton === null || searchBar === null) {
-    throw new Error('Search button or search bar not found');
-  }
-  
-  searchButton.addEventListener('click', () => {
-    searchBar.classList.toggle('scale-0');
-    searchBar.classList.toggle('opacity-0');
-    searchBar.classList.toggle('scale-100');
-    searchBar.classList.toggle('opacity-100');
-    
-    // Focus the input field if search bar is visible
-    if (searchBar.classList.contains('scale-100')) {
-      setTimeout(() => {
-        searchBar.querySelector('input').focus();
-      }, 300);
-    }
-  });
-  
-  // Close search bar when clicking outside
-  document.addEventListener('click', (event) => {
-    if (!searchButton.contains(event.target) && !searchBar.contains(event.target)) {
-      searchBar.classList.add('scale-0', 'opacity-0');
-      searchBar.classList.remove('scale-100', 'opacity-100');
-    }
-  });
-</script>
+</Modal>

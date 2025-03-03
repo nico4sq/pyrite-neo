@@ -1,69 +1,217 @@
 <script>
-    import * as FeatherIcons from 'svelte-feather-icons';
-    import { onMount } from 'svelte';
+  import 'svelte-feather-icons';
+  import IconWrapper from './IconWrapper.svelte';
+
+  export let label = '';
+  export let type = 'primary';
   
-    export let label;
-    export let href;
-    export let type;
-    export let icon;
+  export let interaction = {
+    type: 'link',
+    target: '',
+    external: false
+  };
   
-    let classesButton = [
-      'group',
-      'py-2',
-      'transition-all',
-      'rounded-lg',
-      'uppercase',
-      'font-barlow',
-      'font-bold',
-      'flex',
-      'flex-auto',
-      'justify-center',
-      'cursor-pointer',
-      'items-center',
-      'leading-1.05',
-      'active:scale-95',
-    ];
+  $: interaction = {
+    type: 'link',
+    target: '',
+    external: false,
+    ...interaction
+  };
   
-    let classesIcon = [
-      'transition-all',
-      'w-5',
-      'h-5'
-    ];
+  export let icon = {
+    name: 'ArrowRightIcon',
+    only: false,
+    position: 'right'
+  };
   
-    onMount(() => {
-      if (label === null) {
-        classesButton.push('px-3');
+  $: icon = {
+    name: 'ArrowRightIcon',
+    only: false,
+    position: 'right',
+    ...icon
+  };
+
+  let classesButton = [
+    'group',
+    'flex', 
+    'items-center', 
+    'justify-center', 
+    'cursor-pointer', 
+    'leading-none', 
+    'py-3', 
+    'gap-3',
+    'rounded-lg', 
+    'font-barlow', 
+    'uppercase', 
+    'font-bold', 
+    'transition'
+  ];
+
+  function updateButtonClasses() {
+    const classes = [...classesButton];
+    
+    if (!label || icon.only) {
+      classes.push('px-3');
+
+      if (type === 'primary') {
+        classes.push('border-1', 'border-indigo-400', 'bg-indigo-400', 'hover:bg-indigo-500', 'hover:border-indigo-500', 'text-slate-950');
+      } else if (type === 'secondary') {
+        classes.push('border-1', 'border-slate-950', 'dark:border-white', 'hover:border-indigo-400', 'dark:hover:border-indigo-400', 'text-slate-950', 'dark:text-white');
+      } else {
+        classes.push('text-white');
+      }
+    } else {
+      classes.push('px-4');
+      if (type === 'primary') {
+        classes.push('border-1', 'border-indigo-400', 'bg-indigo-400', 'hover:bg-indigo-500', 'hover:border-indigo-500', 'text-slate-950');
+      } else if (type === 'secondary') {
+        classes.push('border-1', 'border-slate-950', 'dark:border-white', 'hover:border-indigo-600', 'dark:hover:border-indigo-400', 'text-slate-950', 'dark:text-white');
+      } else {
+        classes.push('text-white');
+      }
+    }
+    
+    return classes;
+  }
+
+  $: buttonClasses = updateButtonClasses().join(' ');
   
-        if (type === 'primary') {
-          classesButton.push('border-1', 'border-indigo-400', 'bg-indigo-400', 'hover:bg-indigo-500', 'text-slate-950');
-        } else if (type === 'secondary') {
-          classesButton.push('border-1', 'border-slate-950', 'dark:border-white', 'hover:border-indigo-400', 'dark:hover:border-indigo-400', 'text-slate-950', 'dark:text-white');
-        } else {
-          classesButton.push('text-white');
+  // Funktion zum Öffnen eines Modals
+  function handleModal() {
+    if (interaction.type === 'modal' && interaction.target) {
+      const targetElement = document.getElementById(interaction.target);
+      if (targetElement) {
+        targetElement.classList.add('translate-0!');
+        
+        // Optional: Event-Handler für Schließen-Button hinzufügen
+        const closeButton = targetElement.querySelector('[data-close]');
+        if (closeButton) {
+          closeButton.addEventListener('click', () => {
+            targetElement.classList.remove('translate-0!');
+          });
         }
       } else {
-        classesButton.push('px-4');
-  
-        if (icon) {
-          classesButton.push('hover:pr-3', 'hover:gap-3', 'gap-2');
-        }
-  
-        if (type === 'primary') {
-          classesButton.push('border-1', 'border-indigo-400', 'bg-indigo-400', 'hover:bg-indigo-500', 'text-slate-950');
-        } else if (type === 'secondary') {
-          classesButton.push('border-1', 'border-slate-950', 'dark:border-white', 'hover:border-indigo-600', 'dark:hover:border-indigo-400', 'text-slate-950', 'dark:text-white');
-        } else {
-          classesButton.push('text-white');
-        }
+        console.warn(`Modal-Ziel mit ID "${interaction.target}" nicht gefunden.`);
       }
-    });
-  </script>
-  
-  <a href={href} class={classesButton.join(' ')}>
-    {#if label}
+    }
+  }
+
+  function closeModal() {
+    if (interaction.type === 'close' && interaction.target) {
+      const targetElement = document.getElementById(interaction.target);
+      if (targetElement) {
+        targetElement.classList.remove('translate-0!');
+      } else {
+        console.warn(`Modal-Ziel mit ID "${interaction.target}" nicht gefunden.`);
+      }
+    }
+  }
+</script>
+
+{#if interaction.type === 'link'}
+  <a 
+    href={interaction.target} 
+    target={interaction.external ? "_blank" : "_self"} 
+    rel={interaction.external ? "noopener noreferrer" : ""}
+    class={buttonClasses}
+  >
+    {#if icon.position === 'left'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+
+    {#if icon.only && label}
+      <span class="sr-only">{label}</span>
+    {/if}
+
+    {#if !icon.only && label}
       {label}
     {/if}
-    {#if icon}
-        <FeatherIcons.ArrowRightIcon />
+
+    {#if icon.position === 'right'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
     {/if}
   </a>
+{:else if interaction.type === 'button'}
+  <button 
+    class={buttonClasses}
+  >
+    {#if icon.position === 'left'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+
+    {#if icon.only && label}
+      <span class="sr-only">{label}</span>
+    {/if}
+
+    {#if !icon.only && label}
+      {label}
+    {/if}
+
+    {#if icon.position === 'right'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+  </button>
+{:else if interaction.type === 'submit'}
+  <button 
+    type="submit" 
+    class={buttonClasses}
+  >
+    {#if icon.position === 'left'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+
+    {#if icon.only && label}
+      <span class="sr-only">{label}</span>
+    {/if}
+
+    {#if !icon.only && label}
+      {label}
+    {/if}
+
+    {#if icon.position === 'right'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+  </button>
+{:else if interaction.type === 'modal'}
+  <button 
+    class={buttonClasses}
+    on:click={handleModal}
+  >
+    {#if icon.position === 'left'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+
+    {#if icon.only && label}
+      <span class="sr-only">{label}</span>
+    {/if}
+
+    {#if !icon.only && label}
+      {label}
+    {/if}
+
+    {#if icon.position === 'right'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+  </button>
+{:else if interaction.type === 'close'}
+  <button 
+    class={buttonClasses}
+    on:click={closeModal}
+  >
+    {#if icon.position === 'left'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+
+    {#if icon.only && label}
+      <span class="sr-only">{label}</span>
+    {/if}
+
+    {#if !icon.only && label}
+      {label}
+    {/if}
+
+    {#if icon.position === 'right'}
+      <IconWrapper name={icon.name} size="16" class="w-4 h-4 transition" />
+    {/if}
+  </button>
+{/if}

@@ -23,12 +23,12 @@
     });
   </script>
   
-  <article class="fade-in group relative w-full flex flex-col bg-white dark:bg-slate-800 text-slate-950 dark:text-white rounded-3xl overflow-clip outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white transition">
+  <article class="fade-in group relative w-full flex flex-col bg-white dark:bg-neutral-800 text-slate-950 dark:text-white rounded-3xl overflow-clip outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white transition">
     <figure class="relative aspect-3/2 w-full overflow-clip bg-slate-600 flex items-center justify-center">
       {#if featured_media}
         <img width="600" height="400" src={featured_media} alt={title} class="group-has-[a:hover]:scale-110 group-has-[a:focus]:scale-110 transition aspect-3/2 w-full object-cover object-center" />
       {:else}
-        <FeatherIcons.ImageIcon class="w-4 h-4 aspect-1 text-slate-700" />
+        <FeatherIcons.ImageIcon class="w-8 h-8 aspect-1 text-slate-400" />
       {/if}
 
       {#if href}

@@ -3,11 +3,11 @@
 
 import Layout from '../../layouts/Layout.astro';
 import Page from '../../components/Page.astro';
-import Button from '../../components/Button.astro';
+import Button from '../../components/Button.svelte';
 import EventArtists from '../../components/EventArtists.svelte';
 import EventLocation from '../../components/EventLocation.svelte';
 
-import * as AstroFeather from 'astro-feather';
+import { ShoppingCartIcon } from 'astro-feather';
 import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
@@ -72,8 +72,8 @@ const { event } = Astro.props;
                 </figure>
 
                 <div class="p-6 bg-slate-50 dark:bg-neutral-800  rounded-3xl flex gap-4 shadow-lg -order-2">
-                    <Button label="Tickets" href={ event.tickets } type="primary" target="_blank"/>
-                    <Button label="Kalender" href="/events" type="secondary"/>
+                    <Button label="Tickets" type="primary" interaction={ {type: 'link', target: event.tickets, external: true} } icon={ {name: "ShoppingCartIcon"} } />
+                    <Button label="Kalender" type="secondary" icon={ {name: 'CalendarIcon', only: true} }/>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Page from '../../components/Page.astro';
 import LocationEvent from '../../components/LocationEvent.svelte';
-import Map from '../../components/Map.svelte';
+// import Map from '../../components/Map.svelte';
 
 import * as AstroFeather from 'astro-feather';
 import { Image } from 'astro:assets';
@@ -42,23 +42,23 @@ const locationEvents = await fetchLocationEvents(id);
     <Page>
         <article class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
             <div class="contents md:flex flex-col gap-6">
-                <hgroup class="p-6 bg-indigo-400 rounded-3xl -order-2">
-                    <p class="font-barlow uppercase text-sm font-bold text-slate-950">Location</p>
-                    <h1 class="text-3xl text-slate-950 font-barlow uppercase font-bold ">{ title }</h1>
+                <hgroup class="p-6 bg-indigo-600 dark:bg-indigo-400 rounded-3xl -order-2">
+                    <p class="font-barlow uppercase text-sm font-bold text-white dark:text-slate-950">Location</p>
+                    <h1 class="text-3xl text-white dark:text-slate-950 font-barlow uppercase font-bold ">{ title }</h1>
                 </hgroup>
 
-                <div class="p-6 bg-slate-200 dark:bg-slate-800 rounded-3xl list-none flex gap-4 -order-2"> 
+                <div class="p-6 bg-white dark:bg-neutral-800 rounded-3xl list-none flex gap-4 -order-2"> 
                     <div class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Adresse</span><address class="not-italic">{ address }</address></div>
                 </div>
 
                 { content && 
-                    <div class="p-6 bg-slate-200 dark:bg-slate-800  rounded-3xl">
+                    <div class="p-6 bg-white dark:bg-neutral-800  rounded-3xl">
                         <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
                         <p>{ content }</p>
                     </div> 
                 }
 
-                <div class="p-6 bg-slate-200 dark:bg-slate-800  rounded-3xl">
+                <div class="p-6 bg-white dark:bg-neutral-800  rounded-3xl">
                     <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
                     { locationEvents && locationEvents.map((event) => (
                         event && <LocationEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } />
@@ -66,11 +66,11 @@ const locationEvents = await fetchLocationEvents(id);
                 </div>
             </div>
             <div class="contents md:flex flex-col gap-6">
-                <figure class="bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3">
+                <figure class="bg-white dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3">
                     { featured_media && <Image width="600" height="400" src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
                     { !featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-slate-700" /> }
                 </figure>
-                <Map single="true" client:only />
+                <!-- <Map single="true" client:only /> -->
             </div>
         </article>
     </Page>
