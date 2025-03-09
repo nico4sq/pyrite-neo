@@ -40,9 +40,6 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
     url += (url.includes('?') ? '&' : '?') + queryString;
   }  
 
-  console.log(url);
-  
-
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -78,7 +75,7 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
     }
   } catch (error) {
     console.error('Fehler:', error);
-  }
+  } 
 
   return posts;
 }

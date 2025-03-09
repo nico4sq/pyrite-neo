@@ -138,6 +138,7 @@
             {#each events as event}
                 <li class="flex items-stretch h-full">
                     <EventCardSmall
+                        id={event.id}
                         title={event.title}
                         href={`/event/${event.slug}`}
                         date={event.date}

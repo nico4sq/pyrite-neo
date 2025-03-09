@@ -4,6 +4,7 @@
 
   export let label = '';
   export let type = 'primary';
+  export let disabled = false;
   
   export let interaction = {
     type: 'link',
@@ -69,6 +70,10 @@
       } else {
         classes.push('text-white');
       }
+    }
+
+    if (disabled) {
+      classes.push('opacity-50', 'pointer-events-none');
     }
     
     return classes;

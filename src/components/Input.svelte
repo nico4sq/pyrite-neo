@@ -56,7 +56,7 @@
 {#if type === 'text' || type === 'email' || type === 'password'}
     <label on:input on:change for={id} class="flex flex-col gap-1">
         <strong class:list={"pl-1 font-barlow uppercase text-sm"} class:sr-only={floating}>{label}</strong>
-        <input type={type} name={id} id={id} class="py-2 px-4 rounded-lg bg-slate-800 border-1 border-slate-600 focus:outline-none focus:border-white" placeholder={placeholder}>
+        <input type={type} name={id} id={id} class="py-2 px-4 rounded-lg bg-slate-50 dark:bg-neutral-800 border-1 border-slate-300 dark:border-neutral-600 cursor-pointer focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-300" placeholder={placeholder} bind:value={value}>
     </label>
 {/if}
 

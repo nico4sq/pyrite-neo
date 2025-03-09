@@ -2,9 +2,9 @@
 import logo from '../assets/pyrite-logo.svg';
 import Button from './Button.svelte';
 import Modal from './Modal.svelte';
+import UserMenuButton from './UserMenuButton.svelte';
 
 import { SITENAME } from '../functions/theme';
-
 ---
 
 <header class="sticky flex items-center w-full top-0 left-0 right-0 z-10000 bg-slate-200 dark:bg-neutral-900 shadow-lg h-16">
@@ -15,6 +15,10 @@ import { SITENAME } from '../functions/theme';
   </a>
   
   <div class="flex items-center gap-4">
+    <!-- Login/Benutzer-Bereich -->
+    <UserMenuButton client:load />
+    
+    <!-- Menü-Button -->
     <Button
       label="Menü"
       interaction={{ type: 'modal', target: 'main-menu' }}

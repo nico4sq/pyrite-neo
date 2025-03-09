@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+import Button from '../components/Button.svelte';
+import ProfileCard from '../components/ProfileCard.svelte';
+---
+
+<Layout title="Profil">
+    <Page>
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Mein Profil</h1>
+            
+            <ProfileCard client:load />
+        </div>
+    </Page>
+</Layout>

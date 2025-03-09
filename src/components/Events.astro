@@ -33,6 +33,7 @@ if (shouldPaginate) {
     {events && events.map((event) => (
         <li class="flex items-stretch h-full">
             <EventCard 
+                id={event.id}
                 title={event.title} 
                 href={`/event/${event.slug}`} 
                 featured_media={event.featured_media} 
