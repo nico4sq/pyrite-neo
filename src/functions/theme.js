@@ -10,8 +10,6 @@ import { registerUser } from '../utils/auth';
 export async function handleSubmit(username, email, password) {
     try {
         await registerUser(username, email, password);
-        console.log('Registration successful!');
-        console.log(username, email, password);
     } catch (error) {
         console.error(`Registration failed: ${error}`);
     }

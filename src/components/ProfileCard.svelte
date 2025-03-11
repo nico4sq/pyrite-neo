@@ -31,7 +31,7 @@
         </div>
     </div>
 {:else if user}
-    <div class="bg-white dark:bg-neutral-800 rounded-lg p-6 shadow-md flex flex-col gap-6">
+    <div class="bg-white dark:bg-neutral-800 rounded-3xl p-6 shadow-md flex flex-col gap-6">
         <div class="flex flex-col items-center mb-6">
             <!-- Profilbild mit Initialen -->
             <div class="w-24 h-24 rounded-full bg-indigo-500 text-white flex items-center justify-center text-3xl font-medium mb-4">

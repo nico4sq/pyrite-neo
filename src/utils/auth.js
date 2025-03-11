@@ -1,89 +1,151 @@
-import { db, eq, Users } from 'astro:db';
+import { db, Users, eq } from 'astro:db';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import { sendVerificationEmail } from './email.js';
 
-// JWT Secret Key - sollte in einer .env-Datei gespeichert werden
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-for-development-only';
+// Token-Generierung für E-Mail-Verifikation
+function generateVerificationToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
 
-// Modifikation der auth.js
 export async function registerUser(username, email, password) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+  // Prüfen, ob Benutzer oder E-Mail bereits existieren
+  const existingUser = await db
+    .select()
+    .from(Users)
+    .where(eq(Users.username, username));
     
-    try {
-        const user = await db.insert(Users).values({ 
-            username: username, 
-            email: email, 
-            password: hashedPassword,
-            created_at: new Date()
-        });
-        
-        // Stelle sicher, dass ein serialisierbares Objekt zurückgegeben wird
-        return {
-            username,
-            email,
-            id: user.id || 'unknown'
-        };
-    } catch (error) {
-        console.error('Error in registerUser:', error);
-        throw new Error('Failed to register user: ' + (error.message || 'Unknown error'));
-    }
+  if (existingUser.length > 0) {
+    throw new Error('Benutzername bereits vergeben');
+  }
+  
+  const existingEmail = await db
+    .select()
+    .from(Users)
+    .where(eq(Users.email, email));
+    
+  if (existingEmail.length > 0) {
+    throw new Error('E-Mail-Adresse bereits registriert');
+  }
+  
+  // Passwort hashen
+  const salt = await bcrypt.genSalt(10);
+  const passwordHash = await bcrypt.hash(password, salt);
+  
+  // Verifikationstoken erstellen
+  const verificationToken = generateVerificationToken();
+  
+  // Token-Ablaufzeit (24 Stunden)
+  const tokenExpiry = new Date();
+  tokenExpiry.setHours(tokenExpiry.getHours() + 24);
+  
+  // Benutzer in Datenbank anlegen
+  const [user] = await db.insert(Users).values({
+    username,
+    email,
+    passwordHash,
+    emailVerified: false,
+    verificationToken,
+    tokenExpiry: tokenExpiry.toISOString()
+  }).returning();
+  
+  // E-Mail mit Verifikations-Link senden
+  try {
+    await sendVerificationEmail(email, verificationToken, username);
+  } catch (error) {
+    console.error('Failed to send verification email:', error);
+    // Trotz Fehler beim E-Mail-Versand Benutzer zurückgeben
+    // In Produktionssystemen könnte hier ein Retry-Mechanismus stehen
+  }
+  
+  // Vertrauliche Informationen entfernen
+  const { passwordHash: _, verificationToken: __, tokenExpiry: ___, ...safeUserData } = user;
+  
+  return safeUserData;
 }
 
-export async function loginUser(username, password) {
-    try {
-        // Konvertiere username zu String, um sicherzustellen, dass es ein gültiger Typ ist
-        const usernameString = String(username);
-        
-        // Suche nach dem Benutzer in der Datenbank
-        const user = await db.select().from(Users).where(eq(Users.username, usernameString)).limit(1);
-        
-        if (!user || user.length === 0) {
-            throw new Error('Ungültiger Benutzername oder Passwort');
-        }
-        
-        // Benutzer gefunden, vergleiche nun das Passwort
-        const storedUser = user[0];
-        
-        // Überprüfe das Passwort
-        const passwordMatch = await bcrypt.compare(password, storedUser.password);
-        
-        if (!passwordMatch) {
-            throw new Error('Ungültiger Benutzername oder Passwort');
-        }
-        
-        // Generiere JWT Token
-        const token = jwt.sign(
-            { 
-                id: storedUser.id,
-                username: storedUser.username,
-                email: storedUser.email
-            }, 
-            JWT_SECRET, 
-            { expiresIn: '24h' } // Token läuft nach 24 Stunden ab
-        );
-        
-        // Benutzer gefunden, Passwort stimmt überein, Token generiert
-        return {
-            user: {
-                id: storedUser.id,
-                username: storedUser.username,
-                email: storedUser.email
-            },
-            token
-        };
-    } catch (error) {
-        console.error('Login error:', error);
-        throw error;
-    }
+export async function verifyEmail(token) {
+  if (!token) throw new Error('Kein Verifikationstoken angegeben');
+  
+  // Benutzer mit diesem Token finden
+  const users = await db
+    .select()
+    .from(Users)
+    .where(eq(Users.verificationToken, token));
+  
+  if (users.length === 0) {
+    throw new Error('Ungültiger Verifikationstoken');
+  }
+  
+  const user = users[0];
+  
+  // Prüfen, ob der Token abgelaufen ist
+  const now = new Date();
+  const expiry = new Date(user.tokenExpiry);
+  
+  if (now > expiry) {
+    throw new Error('Verifikationstoken ist abgelaufen');
+  }
+  
+  // Benutzer als verifiziert markieren und Token entfernen
+  await db.update(Users)
+    .set({ 
+      emailVerified: true,
+      verificationToken: null,
+      tokenExpiry: null 
+    })
+    .where(eq(Users.id, user.id));
+  
+  return true;
 }
 
-// Token validieren
+export async function loginUser(email, password) {
+    // Suche nach Benutzer per E-Mail
+    const users = await db
+      .select()
+      .from(Users)
+      .where(eq(Users.email, email));
+      
+    if (users.length === 0) {
+      throw new Error('Ungültige Anmeldedaten');
+    }
+    
+    const user = users[0];
+    
+    // Prüfen, ob die E-Mail verifiziert wurde
+    if (!user.emailVerified) {
+      throw new Error('E-Mail-Adresse nicht bestätigt. Bitte überprüfen Sie Ihren Posteingang.');
+    }
+    
+    // Passwort prüfen
+    const passwordValid = await bcrypt.compare(password, user.passwordHash);
+    
+    if (!passwordValid) {
+      throw new Error('Ungültige Anmeldedaten');
+    }
+    
+    // JWT-Token generieren
+    const token = jwt.sign(
+      { id: user.id, username: user.username, email: user.email },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '7d' }
+    );
+    
+    // Vertrauliche Informationen entfernen
+    const { passwordHash, verificationToken, tokenExpiry, ...safeUserData } = user;
+    
+    return {
+      user: safeUserData,
+      token
+    };
+  }
+
 export function validateToken(token) {
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        return { valid: true, user: decoded };
-    } catch (error) {
-        return { valid: false, error: error.message };
-    }
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return { valid: true, user: decoded };
+  } catch (error) {
+    return { valid: false, error: error.message };
+  }
 }

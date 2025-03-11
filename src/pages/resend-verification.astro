@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Page from '../components/Page.astro';
+import ResendVerificationForm from '../components/ResendVerificationForm.svelte';
+---
+
+<Layout title="Verifikations-E-Mail erneut senden">
+  <Page>
+    <div class="max-w-md mx-auto">
+      <ResendVerificationForm client:load />
+    </div>
+  </Page>
+</Layout>

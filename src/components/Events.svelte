@@ -10,7 +10,7 @@
         fetchLocations,
         fetchCities,
         fetchGenres
-    } from "../api/wordpress";
+    } from "./../api/wordpress";
     import { formatDate } from "../functions/helpers";
 
     let cities = [];
@@ -48,9 +48,7 @@
         }
 
         let metaQueries = [];
-        let taxQueries = [];        
-
-        console.log(selectedDates);       
+        let taxQueries = [];           
 
         if (selectedCity) {          
             let locations = await fetchLocations(null, null, [
@@ -89,8 +87,8 @@
         label="Datumsbereich"
         floating={true}
         placeholder="Zeitraum wählen"
-        bind:value={selectedDates}
         on:change={handleFilterChange}
+        bind:value={selectedDates}
     />
 
     <Input
@@ -99,6 +97,8 @@
         label="Städte"
         floating={true}
         placeholder="Stadt wählen"
+        on:change={handleFilterChange}
+        bind:value={selectedCity}
         options={[
             { value: "", label: "Alle Städte" },
             ...cities.map((city) => {
@@ -108,8 +108,6 @@
             };
             })
         ]}
-        bind:value={selectedCity}
-        on:change={handleFilterChange}
     />
 
     <Input
@@ -118,6 +116,8 @@
         label="Genres"
         floating={true}
         placeholder="Genre wählen"
+        on:change={handleFilterChange}
+        bind:value={selectedGenre}
         options={[
             { value: "", label: "Alle Genres" },
             ...genres.map((genre) => {
@@ -127,8 +127,6 @@
             };
             })
         ]}
-        bind:value={selectedGenre}
-        on:change={handleFilterChange}
     />
 </form>
 

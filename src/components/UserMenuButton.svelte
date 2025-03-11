@@ -5,6 +5,7 @@
     // Status
     let user = null;
     let isLoading = true;
+    let isMenuOpen = false; // Neuer Status für das Dropdown-Menü
     
     // Prüft beim Laden, ob der Benutzer angemeldet ist
     onMount(() => {
@@ -21,15 +22,52 @@
         } finally {
             isLoading = false;
         }
+
+        // Event-Listener für Klicks außerhalb des Menüs
+        document.addEventListener('click', handleOutsideClick);
+        
+        // Cleanup beim Komponenten-Abbau
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
     });
+    
+    // Menü ein-/ausschalten
+    function toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+    }
+    
+    // Menü schließen wenn außerhalb geklickt wird
+    function handleOutsideClick(event) {
+        const menuButton = document.getElementById('user-menu-button');
+        const menu = document.getElementById('user-menu-dropdown');
+        
+        if (menuButton && menu && isMenuOpen && 
+            !menuButton.contains(event.target) && 
+            !menu.contains(event.target)) {
+            isMenuOpen = false;
+        }
+    }
     
     // Logout-Funktion
     function logout() {
         localStorage.removeItem('currentUser');
         localStorage.removeItem('authToken');
         user = null;
+        isMenuOpen = false; // Menü schließen
         // Optional: Zur Login-Seite weiterleiten
         window.location.href = '/login';
+    }
+    
+    // Optionen für das Dropdown-Menü
+    const userMenuOptions = [
+        { label: 'Mein Profil', action: () => window.location.href = '/profile' },
+        { label: 'Abmelden', action: logout, className: 'text-red-600 dark:text-red-400' }
+    ];
+    
+    function handleMenuSelect(action) {
+        action();
+        isMenuOpen = false;
     }
 </script>
 
@@ -40,36 +78,42 @@
     <!-- Angemeldeter Benutzer -->
     <div class="relative group">
         <button 
-            class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-300 hover:bg-slate-400 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition cursor-pointer"
+            id="user-menu-button"
+            on:click={toggleMenu}
+            class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-300 hover:bg-slate-400 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition cursor-pointer border-1 border-neutral-700"
+            class:border-indigo-300!={isMenuOpen}
             aria-label="Benutzermenü"
-            aria-expanded="false"
+            aria-expanded={isMenuOpen}
+            aria-controls="user-menu-dropdown"
         >
             <!-- Profil-Icon/Initialen -->
-            <div class="w-7 h-7 rounded-full bg-indigo-500 text-white flex items-center justify-center font-medium">
+            <div class="w-7 h-7 rounded-full bg-indigo-300 text-stone-950 flex items-center justify-center font-barlow font-bold">
                 {user.username.charAt(0).toUpperCase()}
             </div>
             
             <!-- Benutzername -->
-            <span class="text-slate-800 dark:text-white font-bold font-barlow uppercase">
+            <span class="text-slate-800 dark:text-white text-sm">
                 {user.username}
             </span>
         </button>
         
-        <!-- Dropdown-Menü -->
-        <div class="absolute right-0 top-full mt-0 w-48 bg-white dark:bg-neutral-800 rounded-md shadow-lg py-1 z-20 hidden group-hover:block">
-            <a href="/profile" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-neutral-700">
-                Mein Profil
-            </a>
-            <a href="/settings" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-neutral-700">
-                Einstellungen
-            </a>
-            <button 
-                on:click={logout}
-                class="w-full text-left block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-neutral-700"
-            >
-                Abmelden
-            </button>
-        </div>
+        <!-- Dropdown-Menü (adaptiertes Styling) -->
+        <ul 
+            id="user-menu-dropdown"
+            class="absolute top-full mt-2 z-10 right-0 w-48 bg-neutral-800 border border-neutral-600 rounded-lg overflow-hidden transition-all duration-200 {isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}"
+        >
+            {#each userMenuOptions as option}
+                <li>
+                    <button 
+                        type="button" 
+                        class="block w-full py-2 px-4 text-left hover:bg-slate-700 focus:bg-slate-700 focus:outline-none cursor-pointer transition {option.className || 'text-white'}" 
+                        on:click={() => handleMenuSelect(option.action)}
+                    >
+                        {option.label}
+                    </button>
+                </li>
+            {/each}
+        </ul>
     </div>
 {:else}
     <!-- Nicht angemeldet: Login-Button -->
@@ -80,15 +124,3 @@
         interaction={{ type: 'link', target: '/login' }}
     />
 {/if}
-
-<style>
-    /* Animation für den Ladeindikator */
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-    }
-    
-    .animate-pulse {
-        animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-</style>

@@ -2,9 +2,7 @@ import { loginUser } from '../../utils/auth';
 
 export const prerender = false;
 
-export async function POST({ request }) {
-    console.log('Login request received');
-    
+export async function POST({ request }) {    
     try {
         // Prüfe ob der Request einen Body hat
         const contentType = request.headers.get('content-type');
@@ -21,22 +19,22 @@ export async function POST({ request }) {
             throw new Error('Invalid JSON in request body');
         }
         
-        const { username, password } = body;
+        // E-Mail statt Benutzername verwenden
+        const { email, password } = body;
         
-        if (!username || !password) {
-            throw new Error('Benutzername und Passwort werden benötigt');
+        if (!email || !password) {
+            throw new Error('E-Mail und Passwort werden benötigt');
         }
         
-        // Führe die loginUser-Funktion aus, bekomme Benutzer und Token zurück
-        const { user, token } = await loginUser(username, password);
-        
-        console.log('User logged in:', { id: user.id, username: user.username });
-        
+        // Führe die loginUser-Funktion aus, gebe die E-Mail statt des Benutzernamens weiter
+        // Behalte dieselbe Funktion bei, aber verwende die E-Mail als Identifier
+        const { user, token } = await loginUser(email, password);
+                
         return new Response(JSON.stringify({
             success: true,
             user: {
                 id: user.id,
-                username: user.username,
+                username: user.username, // Benutzername ist immer noch Teil der Antwort
                 email: user.email
                 // Kein Passwort zurückgeben!
             },

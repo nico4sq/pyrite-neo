@@ -1,11 +1,9 @@
-import { CUSTOM_QUERY_URL } from '../functions/theme';
-
 import pkg from 'he';
 const { decode } = pkg;
 
 export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = [], full = false) {
   const posts = [];
-  let url = CUSTOM_QUERY_URL + '/events';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/events';  
 
   if ($limit) {
     url += `?per_page=${$limit}`;
@@ -82,7 +80,7 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
 
 export async function fetchEventById(id, full = false) {
   let entry = {};
-  let url = CUSTOM_QUERY_URL + '/events';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/events';
 
   if (id) {
     url += `?id=${id}`;
@@ -125,7 +123,7 @@ export async function fetchEventById(id, full = false) {
 }
 
 export async function fetchEventCity(id) {
-  let url = CUSTOM_QUERY_URL + '/events';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/events';
 
   if (id) {
     url += `?id=${id}`;
@@ -144,7 +142,7 @@ export async function fetchEventCity(id) {
 
 export async function fetchArtistEvents(artistId, full = false) {
   const posts = [];
-  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=artists&meta_query[0][value]=${artistId}&meta_query[0][compare]=LIKE`;
+  const url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + `/events?meta_query[0][key]=artists&meta_query[0][value]=${artistId}&meta_query[0][compare]=LIKE`;
 
   try {
     const response = await fetch(url);
@@ -163,7 +161,7 @@ export async function fetchArtistEvents(artistId, full = false) {
 }
 
 export async function fetchArtistEventsNumber(artistId) {
-  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=artists&meta_query[0][value]=${artistId}&meta_query[0][compare]=LIKE`;
+  const url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + `/events?meta_query[0][key]=artists&meta_query[0][value]=${artistId}&meta_query[0][compare]=LIKE`;
   const response = await fetch(url);
   const data = await response.json();
   return data.length;
@@ -171,7 +169,7 @@ export async function fetchArtistEventsNumber(artistId) {
 
 export async function fetchLocationEvents(locationId, full = false) {
   const posts = [];
-  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
+  const url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
 
   try {
     const response = await fetch(url);
@@ -190,7 +188,7 @@ export async function fetchLocationEvents(locationId, full = false) {
 }
 
 export async function fetchLocationEventsNumber(locationId) {
-  const url = CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
+  const url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + `/events?meta_query[0][key]=location&meta_query[0][value]=${locationId}`;
   const response = await fetch(url);
   const data = await response.json();
   return data.length;
@@ -198,7 +196,7 @@ export async function fetchLocationEventsNumber(locationId) {
 
 export async function fetchGenreEvents(genreId) {
   const posts = [];
-  const url = CUSTOM_QUERY_URL + `/genres?id=${genreId}`;
+  const url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + `/genres?id=${genreId}`;
 
   try {
     const response = await fetch(url);
@@ -225,7 +223,7 @@ export async function fetchGenreEvents(genreId) {
 
 export async function fetchCityEvents(cityId) {
   const posts = [];
-  const url = CUSTOM_QUERY_URL + `/cities?id=${cityId}`;
+  const url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + `/cities?id=${cityId}`;
 
   try {
     const response = await fetch(url);
@@ -254,7 +252,7 @@ export async function fetchCityEvents(cityId) {
 
 export async function fetchLocations(limit, page, metaQueries = []) {
   const posts = [];
-  let url = CUSTOM_QUERY_URL + '/locations';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/locations';
 
   if (limit) {
     url += `?per_page=${limit}`;
@@ -294,7 +292,7 @@ export async function fetchLocations(limit, page, metaQueries = []) {
 
 export async function fetchLocationById(id) {
   let entry = {};
-  let url = CUSTOM_QUERY_URL + '/locations';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/locations';
 
   if (id) {
     url += `?id=${id}`;
@@ -318,7 +316,7 @@ export async function fetchLocationById(id) {
 
 export async function fetchArtists(limit, page, metaQueries = []) {
   let posts = [];
-  let url = CUSTOM_QUERY_URL + '/artists';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/artists';
 
   if (limit) {
     url += `?per_page=${limit}`;
@@ -354,7 +352,7 @@ export async function fetchArtists(limit, page, metaQueries = []) {
 }
 
 export async function fetchArtistById(id) {
-  let url = CUSTOM_QUERY_URL + '/artists';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/artists';
 
   if (id) {
     url += `?id=${id}`;
@@ -377,7 +375,7 @@ export async function fetchEventsByLocationIds(locationIds = []) {
 
 export async function fetchCities() {
   let cities = [];
-  let url = CUSTOM_QUERY_URL + '/cities';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/cities';
 
   try {
     const response = await fetch(url);
@@ -392,7 +390,7 @@ export async function fetchCities() {
 
 export async function fetchGenres() {
   let genres = [];
-  let url = CUSTOM_QUERY_URL + '/genres';
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/genres';
 
   try {
     const response = await fetch(url);

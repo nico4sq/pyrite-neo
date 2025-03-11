@@ -1,11 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import LoginForm from '../components/LoginForm.svelte';
 import Page from '../components/Page.astro';
+import LoginForm from '../components/LoginForm.svelte';
 ---
 
 <Layout title="Login">
-    <Page>
-        <LoginForm client:load/>
-    </Page>
+  <Page>
+    <div class="max-w-md mx-auto">
+      <LoginForm client:load />
+    </div>
+  </Page>
 </Layout>

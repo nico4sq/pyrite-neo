@@ -92,19 +92,21 @@
             });
             
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error("Error response:", errorText);
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
             
             const result = await response.json();
             
             if (result.success) {
-                successMessage = 'Registrierung erfolgreich!';
+                // Erfolgreiche Registrierung, aber Account noch nicht aktiviert
+                successMessage = 'Registrierung erfolgreich! Bitte überprüfe deine E-Mail, um dein Konto zu aktivieren.';
                 
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 1000);
+                // Felder zurücksetzen
+                username = '';
+                email = '';
+                password = '';
+                passwordConfirm = '';
             }
         } catch (error) {
             console.error("Error during form submission:", error);

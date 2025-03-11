@@ -13,7 +13,15 @@ import db from "@astrojs/db";
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    define: {
+      "process.env": {},
+      'import.meta.env.PUBLIC_API_URL': JSON.stringify(process.env.PUBLIC_API_URL || ''),
+      'import.meta.env.PUBLIC_CUSTOM_QUERY_URL': JSON.stringify(process.env.PUBLIC_CUSTOM_QUERY_URL),
+    }
   },
-  integrations: [svelte(), db()],
+  integrations: [
+    svelte(),
+    db()
+  ],
   adapter: netlify(),
 });
