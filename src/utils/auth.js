@@ -141,11 +141,16 @@ export async function loginUser(email, password) {
     };
   }
 
-export function validateToken(token) {
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return { valid: true, user: decoded };
-  } catch (error) {
-    return { valid: false, error: error.message };
+// Verbesserte Token-Validierung
+function validateToken(token) {
+    try {
+      return jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        console.warn('Token expired');
+      } else {
+        console.error('Invalid token:', error.message);
+      }
+      return null;
+    }
   }
-}
