@@ -1,16 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
-import Button from '../components/Button.svelte';
 import ProfileCard from '../components/ProfileCard.svelte';
+import UserFavorites from '../components/UserFavorites.svelte';
+
 ---
 
-<Layout title="Profil">
-    <Page>
-        <div class="max-w-2xl mx-auto">
-            <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Mein Profil</h1>
-            
-            <ProfileCard client:load />
+<Layout title="Mein Profil">
+  <Page>
+    <div class="w-full max-w-2xl mx-auto">
+      <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Mein Profil</h1>
+      
+      <div class="flex flex-col gap-10">
+        <!-- Profildaten -->
+        <div class="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-sm">
+          <ProfileCard client:load />
         </div>
-    </Page>
+        
+        <!-- Favoriten -->
+        <!-- <div class="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-sm">
+          <UserFavorites client:load />
+        </div> -->
+      </div>
+    </div>
+  </Page>
 </Layout>

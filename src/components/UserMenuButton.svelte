@@ -62,7 +62,7 @@
     // Optionen für das Dropdown-Menü
     const userMenuOptions = [
         { label: 'Mein Profil', action: () => window.location.href = '/profile' },
-        { label: 'Abmelden', action: logout, className: 'text-red-600 dark:text-red-400' }
+        { label: 'Abmelden', action: logout, className: 'text-orange-600 dark:text-orange-400' }
     ];
     
     function handleMenuSelect(action) {
@@ -80,7 +80,7 @@
         <button 
             id="user-menu-button"
             on:click={toggleMenu}
-            class="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-300 hover:bg-slate-400 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition cursor-pointer border-1 border-neutral-700"
+            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-300 hover:bg-slate-400 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition cursor-pointer border-1 border-neutral-700"
             class:border-indigo-300!={isMenuOpen}
             aria-label="Benutzermenü"
             aria-expanded={isMenuOpen}

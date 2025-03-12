@@ -44,9 +44,9 @@
           {:else if upcomingEventsCount === 0}
             <p class="w-fit text-xs border border-indigo-300 bg-indigo-300/20 text-indigo-300 rounded-lg px-2 py-1 flex items-center gap-2">Keine Events</p>
           {:else if upcomingEventsCount === 1}
-            <p class="w-fit text-xs border border-green-300 bg-green-300/20 text-green-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Event</p>
+            <p class="w-fit text-xs border border-lime-300 bg-lime-300/20 text-lime-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Event</p>
           {:else}
-            <p class="w-fit text-xs border border-green-300 bg-green-300/20 text-green-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Events</p>
+            <p class="w-fit text-xs border border-lime-300 bg-lime-300/20 text-lime-300 rounded-lg px-2 py-1 flex items-center gap-2">{upcomingEventsCount} Events</p>
           {/if}
         </hgroup>
       </header>

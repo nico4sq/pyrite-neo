@@ -115,17 +115,17 @@
     }
 </script>
 
-<form on:submit={handleSubmit} class="flex flex-col gap-4 w-sm mx-auto">
-    <h1 class="text-3xl font-bold font-barlow uppercase">Registrieren</h1>
+<form on:submit={handleSubmit} class="flex flex-col gap-4 w-md mx-auto">
+    <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Registrieren</h1>
 
     {#if errorMessage}
-        <div class="bg-red-50 border border-red-200 text-red-800 p-3 rounded-md text-sm">
+        <div class="border-1 border-orange-600 dark:border-orange-300 bg-orange-600/20 dark:bg-orange-300/20 text-orange-600 dark:text-orange-300 p-3 rounded-md text-sm">
             {errorMessage}
         </div>
     {/if}
 
     {#if successMessage}
-        <div class="bg-green-50 border border-green-200 text-green-800 p-3 rounded-md text-sm">
+        <div class="border-1 border-lime-600 dark:border-lime-300 bg-lime-600/20 dark:bg-lime-300/20 text-lime-600 dark:text-lime-300 p-3 rounded-md text-sm">
             {successMessage}
         </div>
     {/if}
@@ -175,19 +175,19 @@
         />
         <div class="mt-2">
             <ul class="text-xs list-none flex gap-x-3 gap-y-1 flex-wrap">
-                <li class={passwordErrors.length ? "text-lime-600" : "text-neutral-600"}>
+                <li class={passwordErrors.length ? "text-lime-300" : "text-neutral-600"}>
                     min. 8 Zeichen
                 </li>
-                <li class={passwordErrors.uppercase ? "text-lime-600" : "text-neutral-600"}>
+                <li class={passwordErrors.uppercase ? "text-lime-300" : "text-neutral-600"}>
                     min. 1 Großbuchstabe
                 </li>
-                <li class={passwordErrors.lowercase ? "text-lime-600" : "text-neutral-600"}>
+                <li class={passwordErrors.lowercase ? "text-lime-300" : "text-neutral-600"}>
                     min. 1 Kleinbuchstabe
                 </li>
-                <li class={passwordErrors.number ? "text-lime-600" : "text-neutral-600"}>
+                <li class={passwordErrors.number ? "text-lime-300" : "text-neutral-600"}>
                     min. 1 Zahl
                 </li>
-                <li class={passwordErrors.special ? "text-lime-600" : "text-neutral-600"}>
+                <li class={passwordErrors.special ? "text-lime-300" : "text-neutral-600"}>
                     min. 1 Sonderzeichen
                 </li>
             </ul>

@@ -10,6 +10,8 @@ const Users = defineTable({
         emailVerified: column.boolean({ default: false }),
         verificationToken: column.text({ optional: true }),
         tokenExpiry: column.date({ optional: true }),
+        resetToken: column.text({ optional: true }),
+        resetTokenExpiry: column.date({ optional: true }),
         createdAt: column.date({ default: NOW })
     },
 });

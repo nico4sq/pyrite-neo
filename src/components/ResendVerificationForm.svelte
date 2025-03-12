@@ -58,13 +58,13 @@
     </p>
     
     {#if errorMessage}
-        <div class="bg-red-50 border border-red-200 text-red-800 p-3 rounded-md text-sm">
+        <div class="bg-orange-50 border border-orange-200 text-orange-800 p-3 rounded-md text-sm">
             {errorMessage}
         </div>
     {/if}
     
     {#if successMessage}
-        <div class="bg-green-50 border border-green-200 text-green-800 p-3 rounded-md text-sm">
+        <div class="bg-lime-50 border border-lime-200 text-lime-800 p-3 rounded-md text-sm">
             {successMessage}
         </div>
     {:else}

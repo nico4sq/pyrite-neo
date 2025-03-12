@@ -26,13 +26,13 @@
     function getPositionClasses(pos) {
         switch(pos) {
             case 'top':
-                return ['top-0', 'left-0', 'right-0', 'bottom-auto', '-translate-y-full', 'h-full', 'max-h-[50vh]', 'translate-y-[-100%]'];
+                return ['top-0', 'left-0', 'right-0', 'bottom-auto', '-translate-y-full', 'h-full', 'max-h-[50vh]', 'translate-y-[-100%]', 'border-b-1', 'border-neutral-700'];
             case 'bottom':
-                return ['bottom-0', 'left-0', 'right-0', 'top-auto', 'translate-y-full', 'h-full', 'max-h-[50vh]'];
+                return ['bottom-0', 'left-0', 'right-0', 'top-auto', 'translate-y-full', 'h-full', 'max-h-[50vh]', 'translate-y-[100%]', 'border-t-1', 'border-neutral-700'];
             case 'left':
-                return ['top-0', 'left-0', 'bottom-0', 'right-auto', '-translate-x-full', 'w-auto', 'max-w-[90vw]', 'min-w-[20rem]'];
+                return ['top-0', 'left-0', 'bottom-0', 'right-auto', '-translate-x-full', 'w-auto', 'max-w-[90vw]', 'min-w-[20rem]', 'translate-x-[-100%]', 'border-r-1', 'border-neutral-700'];
             case 'right':
-                return ['top-0', 'right-0', 'bottom-0', 'translate-x-full', 'left-auto', 'w-auto', 'max-w-[90vw]', 'min-w-[20rem]'];
+                return ['top-0', 'right-0', 'bottom-0', 'translate-x-full', 'left-auto', 'w-auto', 'max-w-[90vw]', 'min-w-[20rem]', 'translate-x-[100%]', 'border-l-1', 'border-neutral-700'];
             default:
                 return ['inset-0', 'scale-0'];
         }

@@ -54,7 +54,7 @@
     <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Anmelden</h1>
     
     {#if errorMessage}
-        <div class="bg-red-50 border border-red-200 text-red-800 p-3 rounded-md text-sm mb-4">
+        <div class="border-1 border-orange-600 dark:border-orange-300 bg-orange-600/20 dark:bg-orange-300/20 text-orange-600 dark:text-orange-300 p-3 rounded-md text-sm mb-4">
             {errorMessage}
         </div>
     {/if}
@@ -86,7 +86,7 @@
     />
     
     <div class="mt-4 flex flex-col gap-2 items-center text-sm text-gray-600 dark:text-gray-400">
-        <a href="/forgot-password" class="hover:underline">Passwort vergessen?</a>
+        <a href="/forgot-password" class="text-indigo-600 dark:text-indigo-400 hover:underline">Passwort vergessen?</a>
         <span>Noch kein Konto? <a href="/register" class="text-indigo-600 dark:text-indigo-400 hover:underline">Registrieren</a></span>
     </div>
 </form>

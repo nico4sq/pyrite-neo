@@ -35,7 +35,8 @@ export async function POST({ request }) {
             user: {
                 id: user.id,
                 username: user.username, // Benutzername ist immer noch Teil der Antwort
-                email: user.email
+                email: user.email,
+                created_at: user.created_at
                 // Kein Passwort zurückgeben!
             },
             token: token // Füge den Token zur Antwort hinzu

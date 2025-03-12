@@ -2,6 +2,7 @@ import pkg from 'he';
 const { decode } = pkg;
 
 export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = [], full = false) {
+  console.log('fetchEvents', $limit, $page, metaQueries, taxQueries, full);
   const posts = [];
   let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/events';  
 
@@ -74,6 +75,9 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
   } catch (error) {
     console.error('Fehler:', error);
   } 
+
+  console.log(posts);
+  
 
   return posts;
 }

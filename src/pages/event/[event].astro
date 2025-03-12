@@ -1,6 +1,8 @@
 --- 
 // @ts-nocheck
 
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
 import Page from '../../components/Page.astro';
 import Button from '../../components/Button.svelte';
@@ -18,6 +20,7 @@ import { downloadICS } from '../../functions/helpers';
 
 export async function getStaticPaths() {
     let events = await fetchEvents(null, null, [], [], true);
+
     return events.map((event) => ({
         params: {
             event: event.slug

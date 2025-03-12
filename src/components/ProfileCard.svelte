@@ -31,53 +31,21 @@
         </div>
     </div>
 {:else if user}
-    <div class="bg-white dark:bg-neutral-800 rounded-3xl p-6 shadow-md flex flex-col gap-6">
-        <div class="flex flex-col items-center mb-6">
-            <!-- Profilbild mit Initialen -->
-            <div class="w-24 h-24 rounded-full bg-indigo-500 text-white flex items-center justify-center text-3xl font-medium mb-4">
+    <div class="bg-white dark:bg-neutral-800 rounded-3xl p-6 flex flex-col gap-6">
+        <div class="flex items-center gap-6">
+            <div class="w-24 h-24 rounded-full bg-indigo-300 text-stone-950 flex items-center justify-center text-5xl font-bold font-barlow uppercase">
                 {user.username.charAt(0).toUpperCase()}
             </div>
-            
-            <h2 class="text-xl font-bold text-slate-800 dark:text-white">{user.username}</h2>
-            {#if user.email}
-                <p class="text-slate-600 dark:text-slate-300 mt-1">{user.email}</p>
-            {/if}
-        </div>
-        
-        <div class="space-y-4 flex flex-col gap-6">
-            <div class="pt-4">
-                <h3 class="font-barlow font-bold uppercase text-slate-700 dark:text-slate-300 mb-6">Kontoinformationen</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Benutzername</p>
-                        <p class="font-medium text-slate-800 dark:text-white">{user.username}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">E-Mail</p>
-                        <p class="font-medium text-slate-800 dark:text-white">{user.email}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Mitglied seit</p>
-                        <p class="font-medium text-slate-800 dark:text-white">
-                            {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'Unbekannt'}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="pt-4 flex justify-between">
-                <Button 
-                    label="Profil bearbeiten" 
-                    type="secondary" 
-                    interaction={{ type: 'link', target: '/profile/edit' }}
-                />
-                
-                <Button 
-                    label="Passwort ändern" 
-                    type="secondary" 
-                    interaction={{ type: 'link', target: '/profile/change-password' }}
-                />
+            <div>
+                <h2 class="text-xl font-bold text-stone-950 dark:text-white">{user.username}</h2>
+                {#if user.email}
+                    <p class="text-stone-950 dark:text-white">{user.email}</p>
+                {/if}
+                {#if user.created_at}
+                    <p class="text-xs text-slate-500 dark:text-neutral-500 mt-1">
+                        Mitglied seit {new Date(user.created_at).toLocaleDateString()}
+                    </p>
+                {/if}
             </div>
         </div>
     </div>

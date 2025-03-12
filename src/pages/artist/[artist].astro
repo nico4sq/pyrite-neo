@@ -1,6 +1,8 @@
 --- 
 // @ts-nocheck
 
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Page from '../../components/Page.astro';
@@ -39,12 +41,12 @@ let artistEvents = await fetchArtistEvents(artist.id, true);
                 <h1 class="text-3xl text-slate-950 font-barlow uppercase font-bold p-6 bg-indigo-400 rounded-3xl">{ artist.title }</h1>
 
                 { artist.content && 
-                    <div class="p-6 bg-slate-200 dark:bg-slate-800  rounded-3xl shadow-lg">
+                    <div class="p-6 bg-slate-200 dark:bg-neutral-800 rounded-3xl shadow-lg">
                         <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
                         <p>{ artist.content }</p>
                     </div> 
                 }
-                <div class="p-6 bg-slate-200 dark:bg-slate-800  rounded-3xl">
+                <div class="p-6 bg-slate-200 dark:bg-neutral-800  rounded-3xl">
                     <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
                     { artistEvents && artistEvents.map((event) => (
                         event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.city } />
@@ -52,9 +54,9 @@ let artistEvents = await fetchArtistEvents(artist.id, true);
                 </div>
             </div>
             <div class="contents md:flex flex-col gap-6">
-                <figure class="bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-1">
+                <figure class="bg-slate-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-1">
                     { artist.featured_media && <Image width="600" height="400" src={ artist.featured_media } alt={ artist.title } class="aspect-3/2 size-full object-cover object-center" /> }
-                    { !artist.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-slate-700" /> }
+                    { !artist.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>
             </div>
         </div>
