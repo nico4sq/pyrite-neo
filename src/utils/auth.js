@@ -128,7 +128,7 @@ export async function loginUser(email, password) {
     // JWT-Token generieren
     const token = jwt.sign(
       { id: user.id, username: user.username, email: user.email },
-      process.env.JWT_SECRET || 'your-secret-key',
+      import.meta.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
     
@@ -144,7 +144,7 @@ export async function loginUser(email, password) {
 // Verbesserte Token-Validierung
 function validateToken(token) {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      return jwt.verify(token, import.meta.env.JWT_SECRET);
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         console.warn('Token expired');

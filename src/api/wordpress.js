@@ -2,9 +2,8 @@ import pkg from 'he';
 const { decode } = pkg;
 
 export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = [], full = false) {
-  console.log('fetchEvents', $limit, $page, metaQueries, taxQueries, full);
   const posts = [];
-  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/events';  
+  let url = import.meta.env.PUBLIC_CUSTOM_QUERY_URL + '/events';
 
   if ($limit) {
     url += `?per_page=${$limit}`;
@@ -37,17 +36,17 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
       return `tax_query[${index}][taxonomy]=${query.taxonomy}&tax_query[${index}][field]=${query.field}&tax_query[${index}][terms]=${query.terms}`;
     }).join('&');
     url += (url.includes('?') ? '&' : '?') + queryString;
-  }  
+  }
 
   try {
     const response = await fetch(url);
     const data = await response.json();
 
-    for (let entry of data) {   
+    for (let entry of data) {
       entry.title = decode(entry.title);
       entry.date = entry.meta.info_date.toString().substring(6, 8) + '.' + entry.meta.info_date.toString().substring(4, 6) + '.' + entry.meta.info_date.toString().substring(0, 4);
       entry.city = entry.taxonomies.city.map(city => city.name);
-      entry.genre = entry.taxonomies.genre.map(genre => genre.name);      
+      entry.genre = entry.taxonomies.genre.map(genre => genre.name);
 
       if (full) {
         entry.tickets = entry.meta.links_tickets.toString();
@@ -62,7 +61,7 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
         artistIds.forEach(async id => {
           let artist = await fetchArtistById(id);
           delete artist.meta;
-          
+
           artists.push(artist);
         });
         entry.artists = artists;
@@ -74,10 +73,7 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
     }
   } catch (error) {
     console.error('Fehler:', error);
-  } 
-
-  console.log(posts);
-  
+  }
 
   return posts;
 }
@@ -111,7 +107,7 @@ export async function fetchEventById(id, full = false) {
       artistIds.forEach(async id => {
         let artist = await fetchArtistById(id);
         delete artist.meta;
-        
+
         artists.push(artist);
       });
       entry.artists = artists;
@@ -120,7 +116,7 @@ export async function fetchEventById(id, full = false) {
     }
 
   } catch (error) {
-    console.error('Fehler:', error);  
+    console.error('Fehler:', error);
   }
 
   return entry;
@@ -160,7 +156,7 @@ export async function fetchArtistEvents(artistId, full = false) {
   } catch (error) {
     console.error('Fehler:', error);
   }
-  
+
   return posts || null;
 }
 
@@ -204,7 +200,7 @@ export async function fetchGenreEvents(genreId) {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();   
+    const data = await response.json();
 
     for (let id of data) {
       for (let event of id.events) {
@@ -231,7 +227,7 @@ export async function fetchCityEvents(cityId) {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();   
+    const data = await response.json();
 
     for (let id of data) {
       for (let location of id.locations) {
@@ -281,8 +277,8 @@ export async function fetchLocations(limit, page, metaQueries = []) {
       entry.title = decode(entry.title);
       entry.address = entry.meta.address_street + ' ' + entry.meta.address_house_number + ', ' + entry.meta.address_postal_code + ' ' + entry.meta.address_city;
       entry.city = entry.meta.address_city.toString();
-      entry.coordinates = { lat: entry.meta.coordinates_latitude.toString(), lng: entry.meta.coordinates_longitude.toString() };   
-      
+      entry.coordinates = { lat: entry.meta.coordinates_latitude.toString(), lng: entry.meta.coordinates_longitude.toString() };
+
       delete entry.meta;
 
       posts.push(entry);
@@ -309,7 +305,7 @@ export async function fetchLocationById(id) {
     entry.title = decode(entry.title);
     entry.address = entry.meta.address_street + ' ' + entry.meta.address_house_number + ', ' + entry.meta.address_postal_code + ' ' + entry.meta.address_city;
     entry.city = entry.meta.address_city.toString();
-    entry.coordinates = { lat: entry.meta.coordinates_latitude.toString(), lng: entry.meta.coordinates_longitude.toString() };   
+    entry.coordinates = { lat: entry.meta.coordinates_latitude.toString(), lng: entry.meta.coordinates_longitude.toString() };
     delete entry.meta;
   } catch (error) {
     console.error('Fehler:', error);
@@ -343,7 +339,7 @@ export async function fetchArtists(limit, page, metaQueries = []) {
 
     for (let entry of data) {
       entry.title = decode(entry.title);
-      
+
       delete entry.meta;
       posts.push(entry);
     }
@@ -373,7 +369,7 @@ export async function fetchArtistById(id) {
 }
 
 export async function fetchEventsByLocationIds(locationIds = []) {
-  const metaQueries = locationIds.map(id => ({ key: 'location', value: id })); 
+  const metaQueries = locationIds.map(id => ({ key: 'location', value: id }));
   return await fetchEvents(null, metaQueries);
 }
 
@@ -407,4 +403,3 @@ export async function fetchGenres() {
 
   return genres;
 }
-  

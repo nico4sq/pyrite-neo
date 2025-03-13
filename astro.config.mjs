@@ -11,7 +11,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     define: {
-      "process.env": {},
+
       'import.meta.env.PUBLIC_API_URL': JSON.stringify(process.env.PUBLIC_API_URL || ''),
       'import.meta.env.PUBLIC_CUSTOM_QUERY_URL': JSON.stringify(process.env.PUBLIC_CUSTOM_QUERY_URL),
       'import.meta.env.MAIL_HOST': JSON.stringify(process.env.MAIL_HOST),
@@ -19,6 +19,7 @@ export default defineConfig({
       'import.meta.env.MAIL_SECURE': JSON.stringify(process.env.MAIL_SECURE),
       'import.meta.env.MAIL_USER': JSON.stringify(process.env.MAIL_USER),
       'import.meta.env.MAIL_PASSWORD': JSON.stringify(process.env.MAIL_PASSWORD),
+      'import.meta.env.JWT_SECRET': JSON.stringify(process.env.JWT_SECRET),
     }
   },
   integrations: [

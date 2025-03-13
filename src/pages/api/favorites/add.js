@@ -1,4 +1,4 @@
-import { db, Favorites, Users, eq, and } from 'astro:db';
+import { db, Favorites, eq, and } from 'astro:db';
 import jwt from 'jsonwebtoken';
 
 export const prerender = false;
@@ -22,7 +22,7 @@ export async function POST({ request }) {
     // Token validieren
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      decoded = jwt.verify(token, import.meta.env.JWT_SECRET);
     } catch (error) {
       return new Response(JSON.stringify({
         error: 'Invalid token'
