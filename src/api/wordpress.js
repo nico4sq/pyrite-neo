@@ -11,7 +11,7 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
     if ($page) {
       url += `&page=${$page}`;
     }
-  }
+  }  
 
   if (metaQueries.length > 0) {
     const queryString = metaQueries.map((query, index) => {
@@ -56,15 +56,15 @@ export async function fetchEvents($limit, $page, metaQueries = [], taxQueries = 
         let location = await fetchLocationById(entry.meta.location);
         entry.location = location;
 
-        let artists = [];
         let artistIds = entry.meta.artists;
-        artistIds.forEach(async id => {
+
+        let artists = await Promise.all(artistIds.map(async id => {
           let artist = await fetchArtistById(id);
           delete artist.meta;
 
-          artists.push(artist);
-        });
-        entry.artists = artists;
+          return artist;
+        }));
+        entry.artists = artists;       
 
         delete entry.meta;
       }

@@ -2,6 +2,7 @@
   import 'svelte-feather-icons';
   import IconWrapper from './IconWrapper.svelte';
 
+  export let customClasses = [];
   export let label = '';
   export let type = 'primary';
   export let disabled = false;
@@ -47,6 +48,8 @@
     'font-bold', 
     'transition'
   ];
+
+  classesButton.push(...customClasses);
 
   function updateButtonClasses() {
     const classes = [...classesButton];

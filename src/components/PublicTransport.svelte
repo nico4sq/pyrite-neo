@@ -5,34 +5,48 @@
     export let longitude;
     export let latitude;
 
-    let monitorData = [];
-    let linesData = [];
+    let monitorData = false;
+    let linesData = false;
 
     async function getNearestStops(lng, lat, limit = 5) {
-        const data = await dvb.findAddress(lng, lat);
+        const data = await dvb.findAddress(lng, lat).catch((error) => {
+            console.error('Fehler beim Abrufen der Haltestellen:', error);
+            return [];
+        });
 
-        return data.stops.map((stop) => {
+        let stops = data.stops.map((stop) => {
             return {
                 name: stop.name,
                 id: stop.id
             };
         }).slice(0, limit);
+
+        return stops;
     }
 
     async function getStopID(name) {
-        const data = await dvb.findStop(name);
-        let stopID = data[0].id;
-        return stopID || null;
+        const data = await dvb.findStop(name).catch((error) => {
+            console.warn('Fehler beim Abrufen der Haltestelle:', error);
+            return [];
+        });
+        let stopID = data.length > 0 ? data[0].id : null;
+        return stopID;
     }
 
     async function getLines(id) {
-        const data = await dvb.lines(id);
+        const data = await dvb.lines(id).catch((error) => {
+            console.warn('Fehler beim Abrufen der Linien:', error);
+            return [];
+        });
         
-        return data || [];
+        return data;
     }
 
     async function getMonitor(id, limit = 5) {
-        const data = await dvb.monitor(id);
+        const data = await dvb.monitor(id).catch((error) => {
+            console.warn('Fehler beim Abrufen der Abfahrten:', error);
+            return [];
+        });
 
         return data.map((line) => {
             return line;
@@ -42,7 +56,7 @@
     async function getRoute(start, destination) {
         const data = await dvb.route(start, destination);
 
-        return data || [];
+        return data;
     }
 
     async function getPublicTransportMonitor(lng, lat) {
@@ -64,31 +78,30 @@
 
     async function getPublicTransportLines(lng, lat) {
         const nearestStops = await getNearestStops(lng, lat, 1);
-        const lines = await getLines(nearestStops[0].id);
-        // const lines = await getLines("27011074");
-
-        console.log(lines);
-        
+        const lines = nearestStops.length > 0 ? await getLines(nearestStops[0].id) : [];
 
         return lines;
     }
 
     onMount(async () => {
-        latitude = Number(latitude) || 51.050407;
-        longitude = Number(longitude) || 13.737262;
+        latitude = Number(latitude);
+        longitude = Number(longitude);
         
         monitorData = await getPublicTransportMonitor(longitude, latitude);
         linesData = await getPublicTransportLines(longitude, latitude);
     });
 </script>
 
-<!-- Hier kannst du die Daten in deiner Komponente verwenden -->
-{#if monitorData.length > 0}
+{#if monitorData === false} 
+    <p class="w-fit text-xs border border-slate-600 dark:border-neutral-300 bg-slate-600/20 dark:bg-neutral-300/20 text-slate-600 dark:text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2">Lade ÖPNV-Daten...</p>
+{:else if monitorData.length === 0}
+    <p class="w-fit text-xs border border-slate-600 dark:border-neutral-300 bg-slate-600/20 dark:bg-neutral-300/20 text-slate-600 dark:text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2">Für diese Location haben wir leider keine ÖPNV-Daten</p>
+{:else if monitorData.length > 0}
     <div class="list-none flex flex-col gap-4">
         {#each monitorData as stop}
             <div class="p-2 flex justify-between items-end bg-indigo-300 text-stone-950 leading-1.1 rounded-xl gap-4">
                 <div class="flex flex-col font-barlow font-bold uppercase">
-                    <span class="text-xs">Haltestelle</span>
+                    <span class="text-xs pt-1">Haltestelle</span>
                     <span class="text-lg whitespace-nowrap">{stop.name}</span>
                 </div>
                 {#if linesData.length > 0}
@@ -131,6 +144,4 @@
             </table>
         {/each}
     </div>
-{:else}
-    <p class="w-fit text-xs border border-slate-600 dark:border-neutral-300 bg-slate-600/20 dark:bg-neutral-300/20 text-slate-600 dark:text-neutral-300 rounded-lg px-2 py-1 flex items-center gap-2">Lade ÖPNV-Daten...</p>
 {/if}
