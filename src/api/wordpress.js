@@ -285,7 +285,7 @@ export async function fetchLocations(limit, page, metaQueries = []) {
     }
   } catch (error) {
     console.error('Fehler:', error);
-  }
+  } 
 
   return posts;
 }

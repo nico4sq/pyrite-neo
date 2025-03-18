@@ -21,7 +21,7 @@
 </script>
 
 {#if isLoading}
-    <div class="bg-slate-100 dark:bg-neutral-800 rounded-lg p-6 shadow-md animate-pulse flex flex-col gap-6">
+    <div class="bg-slate-100 dark:bg-neutral-800 rounded-lg p-6 animate-pulse flex flex-col gap-6">
         <div class="h-24 w-24 bg-slate-300 dark:bg-neutral-700 rounded-full mx-auto"></div>
         <div class="h-6 bg-slate-300 dark:bg-neutral-700 rounded mt-4 w-1/3 mx-auto"></div>
         <div class="h-4 bg-slate-300 dark:bg-neutral-700 rounded mt-2 w-2/3 mx-auto"></div>

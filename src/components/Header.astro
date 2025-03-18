@@ -1,60 +1,91 @@
 ---
-import logo from '../assets/pyrite-logo.svg';
-import Button from './Button.svelte';
-import Modal from './Modal.svelte';
-import UserMenuButton from './UserMenuButton.svelte';
+import logo from "../assets/pyrite-logo.svg";
+import Button from "./Button.svelte";
+import Modal from "./Modal.svelte";
+import UserMenuButton from "./UserMenuButton.svelte";
 
-import { SITENAME } from '../functions/theme';
+import { SITENAME } from "../functions/theme";
 ---
 
-<header class="sticky flex items-center w-full top-0 left-0 right-0 z-10000 bg-slate-200 dark:bg-neutral-900 shadow-lg h-16 border-b-1 border-neutral-700">
-<div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
-  <a href="/" class="flex items-center gap-2">
-    <img src={ logo.src } alt="Pyrite logo" class="w-6 h-6 hover:scale-110 transition" />
-    <p class="text-slate-800 dark:text-white font-barlow font-bold uppercase text-lg ml-2">{ SITENAME }</p>
-  </a>
-  
-  <div class="flex items-center gap-4">
-    <!-- Login/Benutzer-Bereich -->
-    <UserMenuButton client:load />
-    
-    <!-- Menü-Button -->
-    <Button
-      label="Menü"
-      interaction={{ type: 'modal', target: 'main-menu' }}
-      icon={{ name: 'MenuIcon', only: true }}
-      client:load
-    />
-  </div>
-</div>
+<header
+    class="sticky flex items-center w-full top-0 left-0 right-0 z-1000 bg-slate-200 dark:bg-neutral-900 shadow-lg h-16 border-b-1 border-neutral-700"
+>
+    <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
+        <a href="/" class="flex items-center gap-2">
+            <img
+                src={logo.src}
+                alt="Pyrite logo"
+                class="w-6 h-6 hover:scale-110 transition"
+            />
+            <p
+                class="text-slate-800 dark:text-white font-barlow font-bold uppercase text-lg ml-2"
+            >
+                {SITENAME}
+            </p>
+        </a>
+
+        <div class="flex items-center gap-4">
+            <!-- Login/Benutzer-Bereich -->
+            <UserMenuButton client:load />
+
+            <!-- Menü-Button -->
+            <Button
+                label="Menü"
+                interaction={{ type: "modal", target: "main-menu" }}
+                icon={{ name: "MenuIcon", only: true }}
+                client:load
+            />
+        </div>
+    </div>
 </header>
 
-<Modal 
-  id="main-menu"
-  title="Menü"
-  position="right"
-  client:load
->
-  <nav class="flex flex-col gap-8">
-    <ul class="flex flex-col gap-2">
-      <li>
-        <a href="/events" class="text-2xl font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Events</a>
-      </li>
-      <li>
-        <a href="/artists" class="text-2xl font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Artists</a>
-      </li>
-      <li>
-        <a href="/locations" class="text-2xl font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Locations</a>
-      </li>
-    </ul>
+<Modal id="main-menu" title="Menü" position="right" client:load>
+    <nav class="flex flex-col gap-8">
+      <div class="flex flex-col gap-2">
+        <p class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Tools</p>
+        <ul class="flex flex-col gap-2">
+            <li>
+                <a
+                    href="/eventfinder"
+                    class="text-2xl font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300"
+                    >Eventfinder</a
+                >
+            </li>
+            <li>
+                <a
+                    href="/locationfinder"
+                    class="text-2xl font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300"
+                    >Locationfinder</a
+                >
+            </li>
+        </ul>
+    </div>
 
-    <ul class="flex flex-col gap-2">
-      <li>
-        <a href="/eventfinder" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Eventfinder</a>
-      </li>
-      <li>
-        <a href="/locationfinder" class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300">Locationfinder</a>
-      </li>
-    </ul>
-  </nav>
+        <div class="flex flex-col gap-2">
+            <p class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Archiv</p>
+            <ul class="flex flex-col gap-2">
+                <li>
+                    <a
+                        href="/events"
+                        class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300"
+                        >Events</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="/artists"
+                        class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300"
+                        >Artists</a
+                    >
+                </li>
+                <li>
+                    <a
+                        href="/locations"
+                        class="font-barlow font-bold uppercase text-slate-800 dark:text-white hover:text-indigo-400 dark:hover:text-indigo-300"
+                        >Locations</a
+                    >
+                </li>
+            </ul>
+        </div>
+    </nav>
 </Modal>

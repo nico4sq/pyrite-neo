@@ -6,6 +6,7 @@ export const prerender = true;
 import Layout from '../../layouts/Layout.astro';
 import Page from '../../components/Page.astro';
 import LocationEvent from '../../components/LocationEvent.svelte';
+import PublicTransport from '../../components/PublicTransport.svelte';
 // import Map from '../../components/Map.svelte';
 
 import * as AstroFeather from 'astro-feather';
@@ -27,12 +28,14 @@ export async function getStaticPaths() {
             title: location.title,
             address: location.address,
             content: location.content,
-            id: location.id
+            id: location.id,
+            lng: location.coordinates.lng,
+            lat: location.coordinates.lat
         }
     }));
 }
 
-const { excerpt, featured_media, title, address, content, id } = Astro.props;
+const { excerpt, featured_media, title, address, content, id, lng, lat } = Astro.props;
 const locationEvents = await fetchLocationEvents(id);
 
 ---
@@ -69,10 +72,13 @@ const locationEvents = await fetchLocationEvents(id);
             </div>
             <div class="contents md:flex flex-col gap-6">
                 <figure class="bg-white dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3">
-                    { featured_media && <Image width="600" height="400" src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
+                    { featured_media && <img width="600" height="400" src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
                     { !featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
                 </figure>
-                <!-- <Map single="true" client:only /> -->
+                <div class="p-6 bg-white dark:bg-neutral-800  rounded-3xl">
+                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-6">ÖPNV</h3>
+                <PublicTransport longitude={lng} latitude={lat} client:load/>
+                </div>
             </div>
         </article>
     </Page>

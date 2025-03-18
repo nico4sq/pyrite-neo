@@ -87,12 +87,14 @@
       const targetElement = document.getElementById(interaction.target);
       if (targetElement) {
         targetElement.classList.add('translate-0!');
+        targetElement.classList.add('open');
         
         // Optional: Event-Handler für Schließen-Button hinzufügen
         const closeButton = targetElement.querySelector('[data-close]');
         if (closeButton) {
           closeButton.addEventListener('click', () => {
             targetElement.classList.remove('translate-0!');
+            targetElement.classList.remove('open');
           });
         }
       } else {
@@ -106,6 +108,7 @@
       const targetElement = document.getElementById(interaction.target);
       if (targetElement) {
         targetElement.classList.remove('translate-0!');
+        targetElement.classList.remove('open');
       } else {
         console.warn(`Modal-Ziel mit ID "${interaction.target}" nicht gefunden.`);
       }
