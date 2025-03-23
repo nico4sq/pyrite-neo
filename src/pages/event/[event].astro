@@ -71,8 +71,8 @@ console.log(event);
                 </div>
             </div>
             <div class="gap-6 contents md:flex flex-col">
-                <figure class="bg-slate-50 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3 shadow-lg relative">
-                    { event.featured_media && <img width="600" height="400" src={ event.featured_media } alt={ event.title } class="aspect-3/2 size-full object-cover object-center" /> }
+                <figure class="bg-slate-50 dark:bg-neutral-800 md:rounded-3xl overflow-clip aspect-square md:aspect-3/2 flex items-center justify-center -order-3 shadow-lg relative -mt-8 -ml-[5vw] -mr-[5vw] md:m-0">
+                    { event.featured_media && <img width="600" height="400" src={ event.featured_media } alt={ event.title } class="aspect-square md:aspect-3/2 size-full object-cover object-center" /> }
                     { !event.featured_media && <ImageIcon customClasses="w-24 h-24 aspect-1 text-slate-700" /> }
                     
                     <!-- Favoriten-Button hier einfügen -->

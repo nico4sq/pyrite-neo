@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./datepicker.css";
+@import "./calendar.css";
 
 * {
   box-sizing: border-box;

@@ -8,7 +8,7 @@ import { SITENAME } from "../functions/theme";
 ---
 
 <header
-    class="sticky flex items-center w-full top-0 left-0 right-0 z-1000 bg-slate-200 dark:bg-neutral-900 shadow-lg h-16 border-b-1 border-neutral-700"
+    class="fixed flex items-center w-full bottom-0 md:top-0 md:bottom:unset left-0 right-0 z-1000 bg-slate-200 dark:bg-neutral-900 shadow-lg h-16 border-t-1 md:border-t-0 md:border-b-1 border-neutral-700"
 >
     <div class="w-9/10 max-w-6xl mx-auto flex justify-between items-center">
         <a href="/" class="flex items-center gap-2">
@@ -18,7 +18,7 @@ import { SITENAME } from "../functions/theme";
                 class="w-6 h-6 hover:scale-110 transition"
             />
             <p
-                class="text-slate-800 dark:text-white font-barlow font-bold uppercase text-lg ml-2"
+                class="text-slate-800 dark:text-white font-barlow font-bold uppercase text-lg ml-2 hidden md:block"
             >
                 {SITENAME}
             </p>

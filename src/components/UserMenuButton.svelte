@@ -100,7 +100,7 @@
         <!-- Dropdown-Menü (adaptiertes Styling) -->
         <ul 
             id="user-menu-dropdown"
-            class="absolute top-full mt-2 z-10 right-0 w-48 bg-neutral-800 border border-neutral-600 rounded-lg overflow-hidden transition-all duration-200 {isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}"
+            class="absolute bottom-full md:top-full md:bottom-unset mb-4 md:mb-0 md:mt-4 z-10 right-0 w-48 bg-neutral-800 border border-neutral-600 rounded-lg overflow-hidden transition-all duration-200 {isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}"
         >
             {#each userMenuOptions as option}
                 <li>

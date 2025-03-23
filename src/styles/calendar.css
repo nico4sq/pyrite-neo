@@ -1,0 +1,118 @@
+:root {
+    --fc-small-font-size: var(--text-sm);
+    --fc-page-bg-color: var(--color-neutral-800);
+    --fc-neutral-bg-color: hsla(0, 0%, 82%, .3);
+    --fc-neutral-text-color: var(--color-neutral-600);
+    --fc-border-color: var(--color-neutral-700);
+    --fc-button-text-color: var(--color-white);
+    --fc-button-bg-color: var(--color-indigo-400);
+    --fc-button-border-color: var(--fc-button-bg-color);
+    --fc-button-hover-bg-color: var(--color-indigo-500);
+    --fc-button-hover-border-color: var(--fc-button-hover-bg-color);
+    --fc-button-active-bg-color: var(--fc-button-hover-bg-color);
+    --fc-button-active-border-color: var(--fc-button-hover-bg-color);
+    --fc-event-bg-color: var(--color-indigo-400);
+    --fc-event-border-color: var(--fc-event-bg-color);
+    --fc-event-text-color: var(--color-white);
+    --fc-event-selected-overlay-color: hsl(from var(--color-white) h s l / 0.2);
+    --fc-more-link-bg-color: #d0d0d0;
+    --fc-more-link-text-color: inherit;
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 1px;
+    --fc-non-business-color: hsla(0, 0%, 84%, .3);
+    --fc-highlight-color: hsl(from var(--color-white) h s l / 0.2);
+    --fc-today-bg-color: transparent;
+    --fc-now-indicator-color: red;
+}
+
+.fc .fc-toolbar-title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    font-family: var(--font-barlow);
+    text-transform: uppercase;
+}
+
+.fc .fc-day:not(.fc-col-header-cell, .fc-popover) {
+    @apply p-2 h-30;
+}
+
+.fc .fc-popover {
+    @apply h-fit w-fit flex flex-col gap-1 shadow-lg rounded-xl m-2 overflow-hidden;
+}
+
+.fc .fc-popover .fc-popover-body {
+    @apply flex flex-col gap-1;
+}
+
+.fc .fc-popover .fc-popover-header {
+    @apply p-2 bg-neutral-700 text-white font-barlow font-bold uppercase;
+}
+
+.fc .fc-day .fc-daygrid-day-top {
+    @apply w-fit ml-auto bg-transparent overflow-hidden rounded-lg mb-2;
+}
+
+.fc .fc-day .fc-daygrid-day-top .fc-daygrid-day-number {
+    @apply aspect-square w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden;
+}
+
+.fc .fc-day-today .fc-daygrid-day-top {
+    @apply bg-neutral-700 text-indigo-300;
+}
+
+.fc .fc-day .fc-daygrid-day-events {
+    @apply m-0;
+}
+
+.fc .fc-day .fc-daygrid-day-bottom {
+    @apply mt-1!;
+}
+
+.fc .fc-day .fc-more-link {
+    @apply text-neutral-500 p-1;
+}
+
+.fc .fc-day .fc-event {
+    @apply rounded-md;
+}
+
+.fc .fc-day .fc-event-main .fc-event-main-frame {
+    @apply p-1;
+}
+
+.fc .fc-day .fc-event-main .fc-event-main-frame .fc-event-title {
+    @apply p-0;
+}
+
+.fc .fc-daygrid-day-top {
+    /* @apply mx-2 my-1 px-2 py-1 rounded-lg border-1 border-neutral-700 flex items-center justify-center aspect-3/1; */
+}
+
+.fc .fc-day-today .fc-daygrid-day-top {
+    @apply bg-white/10;
+}
+
+.fc .fc-day-other .fc-daygrid-day-top {
+    @apply border-0;
+}
+
+.fc .fc-bg-event {
+    @apply flex items-center justify-center w-12 h-12 max-w-full mx-auto rounded-full overflow-hidden text-transparent border-1 border-indigo-500;
+}
+
+.fc .fc-event-title {
+    /* @apply hidden; */
+}
+
+.fc thead {
+    @apply h-12;
+}
+
+.fc .fc-button {
+    @apply flex items-center justify-center p-2 rounded-lg text-stone-950 bg-indigo-400 border-1 border-indigo-400 transition hover:text-stone-950 hover:bg-indigo-500;
+}
+
+.fc .fc-col-header-cell a {
+    @apply mx-2 my-1 px-2 py-1 rounded-lg flex items-center justify-center h-full font-barlow font-bold uppercase aspect-3/1 ;
+}

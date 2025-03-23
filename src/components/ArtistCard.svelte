@@ -21,7 +21,7 @@
     });
   </script>
   
-  <article class="fade-in group relative w-full flex flex-col bg-white dark:bg-neutral-800 text-slate-950 dark:text-white rounded-3xl overflow-clip outline-transparent has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white has-[a:active]:scale-95 transition">
+  <article class="fade-in group relative flex w-full flex-col overflow-clip rounded-3xl bg-white text-slate-950 outline-transparent transition has-[a:active]:scale-95 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-white dark:bg-neutral-800 dark:text-white">
     <figure class="relative aspect-3/2 w-full overflow-clip bg-slate-300 dark:bg-slate-700 flex items-center justify-center">
       {#if featured_media}
         <img width="600" height="400" src={featured_media} alt={title} class="group-has-[a:hover]:scale-110 group-has-[a:focus]:scale-110 transition aspect-3/2 w-full object-cover object-center" />
