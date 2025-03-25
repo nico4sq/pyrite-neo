@@ -12,5 +12,5 @@
         address={location.address}
     />
 {:else}
-    <p class="text-xs">Keine Location gefunden.</p>
+    <p class="notification is-info">Keine Location gefunden.</p>
 {/if}

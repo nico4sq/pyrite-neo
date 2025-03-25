@@ -1,6 +1,8 @@
 <script>
     import Input from "./Input.svelte";
     import Button from "./Button.svelte";
+
+    import '../styles/components/LoginForm.css';
     
     // E-Mail statt Username verwenden
     let email = '';
@@ -50,16 +52,15 @@
     }
 </script>
 
-<form on:submit={handleSubmit} class="flex flex-col gap-4">
-    <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Anmelden</h1>
+<form on:submit={handleSubmit} id="login-form">
+    <h1>Anmelden</h1>
     
     {#if errorMessage}
-        <div class="border-1 border-orange-600 dark:border-orange-300 bg-orange-600/20 dark:bg-orange-300/20 text-orange-600 dark:text-orange-300 p-3 rounded-md text-sm mb-4">
+        <div class="notification is-error">
             {errorMessage}
         </div>
     {/if}
     
-    <!-- E-Mail-Input statt Username -->
     <Input 
         label="E-Mail-Adresse" 
         id="email" 
@@ -84,9 +85,9 @@
         disabled={isLoading}
         interaction={{ type: 'submit' }}
     />
-    
-    <div class="mt-4 flex flex-col gap-2 items-center text-sm text-gray-600 dark:text-gray-400">
-        <a href="/forgot-password" class="text-indigo-600 dark:text-indigo-400 hover:underline">Passwort vergessen?</a>
-        <span>Noch kein Konto? <a href="/register" class="text-indigo-600 dark:text-indigo-400 hover:underline">Registrieren</a></span>
-    </div>
 </form>
+
+<ul class="text-center is-text-small list-none">
+    <li><a href="/forgot-password">Passwort vergessen?</a></li>
+    <li><a href="/register">Registrieren</a></li>
+</ul>

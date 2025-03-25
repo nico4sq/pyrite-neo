@@ -34,7 +34,7 @@
     let markerLayer = L.markerClusterGroup({
         maxClusterRadius: 100,
         iconCreateFunction: function(cluster) {
-        return L.divIcon({ className: 'w-8! h-8! aspect-1 rounded-full bg-indigo-400 text-indigo-800 flex! items-center justify-center', html: '<b>' + cluster.getChildCount() + '</b>' });
+        return L.divIcon({ className: 'w-8! h-8! aspect-1 rounded-full  text-indigo-800 flex! items-center justify-center', html: '<b>' + cluster.getChildCount() + '</b>' });
     }});
     let positionLayer = L.layerGroup();
 
@@ -93,7 +93,7 @@
             let location = await fetchLocationById(single);
             let marker = L.marker([location.coordinates.lat, location.coordinates.lng], {
                 icon: L.divIcon({
-                    className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before:bg-indigo-400 before:size-xl after:w-2 after:h-2 after:bg-indigo-700 after:rounded-3xl after:flex after:absolute text-white flex! items-center justify-center',
+                    className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before: before:size-xl after:w-2 after:h-2 after:color-teal-700 after:rounded-3xl after:flex after:absolute text-white flex! items-center justify-center',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32]
                 }),
@@ -108,7 +108,7 @@
             locations.forEach((location) => {
                 let marker = L.marker([location.coordinates.lat, location.coordinates.lng], {
                     icon: L.divIcon({
-                        className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before:bg-indigo-400 before:size-xl after:w-2 after:h-2 after:bg-indigo-700 after:rounded-3xl after:flex after:absolute text-white flex! items-center justify-center',
+                        className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before: before:size-xl after:w-2 after:h-2 after:color-teal-700 after:rounded-3xl after:flex after:absolute text-white flex! items-center justify-center',
                         iconSize: [32, 32],
                         iconAnchor: [16, 32]
                     }),
@@ -263,7 +263,7 @@
         let control = L.control({ position: 'topright' });
 
         control.onAdd = function () {
-            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:text-indigo-800 rounded-lg p-2 shadow-md cursor-pointer! transition! ml-2 active:scale-95');
+            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! color-teal-100 text-indigo-700 hover:color-teal-200 hover:text-indigo-800 rounded-lg p-2 shadow-md cursor-pointer! transition! ml-2 active:scale-95');
             button.innerHTML = renderIcon('SearchIcon', 4);
 
             button.addEventListener('click', () => {
@@ -291,7 +291,7 @@
             <div class="bg-slate-200 dark:bg-neutral-900 p-6 rounded-xl shadow-xl w-96 max-w-[90%]">
                 <div class="flex justify-between items-start mb-4">
                     <h3 class="text-xl font-barlow font-bold uppercase text-slate-950 dark:text-slate-200 text-balance">Für welche Stadt interessierst du dich?</h3>
-                    <button on:click={closeCitySelectionModal} class="flex items-center justify-center w-10 h-10 bg-indigo-300 text-indigo-800 hover:bg-indigo-400 hover:text-indigo-900 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer active:scale-95 transition"><FeatherIcon.XIcon class="w-4 h-4"/></button>
+                    <button on:click={closeCitySelectionModal} class="flex items-center justify-center w-10 h-10 color-teal-300 text-indigo-800 hover:text-indigo-900 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer active:scale-95 transition"><FeatherIcon.XIcon class="w-4 h-4"/></button>
                 </div>
                 
                 <div class="relative mb-3">
@@ -305,7 +305,7 @@
                         />
                         <FeatherIcon.SearchIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
                         {#if isSearching}
-                            <span class="flex items-center absolute right-3 top-1/2 -translate-y-1/2 justify-center rounded-full w-4 h-4 animate-ping bg-indigo-400/40 before:bg-indigo-400 before:rounded-full before:w-2 before:h-2"></span>
+                            <span class="flex items-center absolute right-3 top-1/2 -translate-y-1/2 justify-center rounded-full w-4 h-4 animate-ping /40 before: before:rounded-full before:w-2 before:h-2"></span>
                         {/if}
                     </div>
                     
@@ -343,7 +343,7 @@
                 <div class="mt-6 border-t border-slate-300 dark:border-neutral-700 pt-6">
                     <button 
                         on:click={detectUserLocation}
-                        class="w-full flex items-center justify-center py-2 bg-indigo-300 text-indigo-800 hover:bg-indigo-400 hover:text-indigo-900 rounded-lg transition cursor-pointer active:scale-95"
+                        class="w-full flex items-center justify-center py-2 color-teal-300 text-indigo-800 hover:text-indigo-900 rounded-lg transition cursor-pointer active:scale-95"
                     >
                         <FeatherIcon.MapPinIcon class="w-4 h-4 mr-2" />
                         Meinen Standort verwenden
@@ -389,10 +389,10 @@
                         <p class="text-xs">Keine Events gefunden.</p>
                     {/if}
                 {:else}
-                    <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 aspect-square animate-ping bg-indigo-400/40 before:bg-indigo-400 before:rounded-full before:w-2 before:h-2"></span>Einen Moment, Informationen zur Location werden geladen...</p>
+                    <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 aspect-square animate-ping /40 before: before:rounded-full before:w-2 before:h-2"></span>Einen Moment, Informationen zur Location werden geladen...</p>
                 {/if}
             </div>
-            <button on:click={closeModal} class="flex items-center justify-center absolute top-2 right-2 w-10 h-10 bg-indigo-400 text-slate-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><FeatherIcon.XIcon class="w-4 h-4"/></button>
+            <button on:click={closeModal} class="flex items-center justify-center absolute top-2 right-2 w-10 h-10  text-slate-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><FeatherIcon.XIcon class="w-4 h-4"/></button>
         </div>
     </div>
 {/if}

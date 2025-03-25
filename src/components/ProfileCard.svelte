@@ -33,7 +33,7 @@
 {:else if user}
     <div class="bg-white dark:bg-neutral-800 rounded-3xl p-6 flex flex-col gap-6">
         <div class="flex items-center gap-6">
-            <div class="w-24 h-24 rounded-full bg-indigo-300 text-stone-950 flex items-center justify-center text-5xl font-bold font-barlow uppercase">
+            <div class="w-24 h-24 rounded-full color-teal-300 text-stone-950 flex items-center justify-center text-5xl font-bold font-barlow uppercase">
                 {user.username.charAt(0).toUpperCase()}
             </div>
             <div>

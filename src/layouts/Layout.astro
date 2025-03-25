@@ -4,6 +4,7 @@
 import '@fontsource-variable/figtree';
 import '@fontsource/barlow-condensed/400.css';
 import '@fontsource/barlow-condensed/700.css';
+import '@fontsource/barlow-condensed/900.css';
 
 import '../styles/global.css';
 
@@ -39,7 +40,7 @@ title += " | " + SITENAME;
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorSchemeClass);
         </script>
     </head>
-    <body class="bg-slate-200 dark:bg-neutral-900 text-slate-950 dark:text-white has-[dialog:open]:overflow-hidden min-h-screen flex flex-col after:absolute after:inset-0 after:bg-black/60 after:opacity-0 after:transition-opacity after:z-9999 after:pointer-events-none overflow-x-hidden">
+    <body>
         <slot />
     </body>
 </html>

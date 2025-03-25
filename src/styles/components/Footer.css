@@ -1,0 +1,28 @@
+footer.pyrite-footer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    z-index: 1000;
+    height: 4rem;
+    background: var(--color-neutral-600);
+
+    > .inner {
+        height: 100%;
+        width: calc(100% - var(--spacing-50) * 2);
+        max-width: var(--content-xl);
+        margin-inline: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .branding {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-30);
+
+        img {
+            height: 1.5rem;
+        }
+    }
+}

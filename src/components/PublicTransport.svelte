@@ -99,7 +99,7 @@
 {:else if monitorData.length > 0}
     <div class="list-none flex flex-col gap-4">
         {#each monitorData as stop}
-            <div class="p-2 flex justify-between items-end bg-indigo-300 text-stone-950 leading-1.1 rounded-xl gap-4">
+            <div class="p-2 flex justify-between items-end color-teal-300 text-stone-950 leading-1.1 rounded-xl gap-4">
                 <div class="flex flex-col font-barlow font-bold uppercase">
                     <span class="text-xs pt-1">Haltestelle</span>
                     <span class="text-lg whitespace-nowrap">{stop.name}</span>

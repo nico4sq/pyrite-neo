@@ -55,8 +55,8 @@
             },
             dayMaxEvents: 1,
             eventTextColor: "var(--color-stone-950)",
-            eventBackgroundColor: "var(--color-indigo-400)",
-            eventBorderColor: "var(--color-indigo-400)"
+            eventBackgroundColor: "var(--)",
+            eventBorderColor: "var(--)"
         });
         calendar.render();
 

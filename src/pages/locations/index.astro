@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 import Layout from '../../layouts/Layout.astro';
-import Locations from '../../components/Locations.astro';
+import Locations from '../../components/Locations.svelte';
 import Page from '../../components/Page.astro';
 
 const currentPage = 1;
@@ -10,10 +10,10 @@ const currentPage = 1;
 
 <Layout title="Alle Locations">
     <Page>
-        <section class="w-full py-8 md:py-12 xl:py-16">
-            <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Alle Locations</h1>
+        <section>
+            <h1>Alle Locations</h1>
             
-            <Locations pagination currentPage={currentPage} />
+            <Locations pagination currentPage={currentPage} client:load/>
         </section>
     </Page>
 </Layout>

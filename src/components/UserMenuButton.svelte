@@ -75,46 +75,12 @@
     <!-- Ladeindikator -->
     <div class="w-8 h-8 rounded-full bg-slate-300 dark:bg-neutral-700 animate-pulse"></div>
 {:else if user}
-    <!-- Angemeldeter Benutzer -->
-    <div class="relative group">
-        <button 
-            id="user-menu-button"
-            on:click={toggleMenu}
-            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-300 hover:bg-slate-400 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition cursor-pointer border-1 border-neutral-700"
-            class:border-indigo-300!={isMenuOpen}
-            aria-label="Benutzermenü"
-            aria-expanded={isMenuOpen}
-            aria-controls="user-menu-dropdown"
-        >
-            <!-- Profil-Icon/Initialen -->
-            <div class="w-7 h-7 rounded-full bg-indigo-300 text-stone-950 flex items-center justify-center font-barlow font-bold">
-                {user.username.charAt(0).toUpperCase()}
-            </div>
-            
-            <!-- Benutzername -->
-            <span class="text-slate-800 dark:text-white text-sm">
-                {user.username}
-            </span>
-        </button>
-        
-        <!-- Dropdown-Menü (adaptiertes Styling) -->
-        <ul 
-            id="user-menu-dropdown"
-            class="absolute bottom-full md:top-full md:bottom-unset mb-4 md:mb-0 md:mt-4 z-10 right-0 w-48 bg-neutral-800 border border-neutral-600 rounded-lg overflow-hidden transition-all duration-200 {isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}"
-        >
-            {#each userMenuOptions as option}
-                <li>
-                    <button 
-                        type="button" 
-                        class="block w-full py-2 px-4 text-left hover:bg-slate-700 focus:bg-slate-700 focus:outline-none cursor-pointer transition {option.className || 'text-white'}" 
-                        on:click={() => handleMenuSelect(option.action)}
-                    >
-                        {option.label}
-                    </button>
-                </li>
-            {/each}
-        </ul>
-    </div>
+    <Button 
+        label={user.username} 
+        type="secondary"
+        icon={{ name: "UserIcon", position: "left" }} 
+        interaction={{ type: 'link', target: '/profile' }}
+    />
 {:else}
     <!-- Nicht angemeldet: Login-Button -->
     <Button 

@@ -3,6 +3,8 @@
 
     import * as FeatherIcons from "svelte-feather-icons";
 
+    import '../styles/components/Events.css';
+
     import EventCardSmall from "./EventCardSmall.svelte";
     import Input from "./Input.svelte";
     import {
@@ -79,7 +81,7 @@
     }
 </script>
 
-<form id="events-filter" class="flex flex-col md:flex-row flex-wrap gap-4 lg:gap-6 w-full mb-6">
+<form id="events-filter">
 
     <Input
         type="daterange"
@@ -130,7 +132,7 @@
     />
 </form>
 
-<ul id="events-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+<ul id="events-list" class="layout-grid">
     {#if events !== false}
         {#if events.length > 0}
             {#each events as event}
@@ -146,13 +148,13 @@
                 </li>
             {/each}
         {:else}
-            <li class="w-full">
-                <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><FeatherIcons.XCircleIcon class="w-4 h-4"/>Keine Events gefunden</p>
+            <li>
+                <p class="notification is-warning"><FeatherIcons.XCircleIcon class="w-4 h-4"/>Keine Events gefunden</p>
             </li>
         {/if}
     {:else}
-        <li class="w-full">
-            <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 animate-ping bg-indigo-400/40 before:bg-indigo-400 before:rounded-full before:w-2 before:h-2"></span>Gib uns eine Sekunde Zeit, um Events für dich zu laden...</p>
+        <li>
+            <p class="notification is-info"><span class="flex items-center justify-center rounded-full w-4 h-4 animate-ping /40 before: before:rounded-full before:w-2 before:h-2"></span>Gib uns eine Sekunde Zeit, um Events für dich zu laden...</p>
         </li>
     {/if}
 </ul>

@@ -5,13 +5,13 @@
     --fc-neutral-text-color: var(--color-neutral-600);
     --fc-border-color: var(--color-neutral-700);
     --fc-button-text-color: var(--color-white);
-    --fc-button-bg-color: var(--color-indigo-400);
+    --fc-button-bg-color: var(--);
     --fc-button-border-color: var(--fc-button-bg-color);
-    --fc-button-hover-bg-color: var(--color-indigo-500);
+    --fc-button-hover-bg-color: var(--);
     --fc-button-hover-border-color: var(--fc-button-hover-bg-color);
     --fc-button-active-bg-color: var(--fc-button-hover-bg-color);
     --fc-button-active-border-color: var(--fc-button-hover-bg-color);
-    --fc-event-bg-color: var(--color-indigo-400);
+    --fc-event-bg-color: var(--);
     --fc-event-border-color: var(--fc-event-bg-color);
     --fc-event-text-color: var(--color-white);
     --fc-event-selected-overlay-color: hsl(from var(--color-white) h s l / 0.2);
@@ -110,7 +110,7 @@
 }
 
 .fc .fc-button {
-    @apply flex items-center justify-center p-2 rounded-lg text-stone-950 bg-indigo-400 border-1 border-indigo-400 transition hover:text-stone-950 hover:bg-indigo-500;
+    @apply flex items-center justify-center p-2 rounded-lg text-stone-950  border-1 border-indigo-400 transition hover:text-stone-950 hover:;
 }
 
 .fc .fc-col-header-cell a {

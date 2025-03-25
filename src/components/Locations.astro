@@ -46,14 +46,14 @@ if (shouldPaginate) {
     <nav class="flex justify-center items-center py-8 gap-2">
         <a 
             href={`/locations/1`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950  transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronsLeftIcon customClasses="w-4 h-4" />
         </a>
         <a 
             href={`/locations/${currentPage - 1}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950  transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronLeftIcon customClasses="w-4 h-4" />
@@ -85,14 +85,14 @@ if (shouldPaginate) {
 
         <a 
             href={`/locations/${currentPage + 1}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950  transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronRightIcon customClasses="w-4 h-4" />
         </a>
         <a 
             href={`/locations/${pages.length}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950  transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronsRightIcon customClasses="w-4 h-4" />

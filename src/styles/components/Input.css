@@ -1,0 +1,199 @@
+@import 'air-datepicker/air-datepicker.css';
+
+.pyrite-input {
+    --_accent-color: var(--color-teal-400);
+    --_placeholder-color: var(--color-neutral-300);
+    --_border-color: var(--color-neutral-500);
+    --_color: var(--color-white);
+    --_background-color: var(--color-neutral-500);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-10);
+
+    .label {
+        padding-left: var(--spacing-20);
+        font-family: var(--font-barlow);
+        text-transform: uppercase;
+        font-size: var(--small);
+    }
+
+    svg.feather {
+        position: absolute;
+        inset: 50% var(--spacing-40) auto auto;
+        width: 1em;
+        height: 1em;
+        color: var(--_placeholder-color);
+        pointer-events: none;
+        translate: 0 -50%;
+    }
+
+    input, textarea {
+        padding: var(--spacing-30) var(--spacing-40);
+        border-radius: calc(infinity * 1px);
+        background-color: var(--_background-color);
+        border: var(--border);
+        border-color: var(--_border-color);
+        color: var(--_color);
+        cursor: pointer;
+        outline: none;
+        transition: border-color var(--transition-duration) var(--transition-timing);
+        width: 100%;
+
+        &[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        
+            &:focus {
+                outline: none;
+                border-color: var(--color-white);
+            }
+        }
+    }
+
+    &.active {
+        input, textarea {
+            border-color: var(--_accent-color);
+        }
+
+        svg.feather {
+            color: var(--_accent-color);
+        }
+    }
+
+    &.type-checkbox {
+
+    }
+
+    &.type-select {
+        ul.options {
+            position: fixed;
+            inset: 50% auto auto 50%;
+            translate: -50% -50%;
+            margin-top: var(--spacing-20);
+            z-index: 10000;
+            width: min(calc(100% - var(--spacing-50) * 2), 24rem);
+            background-color: var(--color-neutral-600);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition);
+            opacity: 0;
+            pointer-events: none;
+            list-style: none;
+            padding: var(--spacing-20) 0;
+            max-height: 50dvh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        
+            &.open {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        
+            li {
+                button {
+                    --_background-color: transparent;
+                    --_color: var(--color-white);
+
+                    display: block;
+                    width: 100%;
+                    padding: var(--spacing-30) var(--spacing-40);
+                    text-align: left;
+                    color: var(--_color);
+                    background-color: var(--_background-color);
+                    border: none;
+                    cursor: pointer;
+                    transition: var(--transition);
+        
+                    &:hover,
+                    &:focus,
+                    &.active {
+                        --_background-color: var(--color-teal-600);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.air-datepicker {
+    --adp-font-family: var(--font-sans);
+    --adp-font-size: var(--small);
+    --adp-width: var(--content-sm);
+    --adp-z-index: 10001;
+    --adp-padding: var(--spacing-40);
+    --adp-grid-areas: "nav" "body" "timepicker" "buttons";
+    --adp-transition-duration: var(--default-transition-duration);
+    --adp-transition-ease: var(--default-transition-timing-function);
+    --adp-transition-offset: 8px;
+    --adp-background-color: var(--color-neutral-600);
+    --adp-background-color-hover: var(--color-neutral-500);
+    --adp-background-color-active: var(--adp-background-color);
+    --adp-background-color-in-range: var(--color-teal-300);
+    --adp-background-color-in-range-focused: var(--adp-accent-color);
+    --adp-background-color-selected-other-month-focused: var(--adp-accent-color);
+    --adp-background-color-selected-other-month: var(--adp-accent-color);
+    --adp-color: var(--color-white);
+    --adp-color-secondary: var(--color-neutral-400);
+    --adp-accent-color: var(--color-teal-600);
+    --adp-color-current-date: var(--adp-accent-color);
+    --adp-color-other-month: var(--adp-color-secondary);
+    --adp-color-disabled: var(--adp-color-secondary);
+    --adp-color-disabled-in-range: var(--adp-color-secondary);
+    --adp-color-other-month-hover: var(--adp-color);
+    --adp-border-color: transparent;
+    --adp-border-color-inner: var(--adp-border-color);
+    --adp-border-radius: var(--radius-lg);
+    --adp-border-color-inline: var(--adp-border-color);
+    --adp-nav-height: calc(var(--spacing) * 8);
+    --adp-nav-arrow-color: var(--adp-color-secondary);
+    --adp-nav-action-size: calc(var(--spacing) * 8);
+    --adp-nav-color-secondary: var(--adp-color-secondary);
+    --adp-day-name-color: var(--adp-accent-color);
+    --adp-day-name-color-hover: var(--adp-day-name-color);
+    --adp-day-cell-width: 1fr;
+    --adp-day-cell-height: var(--spacing-70);
+    --adp-month-cell-height: var(--spacing-70);
+    --adp-year-cell-height: var(--spacing-80);
+    --adp-pointer-size: var(--spacing-20);
+    --adp-poiner-border-radius: 2px;
+    --adp-pointer-offset: 14px;
+    --adp-cell-border-radius: var(--radius-md);
+    --adp-cell-background-color-hover: var(--adp-background-color-hover);
+    --adp-cell-background-color-selected: var(--adp-accent-color);
+    --adp-cell-background-color-selected-hover: var(--adp-cell-background-color-selected);
+    --adp-cell-background-color-in-range: color-mix(in oklab, var(--color-teal-500) 20%, transparent);
+    --adp-cell-background-color-in-range-color-hover: mix(in oklab, var(--color-teal-500) 40%, transparent);
+    --adp-cell-border-color-in-range: var(--adp-cell-background-color-selected);
+    --adp-btn-height: var(--spacing-70);
+    --adp-btn-color: var(--adp-accent-color);
+    --adp-btn-color-hover: var(--adp-color);
+    --adp-btn-border-radius: var(--radius-md);
+    --adp-btn-background-color-hover: var(--adp-background-color-hover);
+    --adp-btn-background-color-active: var(--adp-background-color-active);
+    --adp-time-track-height: 1px;
+    --adp-time-track-color: var(--adp-color-secondary);
+    --adp-time-track-color-hover: var(--adp-color);
+    --adp-time-thumb-size: var(--spacing-30);
+    --adp-time-padding-inner: var(--spacing-30);
+    --adp-time-day-period-color: var(--adp-color-secondary);
+    --adp-mobile-font-size: var(--base);
+    --adp-mobile-nav-height: var(--spacing-60);
+    --adp-mobile-width: min(calc(100% - var(--spacing-50) * 2), 24rem);
+    --adp-mobile-day-cell-height: var(--spacing-70);
+    --adp-mobile-month-cell-height: var(--spacing-70);
+    --adp-mobile-year-cell-height: var(--spacing-80);
+}
+
+.air-datepicker-overlay {
+    --adp-overlay-background-color: rgba(0, 0, 0, .8);
+    --adp-overlay-transition-duration: var(--default-transition-duration);
+    --adp-overlay-transition-ease: var(--default-transition-timing-function);
+    --adp-overlay-z-index: 10000;
+}
+
+.air-datepicker--pointer::after {
+    background-color: var(--adp-background-color);
+}

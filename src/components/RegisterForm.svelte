@@ -2,6 +2,8 @@
     import Input from "./Input.svelte";
     import Button from "./Button.svelte";
 
+    import '../styles/components/RegisterForm.css';
+
     let username = '';
     let email = '';
     let password = '';
@@ -115,17 +117,17 @@
     }
 </script>
 
-<form on:submit={handleSubmit} class="flex flex-col gap-4 w-md mx-auto">
-    <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Registrieren</h1>
+<form on:submit={handleSubmit} id="register-form">
+    <h1>Registrieren</h1>
 
     {#if errorMessage}
-        <div class="border-1 border-orange-600 dark:border-orange-300 bg-orange-600/20 dark:bg-orange-300/20 text-orange-600 dark:text-orange-300 p-3 rounded-md text-sm">
+        <div class="notification is-error">
             {errorMessage}
         </div>
     {/if}
 
     {#if successMessage}
-        <div class="border-1 border-lime-600 dark:border-lime-300 bg-lime-600/20 dark:bg-lime-300/20 text-lime-600 dark:text-lime-300 p-3 rounded-md text-sm">
+        <div class="notification is-success">
             {successMessage}
         </div>
     {/if}
@@ -141,7 +143,9 @@
             required 
         />
         {#if usernameError}
-            <p class="text-neutral-600 text-xs mt-1">{usernameError}</p>
+            <div class="form-notifications">
+                <p class="form-notification is-error">{usernameError}</p>
+            </div>
         {/if}
     </div>
     
@@ -156,7 +160,9 @@
             required 
         />
         {#if emailError}
-            <p class="text-neutral-600 text-xs mt-1">{emailError}</p>
+            <div class="form-notifications">
+                <p class="form-notification is-error">{emailError}</p>
+            </div> 
         {/if}
     </div>
     
@@ -173,25 +179,23 @@
             }}
             required 
         />
-        <div class="mt-2">
-            <ul class="text-xs list-none flex gap-x-3 gap-y-1 flex-wrap">
-                <li class={passwordErrors.length ? "text-lime-300" : "text-neutral-600"}>
-                    min. 8 Zeichen
-                </li>
-                <li class={passwordErrors.uppercase ? "text-lime-300" : "text-neutral-600"}>
-                    min. 1 Großbuchstabe
-                </li>
-                <li class={passwordErrors.lowercase ? "text-lime-300" : "text-neutral-600"}>
-                    min. 1 Kleinbuchstabe
-                </li>
-                <li class={passwordErrors.number ? "text-lime-300" : "text-neutral-600"}>
-                    min. 1 Zahl
-                </li>
-                <li class={passwordErrors.special ? "text-lime-300" : "text-neutral-600"}>
-                    min. 1 Sonderzeichen
-                </li>
-            </ul>
-        </div>
+        <ul class="form-notifications">
+            <li class="form-notification {passwordErrors.length ? "is-success" : "is-error"}">
+                min. 8 Zeichen
+            </li>
+            <li class="form-notification {passwordErrors.uppercase ? "is-success" : "is-error"}">
+                min. 1 Großbuchstabe
+            </li>
+            <li class="form-notification {passwordErrors.lowercase ? "is-success" : "is-error"}">
+                min. 1 Kleinbuchstabe
+            </li>
+            <li class="form-notification {passwordErrors.number ? "is-success" : "is-error"}">
+                min. 1 Zahl
+            </li>
+            <li class="form-notification {passwordErrors.special ? "is-success" : "is-error"}">
+                min. 1 Sonderzeichen
+            </li>
+        </ul>
     </div>
     
     <div class="form-group">
@@ -205,7 +209,9 @@
             required 
         />
         {#if passwordConfirmError}
-            <p class="text-neutral-600 text-xs mt-1">{passwordConfirmError}</p>
+            <div class="form-notifications">
+                <p class="form-notification is-error">{passwordConfirmError}</p>
+            </div>
         {/if}
     </div>
     

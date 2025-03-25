@@ -8,7 +8,7 @@ import Header from '../../components/Header.astro';
 import Page from '../../components/Page.astro';
 import ArtistEvent from '../../components/ArtistEvent.svelte';
 
-import * as AstroFeather from 'astro-feather';
+import { ImageIcon } from 'astro-feather';
 import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
@@ -36,27 +36,31 @@ let artistEvents = await fetchArtistEvents(artist.id, true);
     description={ artist.excerpt }>
 
     <Page>
-        <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="contents md:flex flex-col gap-6">
-                <h1 class="text-3xl text-slate-950 font-barlow uppercase font-bold p-6 bg-indigo-400 rounded-3xl">{ artist.title }</h1>
+        <div class="page-grid">
+            <div class="page-column">
+                <hgroup class="box is-title">
+                    <p>Artist</p>
+                    <h1>{ artist.title }</h1>
+                </hgroup>
 
                 { artist.content && 
-                    <div class="p-6 bg-slate-200 dark:bg-neutral-800 rounded-3xl shadow-lg">
-                        <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
+                    <div class="box">
+                        <h3>Info</h3>
                         <p>{ artist.content }</p>
                     </div> 
                 }
-                <div class="p-6 bg-slate-200 dark:bg-neutral-800  rounded-3xl">
-                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
+
+                <div class="box">
+                    <h3>Kommende Events</h3>
                     { artistEvents && artistEvents.map((event) => (
                         event && <ArtistEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } city={ event.city } />
                     ))}
                 </div>
             </div>
-            <div class="contents md:flex flex-col gap-6">
-                <figure class="bg-slate-200 dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-1">
-                    { artist.featured_media && <img width="600" height="400" src={ artist.featured_media } alt={ artist.title } class="aspect-3/2 size-full object-cover object-center" /> }
-                    { !artist.featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
+            <div class="page-column">
+                <figure class="box is-image">
+                    { artist.featured_media && <img width="600" height="400" src={ artist.featured_media } alt={ artist.title } /> }
+                    { !artist.featured_media && <ImageIcon /> }
                 </figure>
             </div>
         </div>

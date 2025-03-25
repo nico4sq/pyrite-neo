@@ -1,0 +1,7 @@
+main.pyrite-main {
+    margin: var(--spacing-80) auto;
+
+    @media (max-width: 768px) {
+        margin-top: 0;
+    }
+}

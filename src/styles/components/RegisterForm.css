@@ -1,0 +1,10 @@
+#register-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-30);
+    margin-bottom: var(--spacing-50);
+
+    .pyrite-button {
+        margin-top: var(--spacing-30);
+    }
+}

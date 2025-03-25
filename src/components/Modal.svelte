@@ -1,5 +1,6 @@
 <script>
     import Button from './Button.svelte';
+    import '../styles/components/Modal.css';
 
     export let id = '';
     export let title = '';
@@ -9,15 +10,7 @@
     $: id = id || 'modal';
     $: title = title || 'Modal';
     
-    let baseClasses = [
-        'fixed',
-        'z-10000',
-        'transform',
-        'transition-transform',
-        'duration-300',
-        ,
-        ...classes
-    ];
+    let baseClasses = ['modal', ...classes];
 
     $: positionClasses = getPositionClasses(position);
     
@@ -26,15 +19,15 @@
     function getPositionClasses(pos) {
         switch(pos) {
             case 'top':
-                return ['top-0', 'left-0', 'right-0', 'bottom-auto', '-translate-y-full', 'h-full', 'max-h-[50vh]', 'translate-y-[-100%]', 'border-b-1', 'border-neutral-700'];
+                return ['top'];
             case 'bottom':
-                return ['bottom-0', 'left-0', 'right-0', 'top-auto', 'translate-y-full', 'h-full', 'max-h-[50vh]', 'translate-y-[100%]', 'border-t-1', 'border-neutral-700'];
+                return ['bottom'];
             case 'left':
-                return ['top-0', 'left-0', 'bottom-0', 'right-auto', '-translate-x-full', 'w-auto', 'max-w-[90vw]', 'min-w-[20rem]', 'translate-x-[-100%]', 'border-r-1', 'border-neutral-700'];
+                return ['left'];
             case 'right':
-                return ['top-0', 'right-0', 'bottom-0', 'translate-x-full', 'left-auto', 'w-auto', 'max-w-[90vw]', 'min-w-[20rem]', 'translate-x-[100%]', 'border-l-1', 'border-neutral-700'];
+                return ['right'];
             default:
-                return ['inset-0', 'scale-0'];
+                return ['center'];
         }
     }
 </script>
@@ -47,8 +40,8 @@
     aria-labelledby={`${id}-title`}
     aria-describedby={`${id}-description`}
 >
-    <div class="bg-slate-200 dark:bg-neutral-900 shadow-xl px-6 py-2 size-full">
-        <header class="flex items-center justify-end mb-4">
+    <div class="modal-content">
+        <header class="modal-header">
             {#if title}
                 <h2 id={`${id}-title`} class="sr-only">{title}</h2>
             {/if}

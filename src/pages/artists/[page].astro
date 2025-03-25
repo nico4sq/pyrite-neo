@@ -4,7 +4,7 @@
 export const prerender = true;
 
 import Layout from '../../layouts/Layout.astro';
-import Artists from '../../components/Artists.astro';
+import Artists from '../../components/Artists.svelte';
 import PageComponent from '../../components/Page.astro';
 
 import { fetchArtists } from '../../api/wordpress';
@@ -30,7 +30,7 @@ const currentPage = parseInt(page || '1', 10);
         <section class="w-full py-8 md:py-12 xl:py-16">
             <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Alle Artists</h1>
             
-            <Artists pagination currentPage={currentPage} />
+            <Artists pagination currentPage={currentPage} client:load/>
         </section>
     </PageComponent>
 </Layout>

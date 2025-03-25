@@ -5,6 +5,8 @@ import * as AstroFeather from 'astro-feather';
 import { fetchEvents } from '../api/wordpress';
 import EventCard from './EventCard.svelte';
 
+import '../styles/components/Events.css';
+
 export interface Props {
     pagination?: boolean;
     currentPage?: number;
@@ -29,9 +31,9 @@ if (shouldPaginate) {
 }
 ---
 
-<ul class="flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 w-full place-items-stretch">
+<ul class="layout-grid">
     {events && events.map((event) => (
-        <li class="flex items-stretch h-full">
+        <li>
             <EventCard 
                 id={event.id}
                 title={event.title} 
@@ -40,17 +42,17 @@ if (shouldPaginate) {
                 genre={event.genre} 
                 date={event.date} 
                 city={event.city}
-                client:load
+                client:only
             />
         </li>
     ))}
 
     {!shouldPaginate && (
-        <li class="relative group bg-indigo-300 hover:bg-indigo-400 text-slate-950 p-6 rounded-3xl flex flex-col items-start justify-end transition aspect-3/2">
-            <a href="/eventfinder" class="absolute rounded-3xl inset-0 z-1"><span class="sr-only top-1/2 left-1/2">Zum Eventfinder</span></a>
+        <li class="link-tile">
+            <a href="/eventfinder"><span class="sr-only">Zum Eventfinder</span></a>
             <p>Nichts für dich dabei?</p>
-            <p class="text-2xl font-barlow uppercase leading-none font-bold">Zum Eventfinder</p>
-            <AstroFeather.ArrowRightIcon customClasses="absolute top-6 right-6 w-20 h-20 aspect-1 text-slate-950 transition pointer-events-none" />
+            <p class="is-heading-level-5">Zum Eventfinder</p>
+            <AstroFeather.ArrowRightIcon />
         </li>
     )}
 </ul>
@@ -59,14 +61,14 @@ if (shouldPaginate) {
     <nav class="flex justify-center items-center py-8 gap-2">
         <a 
             href={`/events/1`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronsLeftIcon customClasses="w-4 h-4" />
         </a>
         <a 
             href={`/events/${currentPage - 1}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === 1 }}
         >
             <AstroFeather.ChevronLeftIcon customClasses="w-4 h-4" />
@@ -99,14 +101,14 @@ if (shouldPaginate) {
 
         <a 
             href={`/events/${currentPage + 1}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950  transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronRightIcon customClasses="w-4 h-4" />
         </a>
         <a 
             href={`/events/${pages.length}`} 
-            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950 bg-indigo-400 hover:bg-indigo-500 transition"
+            class="text-sm p-2 aspect-square font-bold rounded-lg flex items-center justify-center leading-1 text-slate-950  transition"
             class:list={{ 'pointer-events-none opacity-50': currentPage === pages.length }}
         >
             <AstroFeather.ChevronsRightIcon customClasses="w-4 h-4" />

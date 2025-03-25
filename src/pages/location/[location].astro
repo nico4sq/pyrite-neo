@@ -7,9 +7,8 @@ import Layout from '../../layouts/Layout.astro';
 import Page from '../../components/Page.astro';
 import LocationEvent from '../../components/LocationEvent.svelte';
 import PublicTransport from '../../components/PublicTransport.svelte';
-// import Map from '../../components/Map.svelte';
 
-import * as AstroFeather from 'astro-feather';
+import { ImageIcon } from 'astro-feather';
 import { Image } from 'astro:assets';
 
 import "../../styles/global.css";
@@ -45,39 +44,42 @@ const locationEvents = await fetchLocationEvents(id);
     description={ excerpt }>
 
     <Page>
-        <article class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="contents md:flex flex-col gap-6">
-                <hgroup class="p-6 bg-indigo-600 dark:bg-indigo-400 rounded-3xl -order-2">
-                    <p class="font-barlow uppercase text-sm font-bold text-white dark:text-slate-950">Location</p>
-                    <h1 class="text-3xl text-white dark:text-slate-950 font-barlow uppercase font-bold ">{ title }</h1>
+        <div class="page-grid">
+            <div class="page-column">
+                <hgroup class="box is-title">
+                    <p>Location</p>
+                    <h1>{ title }</h1>
                 </hgroup>
 
-                <div class="p-6 bg-white dark:bg-neutral-800 rounded-3xl list-none flex gap-4 -order-2"> 
-                    <div class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Adresse</span><address class="not-italic">{ address }</address></div>
+                <div class="box is-meta"> 
+                    <div>
+                        <p class="subline">Adresse</p>
+                        <address>{ address }</address>
+                    </div>
                 </div>
 
                 { content && 
-                    <div class="p-6 bg-white dark:bg-neutral-800  rounded-3xl">
-                        <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
+                    <div class="box">
+                        <h3>Info</h3>
                         <p>{ content }</p>
                     </div> 
                 }
 
-                <div class="p-6 bg-white dark:bg-neutral-800  rounded-3xl">
-                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Kommende Events</h3>
+                <div class="box">
+                    <h3>Kommende Events</h3>
                     { locationEvents && locationEvents.map((event) => (
                         event && <LocationEvent name={ event.title } slug={ event.slug } date={ event.date } image={ event.featured_media } />
                     ))}
                 </div>
             </div>
-            <div class="contents md:flex flex-col gap-6">
-                <figure class="bg-white dark:bg-neutral-800 rounded-3xl overflow-clip aspect-3/2 flex items-center justify-center -order-3">
-                    { featured_media && <img width="600" height="400" src={ featured_media } alt={ title } class="aspect-3/2 size-full object-cover object-center" /> }
-                    { !featured_media && <AstroFeather.ImageIcon customClasses="w-24 h-24 aspect-1 text-neutral-700" /> }
+            <div class="page-column">
+                <figure class="box is-image">
+                    { featured_media && <img width="600" height="400" src={ featured_media } alt={ title } /> }
+                    { !featured_media && <ImageIcon /> }
                 </figure>
-                <div class="p-6 bg-white dark:bg-neutral-800  rounded-3xl">
-                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-6">ÖPNV</h3>
-                <PublicTransport longitude={lng} latitude={lat} client:load/>
+                <div class="box">
+                    <h3>ÖPNV</h3>
+                    <PublicTransport longitude={lng} latitude={lat} client:load/>
                 </div>
             </div>
         </article>

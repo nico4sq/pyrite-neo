@@ -8,7 +8,7 @@ import Page from '../../components/Page.astro';
 import Button from '../../components/Button.svelte';
 import EventArtists from '../../components/EventArtists.svelte';
 import EventLocation from '../../components/EventLocation.svelte';
-import FavoriteButton from '../../components/FavoriteButton.svelte'; // Neue Komponente importieren
+import FavoriteButton from '../../components/FavoriteButton.svelte';
 
 import { ImageIcon, ShoppingCartIcon } from 'astro-feather';
 import { Image } from 'astro:assets';
@@ -32,54 +32,48 @@ export async function getStaticPaths() {
 }
 
 const { event } = Astro.props;
-
-console.log(event);
-
-
 ---
 
 <Layout 
     title={ event.title }
     description={ event.excerpt }>
 
-    { event.featured_media && <img width="1200" height="800" src={ event.featured_media } alt={ event.title } class="size-full h-full object-cover object-center fixed inset-0 opacity-20 dark:opacity-10 blur-xl -z-10" /> }
-    { !event.featured_media && <ImageIcon customClasses="w-24 h-24 aspect-1 text-slate-700" /> }
+    { event.featured_media && <img width="1200" height="800" src={ event.featured_media } alt={ event.title } class="page-background-image" /> }
 
     <Page>
-        <div class="grid size-full grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="gap-6 contents md:flex flex-col">
-                <h1 class="text-3xl text-slate-950 font-barlow uppercase font-bold p-6 bg-indigo-400 rounded-3xl shadow-lg -order-2">{ event.title }</h1>
-                <ul class="p-6 bg-slate-50 dark:bg-neutral-800 rounded-3xl list-none flex gap-4 shadow-lg -order-2"> 
-                    <li class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Datum</span><span class="tabular-nums">{ event.date }</span></li>
-                    <li class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Start</span><span class="tabular-nums">{ event.start } Uhr</span></li>
-                    <li class="flex flex-col flex-auto gap-1"><span class="font-barlow uppercase text-sm font-bold text-indigo-600 dark:text-indigo-300">Einlass</span><span class="tabular-nums">{ event.doors } Uhr</span></li>
+        <div class="page-grid">
+            <div class="page-column">
+                <h1 class="box is-title">{ event.title }</h1>
+                <ul class="box is-meta"> 
+                    <li><span>Datum</span><span>{ event.date }</span></li>
+                    <li><span>Uhrzeit</span><span>{ event.start } Uhr</span></li>
+                    <li><span>Einlass</span><span>{ event.doors } Uhr</span></li>
                 </ul>
                 { event.content && 
-                    <div class="p-6 bg-slate-50 dark:bg-neutral-800  rounded-3xl shadow-lg -order-1">
-                        <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Info</h3>
+                    <div class="box">
+                        <h3>Info</h3>
                         <p>{ event.content }</p>
                     </div> 
                 }
-                <div class="p-6 bg-slate-50 dark:bg-neutral-800  rounded-3xl shadow-lg -order-1">
-                    <h3 class="text-2xl font-barlow font-bold uppercase mb-4">Artists</h3>
+                <div class="box">
+                    <h3>Artists</h3>
                     <EventArtists artists={ event.artists }/>
                 </div>
 
-                <div class="p-6 bg-slate-50 dark:bg-neutral-800  rounded-3xl shadow-lg -order-1">
-                    <h3 class="text-2xl font-barlow font-bold uppercase col-span-full mb-8">Location</h3>
+                <div class="box">
+                    <h3>Location</h3>
                     <EventLocation location={ event.location }/>
                 </div>
             </div>
-            <div class="gap-6 contents md:flex flex-col">
-                <figure class="bg-slate-50 dark:bg-neutral-800 md:rounded-3xl overflow-clip aspect-square md:aspect-3/2 flex items-center justify-center -order-3 shadow-lg relative -mt-8 -ml-[5vw] -mr-[5vw] md:m-0">
-                    { event.featured_media && <img width="600" height="400" src={ event.featured_media } alt={ event.title } class="aspect-square md:aspect-3/2 size-full object-cover object-center" /> }
-                    { !event.featured_media && <ImageIcon customClasses="w-24 h-24 aspect-1 text-slate-700" /> }
+            <div class="page-column">
+                <figure class="box is-image">
+                    { event.featured_media && <img width="600" height="400" src={ event.featured_media } alt={ event.title } /> }
+                    { !event.featured_media && <ImageIcon /> }
                     
-                    <!-- Favoriten-Button hier einfügen -->
                     <FavoriteButton client:load postId={event.id} />
                 </figure>
 
-                <div class="p-6 bg-slate-50 dark:bg-neutral-800  rounded-3xl flex gap-4 shadow-lg -order-2">
+                <div class="box layout-inline">
                     <Button customClasses={['flex-1']} label="Tickets" type="primary" interaction={ {type: 'link', target: event.tickets, external: true} } icon={ {name: "ShoppingCartIcon"} } />
                     <Button label="Kalender" type="secondary" icon={ {name: 'CalendarIcon', only: true} }/>
                 </div>

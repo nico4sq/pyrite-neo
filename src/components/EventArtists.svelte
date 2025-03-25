@@ -1,11 +1,12 @@
 <script>
     import Artist from "./Artist.svelte";
+    import '../styles/components/EventArtists.css';
 
     export let artists = [];
 </script>
 
 {#if artists.length > 0}
-    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-6">
+    <ul class="event-artists">
         {#each artists as artist}
             <li>
                 <Artist

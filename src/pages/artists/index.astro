@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 import Layout from '../../layouts/Layout.astro';
-import Artists from '../../components/Artists.astro';
+import Artists from '../../components/Artists.svelte';
 import Page from '../../components/Page.astro';
 
 const currentPage = 1;
@@ -13,7 +13,7 @@ const currentPage = 1;
         <section class="w-full py-8 md:py-12 xl:py-16">
             <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Alle Artists</h1>
             
-            <Artists pagination currentPage={currentPage} />
+            <Artists pagination currentPage={currentPage} client:load/>
         </section>
     </Page>
 </Layout>

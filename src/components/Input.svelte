@@ -2,8 +2,9 @@
     import * as FeatherIcons from 'svelte-feather-icons';
     import AirDatepicker from 'air-datepicker';
     import localeDe from 'air-datepicker/locale/de';
-    import { onMount } from 'svelte';
+    import { onMount, tick } from 'svelte';
     import { formatDate } from '../functions/helpers';
+    import '../styles/components/Input.css';
 
     export let type = 'text';
     export let id = '';
@@ -14,90 +15,139 @@
     export let options = [];
 
     let datepicker;
+    let selectOpen = false;
+    let selectedOptionValue = value;
 
-    onMount(() => {
+    onMount(async () => {
         if (type === 'daterange') {
+            await tick();
             let closeButton = {
                 content: 'Schließen',
                 onClick: (dp) => {
                     dp.hide();
                 }
             }
-            datepicker = new AirDatepicker(`#${id}`, {
-                locale: localeDe,
-                range: true,
-                dateFormat: 'dd.MM.yyyy',
-                buttons: ['clear', closeButton],
-                multipleDatesSeparator: " - ",
-                position: 'bottom center',
-                isMobile: true,
-                onSelect: ({ date }) => {
-                    value = {
-                        from: date[0] ? formatDate(date[0]) : null,
-                        to: date[1] ? formatDate(date[1]) : null
-                    };
-                    document.getElementById(id).dispatchEvent(new Event('change', { bubbles: true }));
-                }
-            });
+            try {
+                datepicker = new AirDatepicker(`#${id}`, {
+                    locale: localeDe,
+                    range: true,
+                    dateFormat: 'dd.MM.yyyy',
+                    buttons: ['clear', closeButton],
+                    multipleDatesSeparator: " - ",
+                    position: 'bottom center',
+                    isMobile: true,
+                    onSelect: ({ date }) => {
+                        value = {
+                            from: date[0] ? formatDate(date[0]) : null,
+                            to: date[1] ? formatDate(date[1]) : null
+                        };
+                        const input = document.getElementById(id);
+                        if (input) {
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('DatePicker konnte nicht initialisiert werden:', error);
+            }
         }
     });
 
-    function handleSelect(optionValue, elementId) {
-        let input = document.getElementById(elementId);
-        let parent = input.closest('label');
+    function handleSelect(option) {
+        let input = document.getElementById(id);
+        value = option.value;
+        selectedOptionValue = option.value;
+        selectOpen = false;
 
-        input.value = optionValue;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        setTimeout(() => {
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        }, 0);
+    }
 
-        parent.querySelectorAll('*').forEach(el => el.blur());
+    function toggleSelect() {
+        selectOpen = !selectOpen;
+    }
+
+    function clickOutside(node) {
+        if (typeof window === 'undefined') return { destroy() {} };
+
+        const handleClick = (event) => {
+            if (node && !node.contains(event.target)) {
+                selectOpen = false;
+            }
+        };
+        
+        document.addEventListener('click', handleClick, true);
+        
+        return {
+            destroy() {
+                document.removeEventListener('click', handleClick, true);
+            }
+        };
     }
 </script>
 
 {#if type === 'text' || type === 'email' || type === 'password'}
-    <label on:input on:change for={id} class="flex flex-col gap-1">
-        <strong class:list={"pl-1 font-barlow uppercase text-sm"} class:sr-only={floating}>{label}</strong>
-        <input type={type} name={id} id={id} class="py-2 px-4 rounded-lg bg-slate-50 dark:bg-neutral-800 border-1 border-slate-300 dark:border-neutral-600 cursor-pointer focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-300" placeholder={placeholder} bind:value={value}>
+    <label on:input on:change for={id} class="pyrite-input type-text">
+        <strong class:sr-only={floating} class="label">{label}</strong>
+        <input type={type} name={id} id={id} placeholder={placeholder} bind:value={value}>
     </label>
 {/if}
 
 {#if type === 'daterange'}
-    <label on:input on:change for={id} class="flex flex-col gap-1">
-        <strong class:list={"pl-1 font-barlow uppercase text-sm"} class:sr-only={floating}>{label}</strong>
-        <div class="flex flex-col relative">
-            <input type="text" name={id} id={id} class="py-2 pl-4 pr-12 min-w-3xs rounded-lg bg-slate-50 dark:bg-neutral-800 border-1 border-slate-300 dark:border-neutral-600 cursor-pointer focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-300" placeholder={placeholder} readonly>
-            <FeatherIcons.CalendarIcon class="absolute top-0 right-4 bottom-0 w-4 h-full text-slate-300 dark:text-neutral-600 pointer-events-none" />
+    <label on:input on:change for={id} class="pyrite-input type-text type-daterange">
+        <strong class:sr-only={floating} class="label">{label}</strong>
+        <div class="wrapper">
+            <input type="text" name={id} id={id} placeholder={placeholder} readonly>
+            <FeatherIcons.CalendarIcon class="icon calendar-icon" />
         </div>
-</label>
+    </label>
 {/if}
 
 {#if type === 'checkbox'}
-    <label on:input on:change for={id} class="group flex items-center gap-3 cursor-pointer select-none">
-        <FeatherIcons.CheckIcon class="box-content! w-4 h-4 p-1 rounded-lg bg-slate-800 border-1 border-slate-600 text-transparent group-has-checked:bg-indigo-400 group-has-checked:text-slate-950 group-has-checked:border-indigo-400 group-has-focus:border-white transition" />
-        <input type={type} name={id} id={id} class="rounded-lg bg-slate-800 border-1 border-slate-600 absolute opacity-0 focus:outline-none focus:border-white">
-        <span class="leading-none">{label}</span>
+    <label on:input on:change for={id} class="pyrite-input type-checkbox">
+        <FeatherIcons.CheckIcon class="icon checkbox-icon" />
+        <input type={type} name={id} id={id} class="checkbox-input">
+        <span class="checkbox-label">{label}</span>
     </label>
 {/if}
 
 {#if type === 'textarea'}
-    <label on:input on:change for={id} class="group flex flex-col gap-1 cursor-pointer select-none">
-        <strong class="pl-1 font-barlow uppercase text-sm">{label}</strong>
-        <textarea name={id} id={id} class="py-2 px-4 rounded-lg bg-slate-800 border-1 border-slate-600 focus:outline-none focus:border-white" placeholder={placeholder}></textarea>
+    <label on:input on:change for={id} class="pyrite-input type-textarea">
+        <strong class="label">{label}</strong>
+        <textarea name={id} id={id} placeholder={placeholder}></textarea>
     </label>
 {/if}
 
 {#if type === 'select'}
-    <label on:input on:change for={id} class="group relative flex flex-col gap-1 cursor-pointer">
-        <strong class:list={"pl-1 font-barlow uppercase text-sm"} class:sr-only={floating}>{label}</strong>
-        <div class="flex flex-col relative">
-            <input type="text" name={id} id={id} bind:value={value} class="py-2 pl-4 pr-12 rounded-lg bg-slate-50 dark:bg-neutral-800 border-1 border-slate-300 dark:border-neutral-600 cursor-pointer appearance-none focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-300" readonly placeholder={placeholder}>
-            <FeatherIcons.ChevronDownIcon class="absolute top-0 right-4 bottom-0 w-4 h-full text-neutral-600 pointer-events-none" />
-        </div>
-        <ul class="absolute top-full mt-2 z-10 left-0 w-full bg-neutral-800 border-1 border-neutral-600 rounded-lg overflow-hidden transition-all duration-200 opacity-0 pointer-events-none group-has-focus:opacity-100 group-has-focus:pointer-events-auto">
-            {#each options as option}
-                <li>
-                    <button type="button" class="block w-full py-2 px-4 text-left hover:bg-slate-700 focus:bg-slate-700 focus:outline-none cursor-pointer transition" on:click={() => handleSelect(option.value, id)}>{option.label}</button>
-                </li>
-            {/each}
-        </ul>
-    </label>
+    <div class="pyrite-input-container">
+        <label on:input on:change for={id} class="pyrite-input type-select {selectOpen ? 'active' : ''}" use:clickOutside>
+            <strong class:sr-only={floating} class="label">{label}</strong>
+            <div class="wrapper">
+                <input 
+                    type="text" 
+                    name={id} 
+                    id={id} 
+                    bind:value={value}
+                    on:click|stopPropagation={toggleSelect} 
+                    readonly 
+                    placeholder={placeholder}
+                >
+                <FeatherIcons.ChevronDownIcon class="icon select-icon" />
+            </div>
+            <ul class="options modal {selectOpen ? 'open' : ''}">
+                {#each options as option}
+                    <li>
+                        <button 
+                            type="button" 
+                            class="option {option.value === selectedOptionValue ? 'active' : ''}" 
+                            on:click|stopPropagation={() => handleSelect(option)}
+                        >
+                            {option.label}
+                        </button>
+                    </li>
+                {/each}
+            </ul>
+        </label>
+    </div>
 {/if}

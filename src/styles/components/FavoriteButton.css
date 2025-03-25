@@ -1,0 +1,12 @@
+.pyrite-button.favorite-button {
+    position: relative;
+    z-index: 100;
+
+    &.is-favorite {       
+        svg {
+            color: var(--color-teal-600);
+            fill: currentColor;
+            transition: var(--transition);
+        }
+    }
+}
