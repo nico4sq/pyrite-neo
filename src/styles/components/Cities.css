@@ -1,0 +1,70 @@
+.pyrite-cities {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-40);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @media (min-width: 640px) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .city-item {
+        position: relative;
+        overflow: hidden;
+        background-color: var(--color-neutral-500);
+        border-radius: 1.5rem;
+        aspect-ratio: 2 / 1;
+        outline: transparent;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-items: start;
+        padding: var(--spacing-40);
+
+        @media (min-width: 768px) {
+            aspect-ratio: 3 / 2;
+        }
+
+        > a {
+            position: absolute;
+            inset: 0;
+        }
+
+        &:has(a:hover, a:focus-visible) {
+            background-color: var(--color-teal-500);
+        }
+
+        > svg.feather {
+            position: absolute;
+            top: calc(var(--spacing-40) * -1);
+            right: calc(var(--spacing-40) * -1);
+            width: 5rem;
+            height: 5rem;
+            aspect-ratio: 1;
+            color: var(--color-teal-300);
+            transition: color 0.2s;
+            pointer-events: none;
+        }
+
+        > p {
+            margin: 0;
+            font-family: var(--font-barlow);
+            font-size: var(--level-6);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+}

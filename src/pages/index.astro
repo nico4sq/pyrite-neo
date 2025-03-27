@@ -3,8 +3,8 @@
 
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import Genres from '../components/Genres.astro';
-import Cities from '../components/Cities.astro';
+import Genres from '../components/Genres.svelte';
+import Cities from '../components/Cities.svelte';
 import Events from '../components/Events.astro';
 
 import Input from "../components/Input.svelte";
@@ -30,12 +30,12 @@ import Page from '../components/Page.astro';
 		
 		<section>
 			<h2>Erkunde deine Lieblings-Genres</h2>
-			<Genres />
+			<Genres client:load/>
 		</section>
 
 		<section>
 			<h2>Finde Events in deiner Stadt</h2>
-			<Cities />
+			<Cities client:load/>
 		</section>
 	</Page>	
 </Layout>

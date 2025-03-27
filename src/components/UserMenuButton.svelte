@@ -64,11 +64,6 @@
         { label: 'Mein Profil', action: () => window.location.href = '/profile' },
         { label: 'Abmelden', action: logout, className: 'text-orange-600 dark:text-orange-400' }
     ];
-    
-    function handleMenuSelect(action) {
-        action();
-        isMenuOpen = false;
-    }
 </script>
 
 {#if isLoading}
@@ -86,7 +81,7 @@
     <Button 
         label="Login" 
         type="secondary"
-        icon={{ name: "UserIcon", position: "left" }} 
+        icon={{ name: "LogInIcon", position: "right" }} 
         interaction={{ type: 'link', target: '/login' }}
     />
 {/if}

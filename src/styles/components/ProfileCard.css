@@ -1,0 +1,36 @@
+.pyrite-profile-card {
+    display: flex;
+    gap: var(--spacing-30);
+
+    .avatar {
+        width: 4rem;
+        height: 4rem;
+        border-radius: var(--radius-full);
+        overflow: hidden;
+        background-color: var(--color-teal-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--level-4);
+        font-family: var(--font-barlow);
+        font-weight: bold;
+    }
+
+    .text-content {
+        padding: var(--spacing-40);
+
+        > h2 {
+            font-size: var(--level-4);
+            margin-bottom: var(--spacing-20);
+        }
+
+        > p {
+            margin: 0;
+
+            &:last-child {
+                font-size: var(--tiny);
+                color: hsl(from var(--color-white) h s l / 0.5);
+            }
+        }
+    }
+}

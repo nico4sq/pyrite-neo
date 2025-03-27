@@ -1,31 +1,21 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Page from '../components/Page.astro';
-import ProfileCard from '../components/ProfileCard.svelte';
-import UserFavorites from '../components/UserFavorites.svelte';
-import Calendar from '../components/Calendar.svelte';
-
+import Layout from "../layouts/Layout.astro";
+import Page from "../components/Page.astro";
+import ProfileCard from "../components/ProfileCard.svelte";
+import UserFavorites from "../components/UserFavorites.svelte";
+import Calendar from "../components/Calendar.svelte";
 ---
 
 <Layout title="Mein Profil">
-  <Page>
-    <div class="w-full mx-auto">
-      <h1 class="text-3xl font-bold font-barlow uppercase mb-6">Mein Profil</h1>
-      
-      <div class="flex flex-col gap-10">
-        <!-- Profildaten -->
-        <div class="bg-white w-full max-w-2xl mx-auto dark:bg-neutral-800 rounded-3xl">
-          <ProfileCard client:load />
-        </div>
-        <div class="bg-white w-full max-w-2xl mx-auto dark:bg-neutral-800 rounded-3xl p-6">
-          <Calendar client:load/>
-        </div>
-        
-        <!-- Favoriten -->
-        <!-- <div class="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-sm">
-          <UserFavorites client:load />
-        </div> -->
-      </div>
-    </div>
-  </Page>
+    <Page>
+        <section>
+            <h1>Mein Profil</h1>
+
+            <ProfileCard client:only />
+
+            <!-- <div class="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-sm">
+              <UserFavorites client:load />
+            </div> -->
+        </section>
+    </Page>
 </Layout>

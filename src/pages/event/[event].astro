@@ -6,6 +6,7 @@ export const prerender = true;
 import Layout from '../../layouts/Layout.astro';
 import Page from '../../components/Page.astro';
 import Button from '../../components/Button.svelte';
+import Buttons from '../../components/Buttons.svelte';
 import EventArtists from '../../components/EventArtists.svelte';
 import EventLocation from '../../components/EventLocation.svelte';
 import FavoriteButton from '../../components/FavoriteButton.svelte';
@@ -16,7 +17,7 @@ import { Image } from 'astro:assets';
 import "../../styles/global.css";
 
 import { fetchEvents } from '../../api/wordpress';
-import { downloadICS } from '../../functions/helpers';
+import { downloadICS, responsiveImageSource } from '../../functions/helpers';
 
 export async function getStaticPaths() {
     let events = await fetchEvents(null, null, [], [], true);
@@ -38,7 +39,7 @@ const { event } = Astro.props;
     title={ event.title }
     description={ event.excerpt }>
 
-    { event.featured_media && <img width="1200" height="800" src={ event.featured_media } alt={ event.title } class="page-background-image" /> }
+    { event.featured_media && <img width="1200" height="800" srcset={responsiveImageSource(event.featured_media)} alt={ event.title } class="page-background-image" /> }
 
     <Page>
         <div class="page-grid">
@@ -67,15 +68,17 @@ const { event } = Astro.props;
             </div>
             <div class="page-column">
                 <figure class="box is-image">
-                    { event.featured_media && <img width="600" height="400" src={ event.featured_media } alt={ event.title } /> }
+                    { event.featured_media && <img width="600" height="400" srcset={responsiveImageSource(event.featured_media)} alt={ event.title } /> }
                     { !event.featured_media && <ImageIcon /> }
                     
                     <FavoriteButton client:load postId={event.id} />
                 </figure>
 
-                <div class="box layout-inline">
-                    <Button customClasses={['flex-1']} label="Tickets" type="primary" interaction={ {type: 'link', target: event.tickets, external: true} } icon={ {name: "ShoppingCartIcon"} } />
-                    <Button label="Kalender" type="secondary" icon={ {name: 'CalendarIcon', only: true} }/>
+                <div class="box">
+                    <Buttons direction="row" align="center" justify="start">
+                        <Button customClasses={['flex-1']} label="Tickets" type="primary" interaction={ {type: 'link', target: event.tickets, external: true} } icon={ {name: "ShoppingCartIcon"} } />
+                        <Button label="Kalender" type="secondary" icon={ {name: 'CalendarIcon', only: true} }/>
+                    </Buttons>
                 </div>
             </div>
         </div>

@@ -80,7 +80,7 @@
     />
     
     <Button 
-        label={isLoading ? "Wird angemeldet..." : "Anmelden"} 
+        label={isLoading ? "Login..." : "Login"} 
         type="primary" 
         disabled={isLoading}
         interaction={{ type: 'submit' }}

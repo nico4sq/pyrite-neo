@@ -10,6 +10,7 @@
     let passwordConfirm = '';
     let errorMessage = '';
     let successMessage = '';
+    let isLoading = false;
     
     let usernameError = '';
     let emailError = '';
@@ -83,6 +84,9 @@
             errorMessage = 'Bitte überprüfen Sie Ihre Eingaben';
             return;
         }
+
+        isLoading = true;
+        errorMessage = '';
         
         try {
             const response = await fetch('/api/register', {
@@ -101,10 +105,8 @@
             const result = await response.json();
             
             if (result.success) {
-                // Erfolgreiche Registrierung, aber Account noch nicht aktiviert
                 successMessage = 'Registrierung erfolgreich! Bitte überprüfe deine E-Mail, um dein Konto zu aktivieren.';
                 
-                // Felder zurücksetzen
                 username = '';
                 email = '';
                 password = '';
@@ -113,6 +115,8 @@
         } catch (error) {
             console.error("Error during form submission:", error);
             errorMessage = error.message || 'Registrierung fehlgeschlagen';
+        } finally {
+            isLoading = false;
         }
     }
 </script>
@@ -216,7 +220,7 @@
     </div>
     
     <Button 
-        label="Registrieren" 
+        label={isLoading ? "Registrieren..." : "Registrieren"}
         type="primary" 
         interaction={{ type: 'submit' }}
     />

@@ -221,8 +221,13 @@ p {
         margin: 0 !important;
     }
 }
+
 address {
     font-style: normal;
+}
+
+figure {
+    position: relative;
 }
 
 .subline {

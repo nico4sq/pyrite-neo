@@ -40,12 +40,6 @@ article.pyrite-card.type-event {
         }
     }
 
-    .pyrite-button.favorite-button {
-        position: absolute;
-        inset: var(--spacing-20) var(--spacing-20) auto auto;
-        z-index: 1000;
-    }
-
     figure {
         aspect-ratio: 3 / 2;
         background-color: var(--color-neutral-500);
@@ -71,11 +65,9 @@ article.pyrite-card.type-event {
         gap: var(--spacing-20);
 
         p {
-            font-size: var(--small);
             font-weight: bold;
             color: var(--_accent-color);
             transition: var(--transition);
-            margin-bottom: var(--spacing-10);
         }
 
         h2 {

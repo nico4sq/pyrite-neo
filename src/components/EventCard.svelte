@@ -1,6 +1,7 @@
 <script>
   import { ImageIcon, MusicIcon, MapPinIcon } from 'svelte-feather-icons';
   import FavoriteButton from './FavoriteButton.svelte';
+  import { responsiveImageSource } from '../functions/helpers.js';
 
   import '../styles/components/EventCard.css';
 
@@ -16,7 +17,7 @@
 <article data-id={id} class="pyrite-card type-event fade-in">
   <figure>
     {#if featured_media}
-      <img width="600" height="400" src={featured_media} alt={title} />
+      <img width="600" height="400" srcset={responsiveImageSource(featured_media)} alt={title} />
     {/if}
 
     {#if href}

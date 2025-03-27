@@ -1,6 +1,7 @@
 .pyrite-button.favorite-button {
-    position: relative;
-    z-index: 100;
+    position: absolute;
+    inset: var(--spacing-20) var(--spacing-20) auto auto;
+    z-index: 2;
 
     &.is-favorite {       
         svg {

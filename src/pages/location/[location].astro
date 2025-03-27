@@ -14,6 +14,7 @@ import { Image } from 'astro:assets';
 import "../../styles/global.css";
 
 import { fetchLocations, fetchLocationEvents } from '../../api/wordpress';
+import { responsiveImageSource } from '../../functions/helpers';
 
 export async function getStaticPaths() {
     let locations = await fetchLocations();    
@@ -74,7 +75,7 @@ const locationEvents = await fetchLocationEvents(id);
             </div>
             <div class="page-column">
                 <figure class="box is-image">
-                    { featured_media && <img width="600" height="400" src={ featured_media } alt={ title } /> }
+                    { featured_media && <img width="600" height="400" srcset={responsiveImageSource(featured_media)} alt={ title } /> }
                     { !featured_media && <ImageIcon /> }
                 </figure>
                 <div class="box">

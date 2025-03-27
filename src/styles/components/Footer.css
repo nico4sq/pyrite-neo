@@ -25,4 +25,8 @@ footer.pyrite-footer {
             height: 1.5rem;
         }
     }
+
+    a {
+        text-decoration: none;
+    }
 }

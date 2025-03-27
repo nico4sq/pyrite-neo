@@ -1,0 +1,65 @@
+.link-tile {
+    --_background-color: var(--color-teal-600);
+    --_color: var(--color-white);
+
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding: var(--spacing-50);
+    background-color: var(--_background-color);
+    color: var(--_color);
+
+    @media (max-width: 768px) {
+        aspect-ratio: 3 / 2;
+    }
+    
+    a {
+        position: absolute;
+        inset: 0;
+    }
+
+    &:has(a:hover, a:focus) {
+        --_background-color: var(--color-teal-500);
+
+        svg.feather {
+            translate: var(--spacing-20) 0;
+        }
+    }
+
+    p {
+        margin: 0 !important;
+    }
+
+    svg.feather {
+        position: absolute;
+        inset: var(--spacing-50) var(--spacing-50) auto auto;
+        font-size: var(--level-3);
+        transition: var(--transition);
+        pointer-events: none;
+    }
+
+    &.is-small {
+        padding: var(--spacing-40);
+        aspect-ratio: 2 / 1;
+
+        @media (min-width: 768px) {
+            aspect-ratio: 3 / 2;
+        }
+        
+        > p {
+            font-family: var(--font-barlow);
+            font-size: var(--level-6);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        > svg.feather {
+            inset: var(--spacing-40) var(--spacing-40) auto auto;
+            font-size: var(--level-4);
+        }
+    }
+}

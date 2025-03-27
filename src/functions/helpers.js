@@ -86,3 +86,23 @@ export function formatDate(date) {
 
     return date;
 }
+
+export function responsiveImage(src, width, height) {
+    return `//wsrv.nl/?url=${src}?w=${width}&h=${height}&fit=inside&q=75&output=webp`;
+  }
+
+export function responsiveImageSource(src) {
+const sizes = [
+    { width: 600, height: 400 },
+    { width: 1200, height: 800 },
+    { width: 1800, height: 1200 },
+    { width: 2400, height: 1600 }
+];
+
+return sizes
+    .map(({ width, height }) => {
+    const url = responsiveImage(src, width, height);
+    return `${url} ${width}w`;
+    })
+    .join(', ');
+}

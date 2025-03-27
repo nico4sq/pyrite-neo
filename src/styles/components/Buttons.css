@@ -1,0 +1,61 @@
+.pyrite-buttons {
+    display: flex;
+    gap: var(--spacing-30);
+    flex-wrap: wrap;
+
+    &:not(:first-child) {
+        margin-top: var(--spacing-50);
+    }
+
+    &:not(:last-child) {
+        margin-bottom: var(--spacing-50);
+    }
+
+    &.align-start {
+        align-items: flex-start;
+    }
+
+    &.align-center {
+        align-items: center;
+    }
+
+    &.align-end {
+        align-items: flex-end;
+    }
+
+    &.align-stretch {
+        align-items: stretch;
+    }
+
+    &.justify-start {
+        justify-content: flex-start;
+    }
+
+    &.justify-center {
+        justify-content: center;
+    }
+
+    &.justify-end {
+        justify-content: flex-end;
+    }
+
+    &.justify-between {
+        justify-content: space-between;
+    }
+
+    &.justify-around {
+        justify-content: space-around;
+    }
+
+    &.justify-evenly {
+        justify-content: space-evenly;
+    }
+
+    &.direction-row {
+        flex-direction: row;
+    }
+
+    &.direction-column {
+        flex-direction: column;
+    }
+}
