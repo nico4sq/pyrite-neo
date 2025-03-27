@@ -88,6 +88,13 @@
 
 * {
     box-sizing: border-box;
+
+    &:is(:focus, :active) {
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+    }
 }
 
 body {

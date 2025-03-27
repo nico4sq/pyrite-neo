@@ -41,6 +41,7 @@ article.pyrite-card.type-event {
     }
 
     figure {
+        position: static;
         aspect-ratio: 3 / 2;
         background-color: var(--color-neutral-500);
         display: flex;

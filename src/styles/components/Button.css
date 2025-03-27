@@ -17,6 +17,12 @@
     text-transform: uppercase;
     cursor: pointer;
 
+    @media (hover: none) and (pointer: coarse) {
+        &:active {
+            scale: 0.95;
+        }
+    }
+
     svg {
         font-size: var(--base);
     }
@@ -34,10 +40,12 @@
         --_color: var(--color-white);
         --_background-color: var(--color-teal-600);
 
-        &:hover,
-        &:focus {
-            --_border-color: var(--color-teal-500);
-            --_background-color: var(--color-teal-500);
+        @media (hover: hover) {
+            &:hover,
+            &:focus {
+                --_border-color: var(--color-teal-500);
+                --_background-color: var(--color-teal-500);
+            }
         }
     }
 
@@ -46,11 +54,13 @@
         --_color: var(--color-white);
         --_background-color: transparent;
 
-        &:hover,
-        &:focus {
-            --_border-color: var(--color-white);
-            --_background-color: var(--color-neutral-500);
-            --_color: var(--color-white);
+        @media (hover: hover) {
+            &:hover,
+            &:focus {
+                --_border-color: var(--color-white);
+                --_background-color: var(--color-neutral-500);
+                --_color: var(--color-white);
+            }
         }
     }
 
@@ -59,9 +69,13 @@
         --_color: var(--color-white);
         --_background-color: transparent;
 
-        &:hover,
-        &:focus {
-            --_color: var(--color-teal-600);
+        padding: 0;
+
+        @media (hover: hover) {
+            &:hover,
+            &:focus {
+                --_color: var(--color-teal-600);
+            }
         }
     }
 }

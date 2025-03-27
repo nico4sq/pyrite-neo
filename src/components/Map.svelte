@@ -15,6 +15,11 @@
     import { fetchLocationById, fetchLocationEvents, fetchLocations } from '../api/wordpress';
     import { onMount } from 'svelte';
     import LocationEvent from './LocationEvent.svelte';
+    import Input from './Input.svelte';
+    import Buttons from './Buttons.svelte';
+    import Button from './Button.svelte';
+
+    import "../styles/components/Map.css";
 
     export let single;
 
@@ -34,7 +39,7 @@
     let markerLayer = L.markerClusterGroup({
         maxClusterRadius: 100,
         iconCreateFunction: function(cluster) {
-        return L.divIcon({ className: 'w-8! h-8! aspect-1 rounded-full  text-indigo-800 flex! items-center justify-center', html: '<b>' + cluster.getChildCount() + '</b>' });
+        return L.divIcon({ className: 'cluster-icon', html: '<b>' + cluster.getChildCount() + '</b>' });
     }});
     let positionLayer = L.layerGroup();
 
@@ -66,7 +71,7 @@
         let zoomInControl = L.control({ position: 'topright' });
         let zoomOutControl = L.control({ position: 'topright' });
         zoomInControl.onAdd = function () {
-            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! bg-slate-50 text-slate-950 rounded-lg p-2 shadow-md cursor-pointer! hover:bg-slate-300 transition! active:scale-95');
+            let button = L.DomUtil.create('button', 'zoom-button');
             button.innerHTML = renderIcon('PlusIcon', 4);
 
             button.addEventListener('click', () => {
@@ -76,7 +81,7 @@
             return button;
         };
         zoomOutControl.onAdd = function () {
-            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! bg-slate-50 text-slate-950 rounded-lg p-2 shadow-md cursor-pointer! hover:bg-slate-300 transition! active:scale-95');
+            let button = L.DomUtil.create('button', 'zoom-button');
             button.innerHTML = renderIcon('MinusIcon', 4);
 
             button.addEventListener('click', () => {
@@ -93,7 +98,7 @@
             let location = await fetchLocationById(single);
             let marker = L.marker([location.coordinates.lat, location.coordinates.lng], {
                 icon: L.divIcon({
-                    className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before: before:size-xl after:w-2 after:h-2 after:color-teal-700 after:rounded-3xl after:flex after:absolute text-white flex! items-center justify-center',
+                    className: 'location-marker',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32]
                 }),
@@ -108,7 +113,7 @@
             locations.forEach((location) => {
                 let marker = L.marker([location.coordinates.lat, location.coordinates.lng], {
                     icon: L.divIcon({
-                        className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before: before:size-xl after:w-2 after:h-2 after:color-teal-700 after:rounded-3xl after:flex after:absolute text-white flex! items-center justify-center',
+                        className: 'location-marker',
                         iconSize: [32, 32],
                         iconAnchor: [16, 32]
                     }),
@@ -247,7 +252,7 @@
     function setPositionMarker(coords) {
         let marker = L.marker(coords, {
             icon: L.divIcon({
-                className: 'before:size-full before:rounded-tl-3xl before:rounded-tr-3xl before:rounded-bl-3xl before:rounded-br-xs before:rotate-45 before:bg-rose-400 before:size-xl after:w-2 after:h-2 after:bg-rose-700 after:rounded-3xl after:flex after:absolute after:animate-pulse text-white flex! items-center justify-center',
+                className: 'position-marker',
                 iconSize: [24, 24],
                 iconAnchor: [12, 24]
             })
@@ -263,7 +268,7 @@
         let control = L.control({ position: 'topright' });
 
         control.onAdd = function () {
-            let button = L.DomUtil.create('button', 'relative z-10 pointer-events-auto flex items-center justify-center w-10! h-10! color-teal-100 text-indigo-700 hover:color-teal-200 hover:text-indigo-800 rounded-lg p-2 shadow-md cursor-pointer! transition! ml-2 active:scale-95');
+            let button = L.DomUtil.create('button', 'city-selection-button');
             button.innerHTML = renderIcon('SearchIcon', 4);
 
             button.addEventListener('click', () => {
@@ -278,107 +283,92 @@
 </script>
 
 {#if single}
-    <div class="w-full h-128 rounded-3xl overflow-clip">
-        <div id="map" class="size-full bg-transparent!"></div>
+    <div class="map-container">
+        <div id="map" class="map-element"></div>
     </div>
 {:else}
-    <div class="w-full h-dvh -mt-16 pt-16 relative overflow-hidden">
-        <div id="map" class="size-full bg-transparent!"></div>
+    <div class="map-wrapper">
+        <div id="map" class="map-element"></div>
 
         <!-- City Selection Modal -->
-        {#if citySelectionModalOpen}
-        <div class="fixed inset-0 bg-black/70 z-6000 flex items-center justify-center">
-            <div class="bg-slate-200 dark:bg-neutral-900 p-6 rounded-xl shadow-xl w-96 max-w-[90%]">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 class="text-xl font-barlow font-bold uppercase text-slate-950 dark:text-slate-200 text-balance">Für welche Stadt interessierst du dich?</h3>
-                    <button on:click={closeCitySelectionModal} class="flex items-center justify-center w-10 h-10 color-teal-300 text-indigo-800 hover:text-indigo-900 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer active:scale-95 transition"><FeatherIcon.XIcon class="w-4 h-4"/></button>
-                </div>
+        <div class="city-selection-modal-overlay {citySelectionModalOpen ? 'open' : ''}">
+            <div class="city-selection-modal width-xs">
+                <header class="modal-header">
+                    <h3>Für welche Stadt interessierst du dich?</h3>
+                    <Button
+                        on:click={closeCitySelectionModal}
+                        interaction={{ type: 'button' }}
+                        type="primary"
+                        icon={{ name: 'XIcon', only: 'true' }}
+                    />
+                </header>
                 
-                <div class="relative mb-3">
-                    <div class="relative">
-                        <input 
-                            type="text"
-                            bind:value={searchInput}
-                            on:input={searchCity}
-                            placeholder="Stadt suchen..."
-                            class="w-full py-2 pr-4 pl-10 rounded-lg bg-slate-50 dark:bg-neutral-800 border-1 border-neutral-600 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-300"
-                        />
-                        <FeatherIcon.SearchIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
-                        {#if isSearching}
-                            <span class="flex items-center absolute right-3 top-1/2 -translate-y-1/2 justify-center rounded-full w-4 h-4 animate-ping /40 before: before:rounded-full before:w-2 before:h-2"></span>
-                        {/if}
-                    </div>
+                <div class="search-container">
+                    <Input
+                        bind:value={searchInput}
+                        on:input={searchCity}
+                        placeholder="Stadt suchen..."
+                    />
                     
-                    {#if searchResults.length > 0}
-                        <ul class="mt-2 border border-slate-200 dark:border-neutral-600 rounded-lg overflow-hidden absolute left-0 right-0 bg-neutral-900 shadow-xl">
-                            {#each searchResults as result}
-                                <li>
-                                    <button 
-                                        on:click={() => selectCity(result)}
-                                        class="w-full text-left py-2 px-4 bg-slate-50 hover:bg-slate-300 dark:bg-neutral-800 dark:hover:bg-slate-700 text-slate-950 dark:text-slate-200 transition cursor-pointer active:scale-95"
-                                    >
-                                        {result.name}
-                                    </button>
-                                </li>
-                            {/each}
-                        </ul>
-                    {/if}
+                    <ul class="options {searchResults.length > 0 ? 'open' : ''}">
+                        {#each searchResults as result}
+                            <li>
+                                <button 
+                                    type="button"
+                                    class="option"
+                                    on:click={() => selectCity(result)}
+                                >
+                                    {result.name}
+                                </button>
+                            </li>
+                        {/each}
+                    </ul>
                 </div>
                 
                 {#if cities.length > 0}
-                    <div>
-                        <div class="grid grid-cols-2 gap-3 sm:grid-cols-2">
-                            {#each cities as city}
-                                <button 
-                                    on:click={() => selectPredefinedCity(city)}
-                                    class="text-center py-2 px-3 bg-slate-300 hover:bg-slate-400 dark:bg-neutral-800 dark:hover:bg-slate-700 rounded-lg text-slate-950 dark:text-slate-200 transition cursor-pointer active:scale-95"
-                                >
-                                    {city}
-                                </button>
-                            {/each}
-                        </div>
-                    </div>
+                    <Buttons direction="column" align="stretch" justify="start">
+                        {#each cities as city}
+                            <Button 
+                                on:click={() => selectPredefinedCity(city)}
+                                label={city}
+                                interaction={{ type: 'button' }}
+                                type="secondary"
+                            />
+                        {/each}
+                    </Buttons>
                 {/if}
                 
-                <div class="mt-6 border-t border-slate-300 dark:border-neutral-700 pt-6">
-                    <button 
-                        on:click={detectUserLocation}
-                        class="w-full flex items-center justify-center py-2 color-teal-300 text-indigo-800 hover:text-indigo-900 rounded-lg transition cursor-pointer active:scale-95"
-                    >
-                        <FeatherIcon.MapPinIcon class="w-4 h-4 mr-2" />
-                        Meinen Standort verwenden
-                    </button>
-                </div>
+                <Buttons direction="column" align="stretch" justify="start">
+                    <Button 
+                        on:click={closeCitySelectionModal}
+                        label="Standort verwenden"
+                        interaction={{ type: 'button' }}
+                        type="primary"
+                        icon={{ name: 'MapPinIcon', position: 'right' }}
+                    />
+                </Buttons>
             </div>
         </div>
-        {/if}
 
-        <!-- Location Details Modal -->
         <div id="location-modal"
-            class="text-white absolute bottom-0 left-0 right-0 m-4 max-w-3xl h-80 lg:h-auto bg-slate-50 dark:bg-neutral-900 shadow-lg rounded-xl p-6 overflow-y-auto z-5000 transition-transform duration-300 transform lg:top-16 lg:left-0 lg:bottom-0 lg:m-4 lg:mr-0 lg:w-sm lg:max-w-3xl"
+            class="location-modal"
             class:active={modalOpen}>
-            <style>
-                #location-modal {
-                    transform: translate(0, calc(100% + 1rem));
-
-                    @media (min-width: 64rem) {
-                        transform: translate(calc((100% + 1rem) * -1), 0);
-                    }
-                }
-                #location-modal.active {
-                    transform: translate(0); 
-                }
-            </style>
-            <div id="location-modal-content" class="flex flex-col gap-6">
+            <div id="location-modal-content" class="location-modal-content">
+                <Button
+                    on:click={closeModal}
+                    interaction={{ type: 'button' }}
+                    type="primary"
+                    icon={{ name: 'XIcon', only: 'true' }}
+                />
                 {#if activeLocation && activeLocationEvents}
-                    <hgroup class="flex flex-col gap-1">
-                        <p class="text-2xl font-barlow uppercase font-bold text-slate-950 dark:text-slate-200">{activeLocation.title}</p>
-                        <address class="not-italic">{ activeLocation.address }</address>
+                    <hgroup class="location-header">
+                        <p class="location-title">{activeLocation.title}</p>
+                        <address class="location-address">{ activeLocation.address }</address>
                     </hgroup>
             
                     {#if activeLocationEvents && activeLocationEvents.length > 0}
-                        <h3 class="text-lg font-barlow uppercase font-bold text-slate-950 dark:text-slate-200">Kommende Events</h3>
-                        <ul class="flex flex-col gap-6">
+                        <h3 class="events-title">Kommende Events</h3>
+                        <ul class="events-list">
                         {#each activeLocationEvents as event}
                             <li>
                                 <LocationEvent name={event.title} slug={event.slug} image={event.featured_media} date={event.date} />
@@ -386,13 +376,12 @@
                         {/each}
                         </ul>
                     {:else}
-                        <p class="text-xs">Keine Events gefunden.</p>
+                        <p class="no-events">Keine Events gefunden.</p>
                     {/if}
                 {:else}
-                    <p class="text-xs rounded-lg py-4 flex gap-4 text-balance"><span class="flex items-center justify-center rounded-full w-4 h-4 aspect-square animate-ping /40 before: before:rounded-full before:w-2 before:h-2"></span>Einen Moment, Informationen zur Location werden geladen...</p>
+                    <p class="loading-message"><span class="loading-indicator"></span>Einen Moment, Informationen zur Location werden geladen...</p>
                 {/if}
             </div>
-            <button on:click={closeModal} class="flex items-center justify-center absolute top-2 right-2 w-10 h-10  text-slate-950 font-barlow font-bold uppercase text-sm py-1 px-2 rounded-lg cursor-pointer"><FeatherIcon.XIcon class="w-4 h-4"/></button>
         </div>
     </div>
 {/if}

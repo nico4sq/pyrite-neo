@@ -47,6 +47,7 @@ article.pyrite-card.type-artist {
     }
 
     figure {
+        position: static;
         aspect-ratio: 3 / 2;
         display: flex;
         align-items: center;
