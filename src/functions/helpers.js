@@ -65,16 +65,12 @@ import * as FeatherIcons from 'svelte-feather-icons';
 
 export function renderIcon(iconName, size = 5) {
     const iconContainer = document.createElement('span');
-    iconContainer.classList.add('flex', `w-${size}!`, `h-${size}!`, 'aspect-1', 'text-inherit');
 
     mount(FeatherIcons[iconName], {
-        target: iconContainer,
-        props: {
-            class: ['flex', `w-${size}!`, `h-${size}!`].join(' ')
-        }
+        target: iconContainer
     });
 
-    return iconContainer.outerHTML;
+    return iconContainer.innerHTML;
 }
 
 export function formatDate(date) {

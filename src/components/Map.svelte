@@ -53,20 +53,11 @@
             gestureHandling: true
         });
 
-        if(document.documentElement.classList.contains('dark')) {
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                subdomains: 'abcd',
-                maxZoom: 20
-            }).addTo(map);
-        } else {
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                subdomains: 'abcd',
-                maxZoom: 20
-            }).addTo(map);
-        }
-
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
 
         let zoomInControl = L.control({ position: 'topright' });
         let zoomOutControl = L.control({ position: 'topright' });
@@ -353,21 +344,24 @@
         <div id="location-modal"
             class="location-modal"
             class:active={modalOpen}>
-            <div id="location-modal-content" class="location-modal-content">
+            <header class="modal-header">
+                {#if activeLocation}
+                    <hgroup class="location-header">
+                        <h2 class="location-title">{activeLocation.title}</h2>
+                        <address class="location-address">{ activeLocation.address }</address>
+                    </hgroup>
+                {/if}
                 <Button
                     on:click={closeModal}
                     interaction={{ type: 'button' }}
                     type="primary"
                     icon={{ name: 'XIcon', only: 'true' }}
                 />
-                {#if activeLocation && activeLocationEvents}
-                    <hgroup class="location-header">
-                        <p class="location-title">{activeLocation.title}</p>
-                        <address class="location-address">{ activeLocation.address }</address>
-                    </hgroup>
-            
+            </header>
+            <div class="modal-content">
+                {#if activeLocationEvents}
                     {#if activeLocationEvents && activeLocationEvents.length > 0}
-                        <h3 class="events-title">Kommende Events</h3>
+                        <h3>Kommende Events</h3>
                         <ul class="events-list">
                         {#each activeLocationEvents as event}
                             <li>
@@ -376,10 +370,10 @@
                         {/each}
                         </ul>
                     {:else}
-                        <p class="no-events">Keine Events gefunden.</p>
+                        <p class="notification is-info">Keine Events gefunden.</p>
                     {/if}
                 {:else}
-                    <p class="loading-message"><span class="loading-indicator"></span>Einen Moment, Informationen zur Location werden geladen...</p>
+                    <p class="notification is-info">Einen Moment, Informationen zur Location werden geladen...</p>
                 {/if}
             </div>
         </div>
