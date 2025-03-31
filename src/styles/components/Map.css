@@ -217,7 +217,7 @@ ul.options {
 
 .location-modal {
     position: fixed;
-    inset: auto 0 0 0;
+    inset: auto 0 4rem 0;
     margin: var(--spacing-40);
     background-color: var(--color-neutral-600);
     border-radius: var(--radius-lg);
@@ -225,9 +225,13 @@ ul.options {
     overflow-y: auto;
     z-index: 5000;
     transition: var(--transition);
-    translate: 0 calc(100% + var(--spacing-40));
+    translate: calc((100% + var(--spacing-40)) * -1) 0;
 
-    @media (min-width: 64rem) {
+    @media (min-width: 768px) {
+        inset: auto 0 0 0;
+    }
+
+    @media (min-width: 992px) {
         inset: 4rem auto 0 0;
         width: var(--content-xs);
         margin: var(--spacing-40);

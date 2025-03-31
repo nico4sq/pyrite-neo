@@ -35,6 +35,11 @@
         }
     }
 
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
     &.type-primary {
         --_border-color: var(--color-teal-600);
         --_color: var(--color-white);
@@ -47,19 +52,50 @@
                 --_background-color: var(--color-teal-500);
             }
         }
+
+        &.inverted {
+            --_border-color: var(--color-neutral-600);
+            --_color: var(--color-white);
+            --_background-color: var(--color-neutral-600);
+
+            @media (hover: hover) {
+                &:hover,
+                &:focus {
+                    --_border-color: var(--color-neutral-500);
+                    --_background-color: var(--color-neutral-500);
+                    --_color: var(--color-white);
+                }
+            }
+        }
     }
 
     &.type-secondary {
         --_border-color: var(--color-white);
         --_color: var(--color-white);
-        --_background-color: transparent;
+        --_background-color: rgba(255, 255, 255, 0.01);
+
+        backdrop-filter: blur(0.5rem);
 
         @media (hover: hover) {
             &:hover,
             &:focus {
                 --_border-color: var(--color-white);
-                --_background-color: var(--color-neutral-500);
+                --_background-color: hsl(from var(--color-white) h s l / 0.1);
                 --_color: var(--color-white);
+            }
+        }
+
+        &.inverted {
+            --_border-color: var(--color-neutral-600);
+            --_color: var(--color-neutral-600);
+            --_background-color: rgba(0, 0, 0, 0.01);
+
+            @media (hover: hover) {
+                &:hover,
+                &:focus {
+                    --_border-color: var(--color-neutral-500);
+                    --_background-color: hsl(from var(--color-neutral-600) h s l / 0.1);
+                }
             }
         }
     }

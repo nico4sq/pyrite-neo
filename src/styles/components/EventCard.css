@@ -110,4 +110,10 @@ article.pyrite-card.type-event {
             --_color: var(--color-neutral-100);
         }
     }
+
+    &.is-small {
+        header {
+            margin-right: var(--spacing-50);
+        }
+    }
 }

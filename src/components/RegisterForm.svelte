@@ -59,17 +59,20 @@
     
     function validatePasswordConfirm() {
         passwordConfirmError = password !== passwordConfirm ? 'Passwörter stimmen nicht überein' : false;
+        isFormValid();
     }
     
     function isFormValid() {
-        const usernameValid = (username && username.length >= 3 && !usernameError) ? true : false;
-        const emailValid = (email && emailPattern.test(email) && !emailError) ? true : false;
-        const passwordValid = Object.values(passwordErrors).every(val => val === true);
-        const passwordConfirmValid = (passwordConfirm && passwordConfirm === password) ? true : false;
-
-        let formValid = usernameValid && emailValid && passwordValid && passwordConfirmValid;
-        
-        return formValid;
+        return (
+            username &&
+            email &&
+            password &&
+            passwordConfirm &&
+            !usernameError &&
+            !emailError &&
+            Object.values(passwordErrors).every(Boolean) &&
+            !passwordConfirmError
+        );
     }
 
     async function handleSubmit(event) {

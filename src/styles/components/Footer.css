@@ -4,7 +4,7 @@ footer.pyrite-footer {
     width: 100%;
     z-index: 1000;
     height: 4rem;
-    background: var(--color-neutral-600);
+    margin-top: auto;
 
     > .inner {
         height: 100%;

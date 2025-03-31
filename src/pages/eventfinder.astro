@@ -3,7 +3,7 @@
 
 import Layout from '../layouts/Layout.astro';
 import Page from '../components/Page.astro';
-import EventsComponent from '../components/Events.svelte';
+import EventsFilter from '../components/EventsFilter.svelte';
 ---
 
 <Layout 
@@ -14,7 +14,7 @@ import EventsComponent from '../components/Events.svelte';
 		<section class="w-full py-8 md:py-12 xl:py-16 flex flex-col">
             <h1 class="text-5xl font-barlow uppercase font-bold mb-[1em]">Eventfinder</h1>
 
-            <EventsComponent client:load />
+            <EventsFilter client:load />
         </section>
     </Page>
 </Layout>

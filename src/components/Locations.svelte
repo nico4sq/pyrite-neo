@@ -3,11 +3,13 @@
     import * as FeatherIcons from "svelte-feather-icons";
     import { fetchLocations } from "../api/wordpress";
     import LocationCard from "./LocationCard.svelte";
+    import Button from "./Button.svelte";
 
     import "../styles/components/Locations.css";
 
     export let pagination = false;
     export let currentPage = 1;
+    export let paginationRange = [];
 
     let locations = [];
     let pages = [];
@@ -24,12 +26,32 @@
         } else {
             locations = await fetchLocations(perPage - 1);
         }
+
+        paginationRange = getPaginationRange();
     });
+
+    function getPaginationRange() {
+        const totalPages = pages.length;
+        if (totalPages <= 3) {
+            return pages;
+        }
+
+        let startPage = Math.max(1, currentPage - 1);
+        let endPage = Math.min(totalPages, currentPage + 1);
+
+        if (currentPage === 1) {
+            endPage = Math.min(totalPages, 3);
+        } else if (currentPage === totalPages) {
+            startPage = Math.max(1, totalPages - 2);
+        }
+
+        return pages.slice(startPage - 1, endPage);
+    }
 </script>
 
 <ul class="locations-list">
     {#each locations as location}
-        <li>
+        <li class="location-item">
             <LocationCard
                 id={location.id}
                 title={location.title}
@@ -40,63 +62,79 @@
     {/each}
 </ul>
 
-{#if pagination}
+{#if pagination && pages.length > 0}
     <nav class="pagination">
-        <a
-            href="/locations/1"
-            class="pagination-link"
-            class:disabled={currentPage === 1}
-            class:opacity-50={currentPage === 1}
-        >
-            <FeatherIcons.ChevronsLeftIcon class="icon" />
-        </a>
-        <a
-            href={`/locations/${currentPage - 1}`}
-            class="pagination-link"
-            class:disabled={currentPage === 1}
-            class:opacity-50={currentPage === 1}
-        >
-            <FeatherIcons.ChevronLeftIcon class="icon" />
-        </a>
+        <Button
+            label=""
+            disabled={currentPage === 1}
+            interaction={{
+                type: "link",
+                target: currentPage === 1 ? null : "/locations/1"
+            }}
+            icon={{ name: "ChevronsLeftIcon", only: true }}
+            customClasses={["pagination-button"]}
+        />
+        <Button
+            label=""
+            disabled={currentPage === 1}
+            interaction={{
+                type: "link",
+                target:
+                    currentPage === 1 ? null : `/locations/${currentPage - 1}`
+            }}
+            icon={{ name: "ChevronLeftIcon", only: true }}
+            customClasses={["pagination-button"]}
+        />
 
-        {#each pages.slice(Math.max(0, currentPage - 2), Math.min(pages.length, currentPage + 1)) as pageNumber, index}
-            {#if (pages.length > 2 && currentPage > 2 && index === 0) || (pages.length > 2 && currentPage === pages.length && index === 0)}
-                <span class="pagination-ellipsis"
-                    ><FeatherIcons.MoreHorizontalIcon class="icon" /></span
-                >
-            {/if}
-
-            <a
-                href={`/locations/${pageNumber}`}
-                class="pagination-link"
-                class:disabled={pageNumber === currentPage}
-                class:bg-slate-800={pageNumber === currentPage}
+        {#if currentPage > 2 && pages.length > 3}
+            <span class="pagination-ellipsis"
+                ><FeatherIcons.MoreHorizontalIcon class="icon" /></span
             >
-                {pageNumber}
-            </a>
+        {/if}
 
-            {#if (currentPage < pages.length - 2 && index === 2) || (pages.length > 2 && currentPage === 1 && index === 1)}
-                <span class="pagination-ellipsis"
-                    ><FeatherIcons.MoreHorizontalIcon class="icon" /></span
-                >
+        {#each paginationRange as pageNumber}
+            {#if pageNumber === currentPage}
+                <span class="pagination-link active">
+                    {pageNumber}
+                </span>
+            {:else}
+                <a href={`/locations/${pageNumber}`} class="pagination-link">
+                    {pageNumber}
+                </a>
             {/if}
         {/each}
 
-        <a
-            href={`/locations/${currentPage + 1}`}
-            class="pagination-link"
-            class:disabled={currentPage === pages.length}
-            class:opacity-50={currentPage === pages.length}
-        >
-            <FeatherIcons.ChevronRightIcon class="icon" />
-        </a>
-        <a
-            href={`/locations/${pages.length}`}
-            class="pagination-link"
-            class:disabled={currentPage === pages.length}
-            class:opacity-50={currentPage === pages.length}
-        >
-            <FeatherIcons.ChevronsRightIcon class="icon" />
-        </a>
+        {#if currentPage < pages.length - 1 && pages.length > 3}
+            <span class="pagination-ellipsis"
+                ><FeatherIcons.MoreHorizontalIcon class="icon" /></span
+            >
+        {/if}
+
+        <Button
+            label=""
+            disabled={currentPage === pages.length}
+            interaction={{
+                type: "link",
+                target:
+                    currentPage === pages.length
+                        ? null
+                        : `/locations/${currentPage + 1}`
+            }}
+            icon={{ name: "ChevronRightIcon", only: true }}
+            customClasses={["pagination-button"]}
+        />
+        <Button
+            label=""
+            disabled={currentPage === pages.length}
+            interaction={{
+                type: "link",
+                target:
+                    currentPage === pages.length
+                        ? null
+                        : `/locations/${pages.length}`
+            }}
+            icon={{ name: "ChevronsRightIcon", only: true }}
+            customClasses={["pagination-button"]}
+        />
     </nav>
 {/if}

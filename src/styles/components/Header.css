@@ -10,7 +10,8 @@ header.pyrite-header {
     height: 4rem;
     border-top: var(--border);
     border-color: var(--_border-color);
-    background: var(--color-neutral-600);
+    background: hsl(from var(--color-neutral-600) h s l / 0.9);
+    backdrop-filter: blur(0.5rem);
 
     @media (min-width: 768px) {
         inset: 0 0 auto 0;

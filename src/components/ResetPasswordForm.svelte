@@ -3,6 +3,8 @@
     import Input from "./Input.svelte";
     import Button from "./Button.svelte";
 
+    import "../styles/components/ResetPasswordForm.css";
+
     export let token = null;
 
     let password = "";
@@ -19,6 +21,7 @@
         number: false,
         special: false
     };
+    let passwordConfirmError = '';
 
     onMount(() => {
         if (!token) {
@@ -39,26 +42,37 @@
         };
     }
 
-    function validatePassword() {
-        passwordErrors = checkPasswordRequirements(password);
-        return Object.values(passwordErrors).every(Boolean);
+    $: {
+        if (password) validatePassword();
+        if (passwordConfirm) validatePasswordConfirm();
     }
 
+    function validatePassword() {
+        passwordErrors = checkPasswordRequirements(password);
+        isFormValid();
+    }
+    
     function validatePasswordConfirm() {
-        return password === passwordConfirm;
+        passwordConfirmError = password !== passwordConfirm ? 'Passwörter stimmen nicht überein' : false;
+        isFormValid();
+    }
+
+    function isFormValid() {
+        return (
+            passwordErrors.length &&
+            passwordErrors.uppercase &&
+            passwordErrors.lowercase &&
+            passwordErrors.number &&
+            passwordErrors.special &&
+            !passwordConfirmError
+        );
     }
 
     async function handleSubmit(event) {
         event.preventDefault();
 
-        // Validierung
-        if (!validatePassword()) {
-            errorMessage = "Das Passwort erfüllt nicht alle Anforderungen.";
-            return;
-        }
-
-        if (!validatePasswordConfirm()) {
-            errorMessage = "Die Passwörter stimmen nicht überein.";
+        if (!isFormValid()) {
+            errorMessage = "Bitte überprüfe deine Eingaben.";
             return;
         }
 
@@ -99,127 +113,112 @@
     }
 </script>
 
-<div class="flex flex-col gap-4">
-    <h1 class="text-3xl font-bold font-barlow uppercase mb-6">
-        Neues Passwort festlegen
-    </h1>
+<form on:submit={handleSubmit} id="reset-password-form">
+    <h1>Neues Passwort festlegen</h1>
 
     {#if successMessage}
-        <div
-            class="border-1 border-lime-600 dark:border-lime-300 bg-lime-600/20 dark:bg-lime-300/20 text-lime-600 dark:text-lime-300 p-3 rounded-md text-sm mb-6"
-        >
+        <p class="notification is-success">
             {successMessage}
-        </div>
-        <div class="mt-4 text-center">
-            <a
-                href="/login"
-                class="text-indigo-600 dark:text-indigo-400 hover:underline"
-            >
-                Zum Login
-            </a>
-        </div>
+        </p>
+        <Button
+            label="Zurück zur Anmeldung"
+            type="link"
+            href="/login"
+            interaction={{ type: "link", target: "/login" }}
+        />
     {:else if !isValid}
-        <div
-            class="border-1 border-orange-600 dark:border-orange-300 bg-orange-600/20 dark:bg-orange-300/20 text-orange-600 dark:text-orange-300 p-3 rounded-md text-sm mb-6"
-        >
+        <p class="notification is-error">
             {errorMessage}
-        </div>
+        </p>
         <div class="mt-4 text-center">
-            <a
-                href="/forgot-password"
-                class="text-indigo-600 dark:text-indigo-400 hover:underline"
-            >
-                Neuen Reset-Link anfordern
-            </a>
+            <a href="/forgot-password">Neuen Reset-Link anfordern</a>
         </div>
     {:else}
-        <p class="mb-6 text-neutral-600 dark:text-neutral-400">
-            Bitte gib dein neues Passwort ein.
-        </p>
+        <p>Bitte gib dein neues Passwort ein.</p>
 
         {#if errorMessage}
-            <div
-                class="bg-orange-50 border border-orange-200 text-orange-800 p-3 rounded-md text-sm mb-4"
-            >
+            <p class="notification is-error">
                 {errorMessage}
-            </div>
+            </p>
         {/if}
 
-        <form on:submit={handleSubmit} class="flex flex-col gap-4">
-            <div class="mb-2">
-                <Input
-                    label="Neues Passwort"
-                    id="password"
-                    type="password"
-                    bind:value={password}
-                    on:input={validatePassword}
-                    required
-                    autocomplete="new-password"
-                />
+        <div class="form-group">
+        <Input
+            label="Neues Passwort"
+            id="password"
+            type="password"
+            bind:value={password}
+            on:input={validatePassword}
+            on:blur={() => {
+                validatePassword();
+                validatePasswordConfirm();
+            }}
+            required
+            autocomplete="new-password"
+        />
 
-                <div class="mt-2">
-                    <ul
-                        class="text-xs list-none flex gap-x-3 gap-y-1 flex-wrap"
-                    >
-                        <li
-                            class={passwordErrors.length
-                                ? "text-lime-600"
-                                : "text-neutral-600"}
-                        >
-                            min. 8 Zeichen
-                        </li>
-                        <li
-                            class={passwordErrors.uppercase
-                                ? "text-lime-600"
-                                : "text-neutral-600"}
-                        >
-                            min. 1 Großbuchstabe
-                        </li>
-                        <li
-                            class={passwordErrors.lowercase
-                                ? "text-lime-600"
-                                : "text-neutral-600"}
-                        >
-                            min. 1 Kleinbuchstabe
-                        </li>
-                        <li
-                            class={passwordErrors.number
-                                ? "text-lime-600"
-                                : "text-neutral-600"}
-                        >
-                            min. 1 Zahl
-                        </li>
-                        <li
-                            class={passwordErrors.special
-                                ? "text-lime-600"
-                                : "text-neutral-600"}
-                        >
-                            min. 1 Sonderzeichen
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <ul class="form-notifications">
+            <li
+                class="form-notification {passwordErrors.length
+                    ? 'is-success'
+                    : 'is-error'}"
+            >
+                min. 8 Zeichen
+            </li>
+            <li
+                class="form-notification {passwordErrors.uppercase
+                    ? 'is-success'
+                    : 'is-error'}"
+            >
+                min. 1 Großbuchstabe
+            </li>
+            <li
+                class="form-notification {passwordErrors.lowercase
+                    ? 'is-success'
+                    : 'is-error'}"
+            >
+                min. 1 Kleinbuchstabe
+            </li>
+            <li
+                class="form-notification {passwordErrors.number
+                    ? 'is-success'
+                    : 'is-error'}"
+            >
+                min. 1 Zahl
+            </li>
+            <li
+                class="form-notification {passwordErrors.special
+                    ? 'is-success'
+                    : 'is-error'}"
+            >
+                min. 1 Sonderzeichen
+            </li>
+        </ul>
+        </div>
 
+        <div class="form-group">
             <Input
                 label="Passwort bestätigen"
                 id="passwordConfirm"
                 type="password"
                 bind:value={passwordConfirm}
-                error={passwordConfirm && password !== passwordConfirm
-                    ? "Passwörter stimmen nicht überein"
-                    : ""}
+                on:input={validatePasswordConfirm}
+                on:blur={validatePasswordConfirm}
                 required
                 autocomplete="new-password"
             />
+            {#if passwordConfirmError}
+                <div class="form-notifications">
+                    <p class="form-notification is-error">{passwordConfirmError}</p>
+                </div>
+            {/if}
+        </div>
 
-            <Button
-                label={isSubmitting
-                    ? "Wird gespeichert..."
-                    : "Passwort speichern"}
-                type="primary"
-                disabled={isSubmitting}
-                interaction={{ type: "submit" }}
-            />
-        </form>
+        <Button
+            label={isSubmitting ? "Wird gespeichert..." : "Passwort speichern"}
+            type="primary"
+            disabled={isSubmitting}
+            interaction={{ type: "submit" }}
+        />
     {/if}
-</div>
+</form>

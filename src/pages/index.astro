@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Genres from '../components/Genres.svelte';
 import Cities from '../components/Cities.svelte';
-import Events from '../components/Events.astro';
+import Events from '../components/Events.svelte';
 
 import Input from "../components/Input.svelte";
 
@@ -25,7 +25,7 @@ import Page from '../components/Page.astro';
 
 		<section>
 			<h2>Aktuelle Events</h2>
-			<Events />
+			<Events client:load/>
 		</section>
 		
 		<section>

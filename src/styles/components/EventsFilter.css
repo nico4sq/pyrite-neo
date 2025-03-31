@@ -1,0 +1,16 @@
+#events-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: var(--spacing-30);
+    margin-bottom: var(--spacing-60);
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        align-items: center;
+
+        > * {
+            flex: 0 1 12rem;
+        }
+    }
+}

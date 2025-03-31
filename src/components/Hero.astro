@@ -1,4 +1,7 @@
 ---
+import Buttons from './Buttons.svelte';
+import Button from './Button.svelte';
+
 import '../styles/components/Hero.css';
 
 export interface props {
@@ -13,4 +16,24 @@ const { title, copy } = Astro.props;
 <section class="hero hero-bg-animation">
     <h1>{title}</h1>
     {copy && <p>{copy}</p>}
+    <Buttons>
+        <Button 
+          label="Events finden"
+          type="primary"
+          interaction={{
+            type: 'link',
+            target: '/eventfinder',
+          }}
+          inverted
+        />
+        <Button 
+          label="Locations finden"
+          type="secondary"
+          interaction={{
+            type: 'link',
+            target: '/locationfinder',
+          }}
+          inverted
+        />
+    </Buttons>
 </section>

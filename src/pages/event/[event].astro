@@ -44,7 +44,7 @@ const { event } = Astro.props;
     <Page>
         <div class="page-grid">
             <div class="page-column">
-                <h1 class="box is-title">{ event.title }</h1>
+                <h1 class="box is-title is-heading-level-2">{ event.title }</h1>
                 <ul class="box is-meta"> 
                     <li><span>Datum</span><span>{ event.date }</span></li>
                     <li><span>Uhrzeit</span><span>{ event.start } Uhr</span></li>
@@ -76,7 +76,7 @@ const { event } = Astro.props;
 
                 <div class="box">
                     <Buttons direction="row" align="center" justify="start">
-                        <Button customClasses={['flex-1']} label="Tickets" type="primary" interaction={ {type: 'link', target: event.tickets, external: true} } icon={ {name: "ShoppingCartIcon"} } />
+                        <Button customClasses={['flex-grow']} label="Tickets" type="primary" interaction={ {type: 'link', target: event.tickets, external: true} } icon={ {name: "ShoppingCartIcon"} } />
                         <Button label="Kalender" type="secondary" icon={ {name: 'CalendarIcon', only: true} }/>
                     </Buttons>
                 </div>
